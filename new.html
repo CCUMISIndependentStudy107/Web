@@ -20,7 +20,7 @@
                 <a href = "about.html">關於我們</a>
             </div>
             <div id = "new-area">
-                <form action = "myUpload.php" method="post">
+                <form action = "myUpload.php" method="post" enctype="multipart/form-data">
                     <p>商品名稱：</p><input type = "text" required name = "product_name"><br>
                     <p>上傳圖片：</p><input type="file" name = "product_picture">
                     <p>商品價格：</p><input type = "text" v-model = "amount" required name = "product_price">元<br>
