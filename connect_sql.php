@@ -1,7 +1,7 @@
 <?php
 $servername = "140.123.94.145";
-$username = "root";
-$password = "";
+$username = "zhbot";
+$password = "zhbot107";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password);
