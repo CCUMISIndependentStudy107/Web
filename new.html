@@ -20,13 +20,13 @@
                 <a href = "about.html">關於我們</a>
             </div>
             <div id = "new-area">
-                <form>
-                    <p>商品名稱：</p><input type = "text" required><br>
-                    <p>上傳圖片：</p><input type="file">
-                    <p>商品價格：</p><input type = "text" v-model = "amount" required><br>
-                    <p>上架數量：</p><input type = "text" required><br>
-                    <p>商品簡介：</p><input type = "text" required><br>
-                    <p>商品重量(公克)：</p><input type = "number" required v-model = "weight"><br>
+                <form action = "myUpload.php" method="post">
+                    <p>商品名稱：</p><input type = "text" required name = "product_name"><br>
+                    <p>上傳圖片：</p><input type="file" name = "product_picture">
+                    <p>商品價格：</p><input type = "text" v-model = "amount" required name = "product_price">元<br>
+                    <p>上架數量：</p><input type = "text" required name = "product_quantity">個<br>
+                    <p>商品簡介：</p><input type = "text" required name = "product_info"><br>
+                    <p>商品重量：</p><input type = "number" required v-model = "weight" name = "product_weight">公克(g)<br>
                     <p>您為地球減少了{{ count }}公克的二氧化碳</p>
                     <button>送出</button>
                 </form>    
