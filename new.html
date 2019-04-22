@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>新增商品</title>
+</head>
+<body>
+    <div id = "green-count">
+        <div id = "logo">
+                <img src = "pic/zhbot.png">
+            </div>
+            <div id = "top-bar">
+                <a href = "home.html">首頁</a>
+                <a href = "chart.html">購物車</a>
+                <a href = "store.html">商城</a>
+                <a href = "member.html">會員專區</a>
+                <a href = "about.html">關於我們</a>
+            </div>
+            <div id = "new-area">
+                <form>
+                    <p>商品名稱：</p><input type = "text" required><br>
+                    <p>上傳圖片：</p><input type="file">
+                    <p>商品價格：</p><input type = "text" v-model = "amount" required><br>
+                    <p>上架數量：</p><input type = "text" required><br>
+                    <p>商品簡介：</p><input type = "text" required><br>
+                    <p>商品重量(公克)：</p><input type = "number" required v-model = "weight"><br>
+                    <p>您為地球減少了{{ count }}公克的二氧化碳</p>
+                    <button>送出</button>
+                </form>    
+            </div>
+            <div id = about-us>
+        
+            </div>  
+    </div>
+</body>
+<script>
+    var green = new Vue({
+        el:'#green-count',
+        data:{
+            weight:0,
+            co2:0,
+            amount:0,
+        },
+        computed: {
+            count: function(){
+                return this.co2 = this.weight * 440/1000 * this.amount
+            }
+        }
+    })
+</script>
+</html>
