@@ -10,13 +10,13 @@
     /* image upload */
     # 檢查檔案是否上傳成功
     if ($_FILES['product_picture']['error'] === UPLOAD_ERR_OK){
-        $filename = $_FILES['product_picture']['name'];
+        $filetype = $_FILES['product_picture']['type'];
         $upload_folder = 'uploads/';
         echo '檔案名稱: ' . $_FILES['product_picture']['name'] . '<br/>';
         echo '檔案類型: ' . $_FILES['product_picture']['type'] . '<br/>';
         echo '檔案大小: ' . ($_FILES['product_picture']['size'] / 1024) . ' KB<br/>';
         echo '暫存名稱: ' . $_FILES['product_picture']['tmp_name'] . '<br/>';
-        if(isImage($filename)){
+        if(isImage($filetype)){
             # 檢查檔案是否已經存在
             if (file_exists($upload_folder . $_FILES['product_picture']['name'])){
                 echo '檔案已存在。<br/>';
@@ -35,10 +35,9 @@
 ?>
 
 <?php
-    function isImage($filename){
-        $acceptable_file_ext = array(".jpg",".png",".jpeg",".gif"); //jpg png gif are acceptable
-        for($i = 0; $i < count($acceptable_file_ext); $i++)
-            if(strpos($filename,$acceptable_file_ext[$i]) == true) return true;
+    function isImage($filetype){
+        $acceptable_file_ext = "image"; 
+        if(strpos($filetype,$acceptable_file_ext) !== false) return true;
         return false;
     }
 ?>
