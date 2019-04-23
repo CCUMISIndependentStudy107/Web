@@ -1,34 +1,30 @@
 <?php
     include "connect_sql.php";  //connect to mysql
-    // $wordpress_upload_url = 'http://140.123.94.145/bamboo/wp-admin/post-new.php?post_type=product';
-    /* product information from the form */
-    /* image upload */
-    # 檢查檔案是否上傳成功
-    if ($_FILES['product_picture']['error'] === UPLOAD_ERR_OK){
-        $filetype = $_FILES['product_picture']['type'];
-        if(!file_exists('uploads')) mkdir('uploads',0777,true); //0777 is already the default mode for directories and may still be modified by the current umask.
-        $upload_folder = 'uploads/';
-        if(isImage($filetype)){
-            # 檢查檔案是否已經存在
-            if (file_exists($upload_folder . $_FILES['product_picture']['name'])){
-                echo '檔案已存在。<br/>';
-            }
-            else {
-                $file = $_FILES['product_picture']['tmp_name'];
-                $dest = $upload_folder . $_FILES['product_picture']['name'];
-                # 將檔案移至指定位置
-                move_uploaded_file($file, $dest);
-            }
-        }
-    } 
-    else{
-        echo '錯誤代碼：' . $_FILES['product_picture']['error'] . '<br/>';
-    }
+    ImageCheck();
     WriteProductInfo();
 ?>
 
 <?php
-    function isImage($filetype){
+    function ImageCheck(){
+        # 檢查檔案是否上傳成功
+        if ($_FILES['product_picture']['error'] === UPLOAD_ERR_OK){
+            $filetype = $_FILES['product_picture']['type'];
+            if(!file_exists('uploads')) mkdir('uploads',0777,true); //0777 is already the default mode for directories and may still be modified by the current umask.
+            $upload_folder = 'uploads/';
+            if(IsImage($filetype)){
+                # 檢查檔案是否已經存在
+                if (file_exists($upload_folder . $_FILES['product_picture']['name'])) echo '檔案已存在。<br/>';
+                else{
+                    $file = $_FILES['product_picture']['tmp_name'];
+                    $dest = $upload_folder . $_FILES['product_picture']['name'];
+                    move_uploaded_file($file, $dest);   //將檔案移至指定位置
+                }
+            }
+        } 
+        else 
+            echo '錯誤代碼：' . $_FILES['product_picture']['error'] . '<br/>';   
+    }
+    function IsImage($filetype){
         $acceptable_file_ext = "image"; 
         if(strpos($filetype,$acceptable_file_ext) !== false) return true;
         return false;
