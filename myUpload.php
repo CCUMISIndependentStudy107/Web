@@ -11,6 +11,7 @@
     # 檢查檔案是否上傳成功
     if ($_FILES['product_picture']['error'] === UPLOAD_ERR_OK){
         $filetype = $_FILES['product_picture']['type'];
+        if(!file_exists('uploads')) mkdir('uploads',0777,true); //0777 is already the default mode for directories and may still be modified by the current umask.
         $upload_folder = 'uploads/';
         echo '檔案名稱: ' . $_FILES['product_picture']['name'] . '<br/>';
         echo '檔案類型: ' . $_FILES['product_picture']['type'] . '<br/>';
