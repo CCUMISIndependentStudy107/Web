@@ -38,6 +38,10 @@
         return;
     }
 
+    function ReduceC(){
+        return $_POST['product_weight'] * $_POST['product_quantity'] * 440/1000 + '公克(g)';
+    }
+
     function WriteProductInfo(){
         $filename = 'test.txt';
         $file = fopen($filename,"w");
@@ -49,7 +53,8 @@
         $tags = $_POST['product_tag'];
         if(substr($tags,-1) == ',') $tags = substr_replace($tags,'',-1);
         WriteFileInfo($file,"商品標籤",$tags,false);
-        WriteFileInfo($file,"商品照面",$_FILES['product_picture']['name'],true);
+        WriteFileInfo($file,"商品照面",$_FILES['product_picture']['name'],false);
+        WriteFileInfo($file,"節碳量",ReduceC(),true);
         //echo "OK";
         fclose($file);
     }
