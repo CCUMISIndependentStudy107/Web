@@ -2,9 +2,12 @@
     $servername = "140.123.94.145"; //server 本地可用localhost
     $username = "zhbot";    //sql 帳號
     $password = "zhbot107"; //sql 密碼
-    $db_name = "zhbot";  //database name
+    $db_name = "NEWZHBOT";  //database name
     // Create connection
-    $conn = mysqli_connect($servername, $username, $password,$db_name);
+    $conn = mysqli_connect($servername, $username, $password);
     if (!$conn) die("Connection failed: " . mysqli_connect_error()."<br/>");    //not connected then die
     // not die then good (Y)
+    $sql = "CREATE DATABASE IF NOT EXISTS ".$db_name;
+    if($conn -> query($sql) == false) echo "Failed<br/>";
+    // else echo "Database create successfully!<br/>";
 ?> 
