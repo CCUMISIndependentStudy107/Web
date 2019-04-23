@@ -1,5 +1,4 @@
 <?php
-    include "connect_sql.php";  //connect to mysql
     ImageCheck();
     WriteProductInfo();
 ?>
