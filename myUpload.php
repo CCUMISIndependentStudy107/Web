@@ -39,7 +39,7 @@
     }
 
     function ReduceC(){
-        $str = $_POST['product_weight'] * $_POST['product_quantity'] * 440/1000;
+        $str = floatval($_POST['product_weight'] * $_POST['product_quantity'] * 440/1000);
         return $str."公克(g)";
     }
 
