@@ -45,10 +45,12 @@
     }
 
     function WriteProductInfo(){
+        #DateTime
         date_default_timezone_set("Asia/Taipei");   //change time zone to Taipei https://www.php.net/manual/en/timezones.php
         $date = new DateTime('now');
         $date = $date->format('Y-m-d-H-i-s');   //date format
         $dest = "uploads/".$date;   //destination is named by datetime
+        // $dest = "uploads/".$_POST['product_name'];
         if(!file_exists($dest)) mkdir($dest,0777,true); //if not exists , create one
         $info_filename = $dest.'/ProductInfo.txt';   //write product information text file named ProductInfo.txt
         $plain_filename = $dest.'/PlainInfo.txt';   //write plain information text file named PlainInfo.txt
