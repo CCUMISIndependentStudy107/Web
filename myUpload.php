@@ -44,17 +44,29 @@
     }
 
     function WriteProductInfo(){
-        $filename = 'test.txt';
+        date_default_timezone_set("Asia/Taipei");   //change time zone to Taipei https://www.php.net/manual/en/timezones.php
+        $date = new DateTime('now');
+        $date = $date->format('Y-m-d-H-i-s');   //date format
+        $dest = "uploads/".$date;   //destination is named by datetime
+        if(!file_exists($dest)) mkdir($dest,0777,true); //if not exists , create one
+        $filename = $dest.'/ProductInfo.txt';   //write product information named ProductInfo.txt
+        #Write File 
         $file = fopen($filename,"w");
         WriteFileInfo($file,"商品名稱",$_POST['product_name'],false);
         WriteFileInfo($file,"商品價格",$_POST['product_price'],false);
         WriteFileInfo($file,"商品數量",$_POST['product_quantity'],false);
         WriteFileInfo($file,"商品簡介",$_POST['product_info'],false);
         WriteFileInfo($file,"商品重量",$_POST['product_weight'],false);
+        #Tag process
         $tags = $_POST['product_tag'];
         if(substr($tags,-1) == ',') $tags = substr_replace($tags,'',-1); //防呆 若,在最後面的時候
         WriteFileInfo($file,"商品標籤",$tags,false);
         WriteFileInfo($file,"商品照面",$_FILES['product_picture']['name'],false);
+        #Move image to new destination
+        $img_name = $_FILES['product_picture']['name'];
+        $img_old_dest = "uploads/".$img_name;
+        $image_new_dest = $dest.'/'.$img_name;
+        rename($img_old_dest,$image_new_dest);
         WriteFileInfo($file,"節碳量",ReduceC(),true);
         //echo "OK";
         fclose($file);
