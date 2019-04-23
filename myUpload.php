@@ -1,9 +1,9 @@
 <?php
     include "connect_sql.php";  //connect to mysql
-    $wordpress_upload_url = 'http://140.123.94.145/bamboo/wp-admin/post-new.php?post_type=product';
+    // $wordpress_upload_url = 'http://140.123.94.145/bamboo/wp-admin/post-new.php?post_type=product';
     /* product information from the form */
     $product_name = $_POST['product_name'];
-    $product_price = $_POST['product_name'];
+    $product_price = $_POST['product_price'];
     $product_quantity = $_POST['product_quantity'];
     $product_info = $_POST['product_info'];
     $product_weight = $_POST['product_weight'];
@@ -32,6 +32,15 @@
     else{
         echo '錯誤代碼：' . $_FILES['product_picture']['error'] . '<br/>';
     }
+    $filename = 'test.txt';
+    $file = fopen($filename,"w");
+    WriteFileInfo($file,"商品名稱",$product_name,false);
+    WriteFileInfo($file,"商品價格",$product_price,false);
+    WriteFileInfo($file,"商品數量",$product_quantity,false);
+    WriteFileInfo($file,"商品簡介",$product_info,false);
+    WriteFileInfo($file,"商品重量",$product_weight,false);
+    WriteFileInfo($file,"商品照面",$_FILES['product_picture']['name'],true);
+    fclose($file);
 ?>
 
 <?php
@@ -39,5 +48,12 @@
         $acceptable_file_ext = "image"; 
         if(strpos($filetype,$acceptable_file_ext) !== false) return true;
         return false;
+    }
+    function WriteFileInfo($file,$name,$information,$end){
+        if($end==false)
+            fwrite($file,$name.' : '.$information."\n");
+        else
+            fwrite($file,$name.' : '.$information);
+        return;
     }
 ?>
