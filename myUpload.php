@@ -39,7 +39,8 @@
     }
 
     function ReduceC(){
-        return $_POST['product_weight'] * $_POST['product_quantity'] * 440/1000 + '公克(g)';
+        $str = $_POST['product_weight'] * $_POST['product_quantity'] * 440/1000;
+        return $str."公克(g)";
     }
 
     function WriteProductInfo(){
