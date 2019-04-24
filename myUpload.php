@@ -53,7 +53,7 @@
         // $dest = "uploads/".$_POST['product_name'];
         if(!file_exists($dest)) mkdir($dest,0777,true); //if not exists , create one
         $info_filename = $dest.'/ProductInfo.txt';   //write product information text file named ProductInfo.txt
-        $plain_filename = $dest.'/PlainInfo.txt';   //write plain information text file named PlainInfo.txt
+        $plain_filename = $dest.'/PlainInfo.html';   //write plain information text file named PlainInfo.txt
         #Write info File 
         $info_file = fopen($info_filename,"w");
         WriteFileInfo($info_file,"商品名稱",$_POST['product_name'],false);
