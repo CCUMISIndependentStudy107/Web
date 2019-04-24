@@ -33,13 +33,13 @@
         <div id="new-area">
             <h2>商品上架</h2>
             <form action="myUpload.php" onsubmit="return sendHDC(green.co2);" method="post" enctype="multipart/form-data">
-                <p>商品名稱：<input value="a" type="text" name="product_name" required></p>
-                <p>上傳圖片：<input value="a" type="file" name="product_picture"></p>
-                <p>商品價格：<input value="a" type="text" name="product_price" v-model="amount" required>元</p>
-                <p>上架數量：<input value="a" type="text" name="product_quantity" required>個</p>
-                <p>商品簡介：<input value="a" type="text" name="product_info" required></p>
-                <p>商品重量：<input value="a" type="number" name="product_weight" required v-model="weight">公克(g)</p>
-                <p>商品標籤：<input value="a" type="text" name="product_tag">(以逗號(,)隔開)</p>
+                <p>商品名稱：<input type="text" name="product_name" required></p>
+                <p>上傳圖片：<input type="file" name="product_picture"></p>
+                <p>商品價格：<input type="text" name="product_price" v-model="amount" required>元</p>
+                <p>上架數量：<input type="text" name="product_quantity" required>個</p>
+                <p>商品簡介：<input type="text" name="product_info" required></p>
+                <p>商品重量：<input type="number" name="product_weight" required v-model="weight">公克(g)</p>
+                <p>商品標籤：<input type="text" name="product_tag">(以逗號(,)隔開)</p>
                 <p>您為地球減少了 {{ count }} 公克的二氧化碳</p>
                 <button>送出</button>
                 <p id="result"></p>
