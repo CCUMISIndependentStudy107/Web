@@ -12,6 +12,7 @@
     // mysql_query("SET CHARACTER_SET_database= utf8",$db);
     // mysql_query("SET CHARACTER_SET_CLIENT= utf8",$db);
     // mysql_query("SET CHARACTER_SET_RESULTS= utf8",$db);
+    // mysql_query("SET NAMES 'UTF8'");
     $conn = mysqli_connect($servername,$username,$password,$db_name);
     $sql = "INSERT INTO ".$tablename." (".$ProductInfoName[1].",".$ProductInfoName[2].",".$ProductInfoName[3].",".$ProductInfoName[4].",".$ProductInfoName[5].",".$ProductInfoName[6].",".$ProductInfoName[7].",".$ProductInfoName[8].",".$ProductInfoName[9].")";
     $sql .= " VALUES(\"".$ProductInfo[0]."\",".$ProductInfo[1].",".$ProductInfo[2].",\"".$ProductInfo[3]."\",".$ProductInfo[4].",\"".$ProductInfo[5]."\",\"".$ProductInfo[6]."\",".$ProductInfo[7].",\"".$ProductInfo[8]."\");";
