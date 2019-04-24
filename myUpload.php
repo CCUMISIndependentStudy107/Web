@@ -36,7 +36,7 @@
     }
 
     function WritePlainText($file,$information,$end){
-        if(!$end) fwrite($file,$information." ");
+        if(!$end) fwrite($file,$information."\n");   //seperate by NextLine
         else fwrite($file,$information);
     }
 
@@ -76,7 +76,8 @@
         WritePlainText($plain_file,$_POST['product_weight'],false);
         WritePlainText($plain_file,$tags,false);
         WritePlainText($plain_file,$_FILES['product_picture']['name'],false);
-        WritePlainText($plain_file,ReduceC(),true);
+        WritePlainText($plain_file,ReduceC(),false);
+        WritePlainText($plain_file,$date,true);
         #Move image to new destination
         $img_name = $_FILES['product_picture']['name'];
         $img_old_dest = "uploads/".$img_name;
