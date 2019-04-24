@@ -6,7 +6,7 @@
     $ProductInfo[5] = TagProcess($ProductInfo[5]);
     // print_r($ProductInfo);
     // INSERT INTO DATABASE
-    /* Not sure this works */
+    /* Not sure these works */
     // $db=mysql_connect($servername,$username,$password);
     // mysql_query("set character set utf8",$db);
     // mysql_query("SET CHARACTER_SET_database= utf8",$db);
