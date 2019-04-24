@@ -3,53 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <title>新增商品</title>
 </head>
 <body>
-    <div id = "green-count">
-        <div id = "logo">
-                <img src = "pic/zhbot.png">
-            </div>
-            <div id = "top-bar">
-                <a href = "home.html">首頁</a>
-                <a href = "chart.html">購物車</a>
-                <a href = "store.html">商城</a>
-                <a href = "member.html">會員專區</a>
-                <a href = "about.html">關於我們</a>
-            </div>
-            <div id = "new-area">
-                <form action = "myUpload.php" method="post" enctype="multipart/form-data">
-                    <p>商品名稱：</p><input type = "text" required name = "product_name"><br>
-                    <p>上傳圖片：</p><input type="file" name = "product_picture">
-                    <p>商品價格：</p><input type = "text" v-model = "amount" required name = "product_price">元<br>
-                    <p>上架數量：</p><input type = "text" required name = "product_quantity">個<br>
-                    <p>商品簡介：</p><input type = "text" required name = "product_info"><br>
-                    <p>商品重量：</p><input type = "number" required v-model = "weight" name = "product_weight">公克(g)<br>
-                    <p>商品標籤：</p><input type = "text" name = "product_tag">(以逗號(,)隔開)<br>
-                    <p>您為地球減少了{{ count }}公克的二氧化碳</p>
-                    <button>送出</button>
-                </form>    
-            </div>
-            <div id = about-us>
-        
-            </div>  
+    <div id="green-count">
+        <div id="logo">
+            <img src="pic/zhbot.png">
+        </div>
+        <div id="top-bar">
+            <a href="home.html">首頁</a>
+            <a href="chart.html">購物車</a>
+            <a href="store.html">商城</a>
+            <a href="member.html">會員專區</a>
+            <a href="about.html">關於我們</a>
+        </div>
+        <div id="detail">
+            <h2>錢包狀況</h2>
+            <p id="main-wallet">
+                中心錢包：<input type="text" class="wallet" size="50" value="0xf4d80E82C4E3f44B71099e9C087a0Cd8Cd746B8f" oninput="getHDCBalance()">
+                <span class="balance">0</span> HDC
+            </p>
+            <p id="vendor-wallet">
+                廠商錢包：<input type="text" class="wallet" size="50" value="0x4A86D247d0f24f68fA0800A497D8b7Fb18b4e695" oninput="getHDCBalance()">
+                <span class="balance">0</span> HDC
+            </p>
+        </div>
+        <div id="new-area">
+            <h2>商品上架</h2>
+            <form action="myUpload.php" onsubmit="return sendHDC(green.co2);" method="post" enctype="multipart/form-data">
+                <p>商品名稱：<input value="a" type="text" name="product_name" required></p>
+                <p>上傳圖片：<input value="a" type="file" name="product_picture"></p>
+                <p>商品價格：<input value="a" type="text" name="product_price" v-model="amount" required>元</p>
+                <p>上架數量：<input value="a" type="text" name="product_quantity" required>個</p>
+                <p>商品簡介：<input value="a" type="text" name="product_info" required></p>
+                <p>商品重量：<input value="a" type="number" name="product_weight" required v-model="weight">公克(g)</p>
+                <p>商品標籤：<input value="a" type="text" name="product_tag">(以逗號(,)隔開)</p>
+                <p>您為地球減少了 {{ count }} 公克的二氧化碳</p>
+                <button>送出</button>
+                <p id="result"></p>
+            </form>
+        </div>
+        <div id=about-us></div>
     </div>
 </body>
 <script>
     var green = new Vue({
-        el:'#green-count',
-        data:{
-            weight:0,
-            co2:0,
-            amount:0,
+        el: '#green-count',
+        data: {
+            weight: 0,
+            co2: 0,
+            amount: 0,
         },
         computed: {
-            count: function(){
-                return this.co2 = this.weight * 440/1000 * this.amount
+            count: function () {
+                return this.co2 = this.weight * 440/1000 * this.amount;
             }
         }
-    })
+    });
 </script>
+<script src="./web3.min.js"></script>
+<script src="./blockchain.js"></script>
 </html>
