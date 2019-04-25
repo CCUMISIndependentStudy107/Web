@@ -6,7 +6,7 @@
 <html>
     <head>
         <title>上傳頁面</title>
-        <meta http-equiv="refresh" content="1;url=<?php $url = "connect_zhbot.php"; echo $url; ?>"> 
+        <meta charset="UTF-8" http-equiv="refresh" content="1;url=<?php $url = "connect_zhbot.php"; echo $url; ?>"> 
     </head>
     <body>
     </body>
