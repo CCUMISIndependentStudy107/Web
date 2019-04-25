@@ -1,3 +1,11 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>輸入資料庫</title>
+    </head>
+    <body>
+    </body>
+</html>
 <?php
     include "connect_sql.php";
     $ProductInfoName = array("ID","Name","Price","Quantity","Information","Weight","Tag","PictureName","ReduceC","FolderName","Company");
@@ -19,6 +27,7 @@
     $sql .= " VALUES(\"".$ProductInfo[0]."\",".$ProductInfo[1].",".$ProductInfo[2].",\"".$ProductInfo[3]."\",".$ProductInfo[4].",\"".$ProductInfo[5]."\",\"".$ProductInfo[6]."\",".$ProductInfo[7].",\"".$ProductInfo[8]."\",\"".$ProductInfo[9]."\",0);";
     // echo $sql;
     if($conn -> query($sql) == false) echo "Failed to Insert values <br/>";
+    else echo "成功輸入至資料庫！<br/>";
 ?>
 
 <?php
