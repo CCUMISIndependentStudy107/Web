@@ -1,6 +1,7 @@
 <?php
     ImageCheck();
     WriteProductInfo();
+    include "connect_zhbot.php";
 ?>
 
 <?php
@@ -36,9 +37,18 @@
         return;
     }
 
-    function WritePlainText($file,$information,$end){
+    function WritePlainText($file,$information,$end,$date){
         if(!$end) fwrite($file,$information."\n");   //seperate by NextLine
-        else fwrite($file,$information);
+        else{
+            fwrite($file,$information);
+            MovePlainText($date);
+        }
+    }
+
+    function MovePlainText($date){
+        $filename = "PlainInfo.html";
+        $upload_folder = "uploads/";
+        copy($upload_folder.$date."/".$filename,$upload_folder."/".$filename);
     }
 
     function ReduceC(){
@@ -71,16 +81,16 @@
         WriteFileInfo($info_file,"廠商名稱",$_POST['company_name'],true);
         #Write plain File
         $plain_file = fopen($plain_filename,"w");
-        WritePlainText($plain_file,$_POST['product_name'],false);
-        WritePlainText($plain_file,$_POST['product_price'],false);
-        WritePlainText($plain_file,$_POST['product_quantity'],false);
-        WritePlainText($plain_file,$_POST['product_info'],false);
-        WritePlainText($plain_file,$_POST['product_weight'],false);
-        WritePlainText($plain_file,$tags,false);
-        WritePlainText($plain_file,$_FILES['product_picture']['name'],false);
-        WritePlainText($plain_file,ReduceC(),false);
-        WritePlainText($plain_file,$date,false);
-        WritePlainText($plain_file,$_POST['company_name'],true);
+        WritePlainText($plain_file,$_POST['product_name'],false,$date);
+        WritePlainText($plain_file,$_POST['product_price'],false,$date);
+        WritePlainText($plain_file,$_POST['product_quantity'],false,$date);
+        WritePlainText($plain_file,$_POST['product_info'],false,$date);
+        WritePlainText($plain_file,$_POST['product_weight'],false,$date);
+        WritePlainText($plain_file,$tags,false,$date);
+        WritePlainText($plain_file,$_FILES['product_picture']['name'],false,$date);
+        WritePlainText($plain_file,ReduceC(),false,$date);
+        WritePlainText($plain_file,$date,false,$date);
+        WritePlainText($plain_file,$_POST['company_name'],true,$date);
         #Move image to new destination
         $img_name = $_FILES['product_picture']['name'];
         $img_old_dest = "uploads/".$img_name;
