@@ -1,9 +1,16 @@
 <?php
     ImageCheck();
     WriteProductInfo();
-    include "connect_zhbot.php";
+    echo "Upload Successful";
 ?>
-
+<html>
+    <head>
+        <title>上傳頁面</title>
+        <meta http-equiv="refresh" content="1;url=<?php $url = "connect_zhbot.php"; echo $url; ?>"> 
+    </head>
+    <body>
+    </body>
+</html>
 <?php
     function ImageCheck(){
         # 檢查檔案是否上傳成功
@@ -64,7 +71,7 @@
         // $dest = "uploads/".$_POST['product_name'];
         if(!file_exists($dest)) mkdir($dest,0777,true); //if not exists , create one
         $info_filename = $dest.'/ProductInfo.txt';   //write product information text file named ProductInfo.txt
-        $plain_filename = $dest.'/PlainInfo.html';   //write plain information text file named PlainInfo.txt
+        $plain_filename = $dest.'/PlainInfo.html';   //write plain information text file named PlainInfo.html
         #Write info File 
         $info_file = fopen($info_filename,"w");
         WriteFileInfo($info_file,"商品名稱",$_POST['product_name'],false);
