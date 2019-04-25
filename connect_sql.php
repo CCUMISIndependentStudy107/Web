@@ -13,4 +13,5 @@
     $sql = "CREATE DATABASE IF NOT EXISTS ".$db_name." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;";    //utf8 utf8_unicode_ci or big5 big5_chinese_ci
     if($conn -> query($sql) == false) echo "Failed to create database<br/>";
     // else echo "Database create successfully!<br/>";
+    $conn = mysqli_connect($servername,$username,$password,$db_name);
 ?> 
