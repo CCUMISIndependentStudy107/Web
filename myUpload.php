@@ -23,6 +23,7 @@
         else 
             echo '錯誤代碼：' . $_FILES['product_picture']['error'] . '<br/>';   
     }
+
     function IsImage($filetype){
         $acceptable_file_ext = "image"; 
         if(strpos($filetype,$acceptable_file_ext) !== false) return true;
@@ -66,7 +67,8 @@
         if(substr($tags,-1) == ',') $tags = substr_replace($tags,'',-1); //防呆 若,在最後面的時候
         WriteFileInfo($info_file,"商品標籤",$tags,false);
         WriteFileInfo($info_file,"商品照面",$_FILES['product_picture']['name'],false);
-        WriteFileInfo($info_file,"節碳量",ReduceC()."公克(g)",true);
+        WriteFileInfo($info_file,"節碳量",ReduceC()."公克(g)",false);
+        WriteFileInfo($info_file,"廠商名稱",$_POST['company_name'],true);
         #Write plain File
         $plain_file = fopen($plain_filename,"w");
         WritePlainText($plain_file,$_POST['product_name'],false);
@@ -77,7 +79,8 @@
         WritePlainText($plain_file,$tags,false);
         WritePlainText($plain_file,$_FILES['product_picture']['name'],false);
         WritePlainText($plain_file,ReduceC(),false);
-        WritePlainText($plain_file,$date,true);
+        WritePlainText($plain_file,$date,false);
+        WritePlainText($plain_file,$_POST['company_name'],true);
         #Move image to new destination
         $img_name = $_FILES['product_picture']['name'];
         $img_old_dest = "uploads/".$img_name;
