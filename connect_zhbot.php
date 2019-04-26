@@ -25,22 +25,29 @@
     $conn = mysqli_connect($servername,$username,$password,$db_name);
     // $sql = "INSERT INTO ".$tablename." (".$ProductInfoName[1].",".$ProductInfoName[2].",".$ProductInfoName[3].",".$ProductInfoName[4].",".$ProductInfoName[5].",".$ProductInfoName[6].",".$ProductInfoName[7].",".$ProductInfoName[8].",".$ProductInfoName[9].",".$ProductInfoName[10].",".$check.")";
     // $sql .= " VALUES(\"".$ProductInfo[0]."\",".$ProductInfo[1].",".$ProductInfo[2].",\"".$ProductInfo[3]."\",".$ProductInfo[4].",\"".$ProductInfo[5]."\",\"".$ProductInfo[6]."\",".$ProductInfo[7].",\"".$ProductInfo[8]."\",\"".$ProductInfo[9]."\",0);";
-    $sql = "INSERT INTO ".$tablename."(";
-    for($i=1;$i<count($ProductInfoName);$i++) $sql .= $ProductInfoName[$i].",";
-    $sql .= $check.") VALUES(";
-    for($i=0;$i<count($ProductInfo);$i++){
-        switch($i){
-            case 0: case 3: case 5: case 6: case 8: case 9:
-                $sql .= "\"$ProductInfo[$i]\",";
-                break;
-            default:
-                $sql .= $ProductInfo[$i].",";
-        }
+    if(Duplicate($servername,$username,$password,$db_name,$tablename,$ProductInfoName,$ProductInfo)){
+        echo "Failed to insert because of the duplicate<br/>";
     }
-    $sql .= "0);";
-    echo $sql;
-    if($conn -> query($sql) == false) echo "Failed to Insert values <br/>";
-    else echo "成功輸入至資料庫！<br/>";
+    else{
+        $sql = "INSERT INTO ".$tablename."(";
+        for($i=1;$i<count($ProductInfoName);$i++) $sql .= $ProductInfoName[$i].",";
+        $sql .= $check.") VALUES(";
+        for($i=0;$i<count($ProductInfo);$i++){
+            switch($i){
+                case 0: case 3: case 5: case 6: case 8: case 9:
+                    $sql .= "\"$ProductInfo[$i]\",";
+                    break;
+                default:
+                    $sql .= $ProductInfo[$i].",";
+                    break;
+            }
+        }
+        $sql .= "0);";
+        // echo $sql;
+        if($conn -> query($sql) == false) echo "Failed to Insert values <br/>";
+        else echo "成功輸入至資料庫！<br/>";
+        mysqli_close($conn);
+    }
 ?>
 
 <?php
@@ -58,7 +65,6 @@
     function ReadPlainText(){
         $file = fopen("uploads/PlainInfo.html","r");
         $ProductInfo = array();
-        $index = 0;
         while(!feof($file)){
             $tmp = fgets($file);
             array_push($ProductInfo,$tmp);
@@ -69,5 +75,41 @@
 
     function TagProcess($tag){
         return str_replace(','," ",$tag);
+    }
+
+    function Duplicate($servername,$username,$password,$db_name,$tablename,$ProductInfoName,$ProductInfo){
+        $conn = mysqli_connect($servername,$username,$password,$db_name);
+        $sql = "SELECT * FROM ".$tablename." ";
+        $arr = array();
+        $productname = array($ProductInfo[0]);
+        $companyname = array($ProductInfo[9]);
+        if($res = mysqli_query($conn, $sql)){
+            while($row = mysqli_fetch_array($res)){
+                for($i=0,$j=0;$i<count($ProductInfoName);$i++){
+                    // echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
+                    $id = $row[$ProductInfoName[0]];
+                    if($i>0) $arr[$id][$j++]=$row[$ProductInfoName[$i]];
+                }
+            }
+        }
+        $keys = array_keys($arr);
+        // print_r($keys);
+        for($i=0;$i<count($keys);$i++){
+            array_push($productname,$arr[$keys[$i]][0]);
+            array_push($companyname,$arr[$keys[$i]][9]);
+        }
+        // print_r($productname)."QQQ";
+        // print_r($companyname)."AAA";
+        $result = findDuplicate($productname,$companyname);
+        return $result;
+    }
+
+    function findDuplicate($productname,$companyname){
+        for($i=0;$i<count($productname);$i++){
+            for($j=$i+1;$j<count($productname);$j++){
+                if($productname[$i] == $productname[$j] && $companyname[$i] == $companyname[$j]) return true;
+            }
+        }
+        return false;
     }
 ?>
