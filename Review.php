@@ -69,7 +69,7 @@
                     echo "</tr>";
                 }
                 echo "</table>";
-                // Confirm($ProductInfoName,$newtable,$info,1,$servername,$username,$password,$db_name);
+                // Confirm($ProductInfoName,$tableName,$newtable,$info,1,$servername,$username,$password,$db_name);
                 // Free result set
                 mysqli_free_result($result);
             }
@@ -96,9 +96,9 @@
         return $tableName;
     }
 
-    function Confirm($ProductInfoName,$table,$array,$id,$servername,$username,$password,$db_name){
+    function Confirm($ProductInfoName,$oldtable,$newtable,$array,$id,$servername,$username,$password,$db_name){
         // print_r($array[$id]);
-        $sql = "INSERT INTO ".$table."(";
+        $sql = "INSERT INTO ".$newtable."(";
         for($i=1;$i<count($ProductInfoName)-1;$i++) $sql .= $ProductInfoName[$i].",";
         $sql .= $ProductInfoName[count($ProductInfoName)-1].") VALUES (";
         for($i=0;$i<count($array[$id]);$i++){
@@ -107,15 +107,18 @@
                     $sql .= "\"".$array[$id][$i]."\","; //if is string
                     break;
                 case count($array[$id])-1:
-                    $sql .= "\"".$array[$id][$i]."\");";
+                    $sql .= "\"".$array[$id][$i]."\");";   // the last value
                     break;
                 default:
-                    $sql .= $array[$id][$i].",";
+                    $sql .= $array[$id][$i].",";    //number value
                     break;
             }
         }
-        // echo $sql;
+        // echo $sql."<br>";
         $conn = mysqli_connect($servername,$username,$password,$db_name);
-        if($conn -> query($sql) == false) echo "Failed to create table ".$table."<br/>";
+        if($conn -> query($sql) == false) echo "Failed to insert to table ".$newtable."<br/>";
+        $sql = "UPDATE ".$oldtable." SET checks=1 WHERE ".$ProductInfoName[1]."=\"".$array[$id][0]."\" AND ".$ProductInfoName[count($ProductInfoName)-1]."=\"".$array[$id][count($array[$id])-1]."\"";
+        // echo $sql;
+        if($conn -> query($sql) == false) echo "Failed to update table ".$oldtable."<br/>";
     }
 ?>
