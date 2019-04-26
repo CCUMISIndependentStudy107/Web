@@ -56,10 +56,18 @@
                 echo "</tr>";
                 while($row = mysqli_fetch_array($result)){
                     echo "<tr>";
-                    for($i=0;$i<count($ProductInfoName);$i++) echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
+                    $info = array();
+                    $id;
+                    for($i=0;$i<count($ProductInfoName);$i++){
+                        echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
+                        $id = $row[$ProductInfoName[0]];
+                        if($i>0) array_push($info,$id."=>".$row[$ProductInfoName[$i]]);
+                    }
+                    // print_r($info);
+                    // echo "<br/>";
                     $confirm = "通過";
                     $deny = "駁回";
-                    echo "<td>"."<button name=\"confirm\">".$confirm."</button>"."<button name=\"deny\">".$deny."</button>";
+                    echo "<td>"."<button name=\"confirm".$id."\">".$confirm."</button>"."<button name=\"deny".$id."\">".$deny."</button>";
                     echo "</tr>";
                 }
                 echo "</table>";
