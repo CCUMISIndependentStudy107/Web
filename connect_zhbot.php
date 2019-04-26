@@ -23,9 +23,22 @@
     // mysql_query("SET CHARACTER_SET_RESULTS= utf8",$db);
     // mysql_query("SET NAMES 'UTF8'");
     $conn = mysqli_connect($servername,$username,$password,$db_name);
-    $sql = "INSERT INTO ".$tablename." (".$ProductInfoName[1].",".$ProductInfoName[2].",".$ProductInfoName[3].",".$ProductInfoName[4].",".$ProductInfoName[5].",".$ProductInfoName[6].",".$ProductInfoName[7].",".$ProductInfoName[8].",".$ProductInfoName[9].",".$ProductInfoName[10].",".$check.")";
-    $sql .= " VALUES(\"".$ProductInfo[0]."\",".$ProductInfo[1].",".$ProductInfo[2].",\"".$ProductInfo[3]."\",".$ProductInfo[4].",\"".$ProductInfo[5]."\",\"".$ProductInfo[6]."\",".$ProductInfo[7].",\"".$ProductInfo[8]."\",\"".$ProductInfo[9]."\",0);";
-    // echo $sql;
+    // $sql = "INSERT INTO ".$tablename." (".$ProductInfoName[1].",".$ProductInfoName[2].",".$ProductInfoName[3].",".$ProductInfoName[4].",".$ProductInfoName[5].",".$ProductInfoName[6].",".$ProductInfoName[7].",".$ProductInfoName[8].",".$ProductInfoName[9].",".$ProductInfoName[10].",".$check.")";
+    // $sql .= " VALUES(\"".$ProductInfo[0]."\",".$ProductInfo[1].",".$ProductInfo[2].",\"".$ProductInfo[3]."\",".$ProductInfo[4].",\"".$ProductInfo[5]."\",\"".$ProductInfo[6]."\",".$ProductInfo[7].",\"".$ProductInfo[8]."\",\"".$ProductInfo[9]."\",0);";
+    $sql = "INSERT INTO ".$tablename."(";
+    for($i=1;$i<count($ProductInfoName);$i++) $sql .= $ProductInfoName[$i].",";
+    $sql .= $check.") VALUES(";
+    for($i=0;$i<count($ProductInfo);$i++){
+        switch($i){
+            case 0: case 3: case 5: case 6: case 8: case 9:
+                $sql .= "\"$ProductInfo[$i]\",";
+                break;
+            default:
+                $sql .= $ProductInfo[$i].",";
+        }
+    }
+    $sql .= "0);";
+    echo $sql;
     if($conn -> query($sql) == false) echo "Failed to Insert values <br/>";
     else echo "成功輸入至資料庫！<br/>";
 ?>
