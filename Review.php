@@ -43,7 +43,7 @@
                 $sql .= "WHERE ".$selected_value." LIKE \"%".$key."%\"";
             else
                 $sql .= "WHERE ".$selected_value.$key;
-            $sql .= "AND checks=0";
+            $sql .= " AND checks=0";
         }
         else $sql .= " WHERE checks = 0";
         // echo $sql;
