@@ -67,11 +67,11 @@
                     }
                     $confirm = "通過";
                     $deny = "駁回";
-                    echo "<td>"."<button name=\"confirm".$id."\">".$confirm."</button>"."<button name=\"deny".$id."\">".$deny."</button>";
+                    echo "<td>"."<button name=\"confirm".$id."\">".$confirm."</button>"."<button name=\"deny".$id."\">".$deny."</button>";  //加入事件 Confirm()
                     echo "</tr>";
                 }
                 echo "</table>";
-                // Confirm($ProductInfoName,$tableName,$newtable,$info,1,$servername,$username,$password,$db_name);
+                // Confirm($ProductInfoName,$tableName,$newtable,$info,1,$servername,$username,$password,$db_name);  1 改成按鈕
                 // Free result set
                 mysqli_free_result($result);
             }
