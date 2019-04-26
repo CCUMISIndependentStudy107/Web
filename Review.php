@@ -18,15 +18,15 @@
                     <option value="FolderName">創建時間</option>
                     <option value="ReduceC">節碳量</option>
                 </select>
-            </p>
-            <p>輸入關鍵字:<input type="text" name="key" value=""></p>
-            <input type="submit" name="button" value="送出">
+                輸入關鍵字:<input type="text" name="key" value="">
+                <input type="submit" name="button" value="送出"></p>
         </form>
     </body>
 </html>
 <?php
     include "connect_sql.php";
     $ProductInfoName = array("ID","Name","Price","Quantity","Information","Weight","Tag","PictureName","ReduceC","FolderName","Company");
+    CreateProductTable($servername,$username,$password,$db_name,$ProductInfoName);
     $tableName = 'preprocess';
     $sql = "SELECT * FROM ".$tableName." ";
     // echo $sql;
@@ -51,11 +51,15 @@
                 echo "<tr>";
                 for($i=0;$i<count($ProductInfoName);$i++)
                     echo "<th>".$ProductInfoName[$i]."</th>";
+                $check = "審查結果";
+                echo "<th>".$check."</th>";
                 echo "</tr>";
                 while($row = mysqli_fetch_array($result)){
                     echo "<tr>";
-                    for($i=0;$i<count($ProductInfoName);$i++)
-                        echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
+                    for($i=0;$i<count($ProductInfoName);$i++) echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
+                    $confirm = "通過";
+                    $deny = "駁回";
+                    echo "<td>"."<button name=\"confirm\">".$confirm."</button>"."<button name=\"deny\">".$deny."</button>";
                     echo "</tr>";
                 }
                 echo "</table>";
@@ -72,4 +76,16 @@
     }
     // Close connection
     mysqli_close($conn);
+?>
+
+<?php
+    function CreateProductTable($servername,$username,$password,$db_name,$array){
+        $conn = mysqli_connect($servername,$username,$password,$db_name);
+        $tableName = 'product';
+        $sql = "CREATE TABLE IF NOT EXISTS ".$tableName." (".$array[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY,".$array[1]." VARCHAR(200),".$array[2]." INT,".$array[3]." INT,".$array[4]." VARCHAR(200),".$array[5]." FLOAT,".$array[6]." VARCHAR(100),".$array[7]." VARCHAR(100),".$array[8]." FLOAT,".$array[9]." VARCHAR(100),".$array[10]." VARCHAR(100));";
+        // echo $sql;
+        if($conn -> query($sql) == false) echo "Failed to create table ".$tableName."<br/>";
+        // else echo "Table create successfully!<br/>";
+        return $tableName;
+    }
 ?>
