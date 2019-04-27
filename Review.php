@@ -2,9 +2,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>產品審查</title>
+        <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
     </head>
     <body>
-        <form method="post" action="Review.php">
+        <form id="postForm" onsubmit="return false;">
             <p>選擇欄位:
                 <select name="Field">
                     <option value="Company">廠商名稱</option>
@@ -21,6 +22,26 @@
                 輸入關鍵字:<input type="text" name="key" value="">
                 <input type="submit" name="button" value="送出"></p>
         </form>
+        <script>
+            $(document).ready(function () {
+                $().click(function () {
+                    $.ajax({
+                        url: 'Review.php',
+                        type: 'POST',
+                        data: {
+                            user_name: $('#user_name').val(),
+                        },
+                        error: function(xhr) {
+                            alert('Ajax request 發生錯誤');
+                        },
+                        success: function(response) {
+                            $('#msg_user_name').html(response);
+                            $('#msg_user_name').fadeIn();
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>
 <?php
@@ -43,7 +64,7 @@
                 $sql .= "WHERE ".$selected_value." LIKE \"%".$key."%\"";
             else
                 $sql .= "WHERE ".$selected_value.$key;
-            $sql .= " AND checks=0";
+            $sql .= " AND checks = 0";
         }
         else $sql .= " WHERE checks = 0";
         // echo $sql;
