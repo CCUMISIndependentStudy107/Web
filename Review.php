@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <script src="./web3.min.js"></script>
+        <script src="./blockchain.js"></script>
         <style>
             .table td, .table th {
                 padding: .75rem;
@@ -58,46 +60,52 @@
                 window.location.reload();
             }
 
-            function reviewToCheck(id, status) {
+            function reviewToCheck(id, status, reduceC = 0) {
                 if (status === 1) {
-                  if (confirm('確定通過？') == true) {
-                      $.ajax({
-                          url: 'Review_to_check.php',
-                          type: 'POST',
-                          data: {
-                              id: id,
-                              status: status
-                          },
-                          error: function(xhr) {
-                              alert('Error.');
-                          },
-                          success: function(res) {
-                              // alert('Success.')
-                              console.log(res);
-                              ReloadPage();
-                          }
-                      });
-                  }
+                    if (confirm('確定通過？') == true) {
+                        sendHDC(reduceC).then(tx => {
+                            alert(tx);
+                            $.ajax({
+                                url: 'Review_to_check.php',
+                                type: 'POST',
+                                data: {
+                                    id: id,
+                                    status: status,
+                                    tx: tx
+                                },
+                                error: function(xhr) {
+                                    alert('Error.');
+                                },
+                                success: function(res) {
+                                    // alert('Success.')
+                                    console.log(res);
+                                    ReloadPage();
+                                }
+                            });
+                        }).catch(err => {
+                            console.log(err);
+                        });;
+                    }
                 }
                 if (status === 2) {
-                  if (confirm('確定駁回？') == true) {
-                      $.ajax({
-                          url: 'Review_to_check.php',
-                          type: 'POST',
-                          data: {
-                              id: id,
-                              status: status
-                          },
-                          error: function(xhr) {
-                              alert('Error.');
-                          },
-                          success: function(res) {
-                              // alert('Success.')
-                              console.log(res);
-                              ReloadPage();
-                          }
-                      });
-                  }
+                    if (confirm('確定駁回？') == true) {
+                        $.ajax({
+                            url: 'Review_to_check.php',
+                            type: 'POST',
+                            data: {
+                                id: id,
+                                status: status
+                            },
+                            error: function(xhr) {
+                                alert('Error.');
+                            },
+                            success: function(res) {
+                                // alert('Success.')
+                                console.log(res);
+                                ReloadPage();
+                            }
+                        });
+                    }
                 }
             }
         </script>
@@ -108,7 +116,7 @@
     include "connect_sql.php";
 
     if (isset($_GET['Field']) && isset($_GET['key'])) { // Make sure really GET variable(s)
-        $ProductInfoName = array("ID", "Name", "Price", "Quantity", "Information", "Weight", "Tag", "PictureName", "ReduceC", "FolderName", "Company", "checks");
+        $ProductInfoName = array("ID", "Name", "Price", "Quantity", "Information", "Weight", "Tag", "PictureName", "ReduceC", "FolderName", "Company", "tx", "checks");
         $ProductInfoName_chinese = array("ID", "商品名稱","商品價格", "上架數量", "商品簡介", "商品重量", "商品標籤", "圖片", "減碳量", "提交日期", "廠商名稱", "狀態");
         $sql = SelectTable($ProductInfoName);
         // To show searching result(s)
@@ -127,17 +135,23 @@
                 while ($row = mysqli_fetch_array($result)) {
                     echo "<tr>";
                     for ($i = 0, $j = 0; $i < count($ProductInfoName); $i++) {
-                        if ($i == count($ProductInfoName) -1) {
+                        if ($i == count($ProductInfoName) - 2) {
+                            $txLink = "<a href='https:\/\/ropsten.etherscan.io\/tx\/" . $row[$ProductInfoName[$i]] . "' target='_blank'>Tx</a>";
+                            continue;
+                        }
+                        if ($i == count($ProductInfoName) - 5)
+                            $reduceC = $row[$ProductInfoName[$i]];
+                        if ($i == count($ProductInfoName) - 1) {
                             switch ($row[$ProductInfoName[$i]]) {
                                 case 1:
-                                    echo "<td><span class='text-success'>PASS</span></td>";
+                                    echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
                                     break;
                                 case 2:
                                     echo "<td><span class='text-danger'>FAIL</span></td>";
                                     break;
                                 default:
                                     echo "<td>";
-                                    echo "<span class='badge badge-success' onclick='reviewToCheck(" . $id . ", 1)'>PASS</span>";
+                                    echo "<span class='badge badge-success' onclick='reviewToCheck(" . $id . ", 1, " . $reduceC . ")'>PASS</span>";
                                     echo "<span class='badge badge-danger' onclick='reviewToCheck(" . $id . ", 2)'>FAIL</span>";
                                     echo "</td>";
                                     break;

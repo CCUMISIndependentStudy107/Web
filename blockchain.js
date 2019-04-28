@@ -1,6 +1,6 @@
 const _TOKEN_ADDRESS = '0x654899645B3638E63A37CB21Ff7B312f6ae77DB5'; // HDC Contract address
-let _WALLET_ADDRESS = document.querySelector('#main-wallet .wallet').value;
-let _RECIPIENTS_ADDRESS = document.querySelector('#vendor-wallet .wallet').value;
+let _WALLET_ADDRESS = "0xf4d80E82C4E3f44B71099e9C087a0Cd8Cd746B8f"; // document.querySelector('#main-wallet .wallet').value;
+let _RECIPIENTS_ADDRESS = "0x4A86D247d0f24f68fA0800A497D8b7Fb18b4e695"; // document.querySelector('#vendor-wallet .wallet').value;
 let _TOKEN_DECIMALS;
 
 let _DETAILS = {
@@ -75,14 +75,14 @@ function getERC20TokenDecimals(callback) {
 }
 
 function getHDCBalance(e) {
-    _WALLET_ADDRESS = document.querySelector('#main-wallet .wallet').value;
-    _RECIPIENTS_ADDRESS = document.querySelector('#vendor-wallet .wallet').value;
+    // _WALLET_ADDRESS = document.querySelector('#main-wallet .wallet').value;
+    // _RECIPIENTS_ADDRESS = document.querySelector('#vendor-wallet .wallet').value;
     if (_WALLET_ADDRESS && _RECIPIENTS_ADDRESS) {
         getERC20TokenBalance(_TOKEN_ADDRESS, _WALLET_ADDRESS, balance => {
-            document.querySelector('#main-wallet .balance').innerText = balance.toString();
+            // document.querySelector('#main-wallet .balance').innerText = balance.toString();
         });
         getERC20TokenBalance(_TOKEN_ADDRESS, _RECIPIENTS_ADDRESS, balance => {
-            document.querySelector('#vendor-wallet .balance').innerText = balance.toString();
+            // document.querySelector('#vendor-wallet .balance').innerText = balance.toString();
         });
 
         window.tokenContract = getERC20TokenContract(_TOKEN_ADDRESS);
@@ -99,17 +99,27 @@ function transferERC20Token(toAddress, value, callback) {
     });
 }
 
+function exchangeRateAlgorithm(val) {
+    return 0.1 * val;
+}
+
 function sendHDC(val) {
-    let toAddress = _RECIPIENTS_ADDRESS;
-    let decimals = _TOKEN_DECIMALS;
-    let amount = web3.toBigNumber(val)
-    let sendValue = amount.times(web3.toBigNumber(10).pow(decimals));
-    console.log(sendValue.toString());
-    transferERC20Token(toAddress, sendValue, txHash => {
-        if (txHash) {
-            let content = `<a href="https://ropsten.etherscan.io/tx/${txHash}" target="_blank">Transaction</a>`
-            document.getElementById('result').innerHTML = content;
-        }
+    return new Promise((resolve, reject) => {
+        let toAddress = _RECIPIENTS_ADDRESS;
+        let decimals = _TOKEN_DECIMALS;
+        let amount = web3.toBigNumber(val)
+        let sendValue = exchangeRateAlgorithm(amount.times(web3.toBigNumber(10).pow(decimals)));
+        console.log(sendValue.toString());
+        transferERC20Token(toAddress, sendValue, txHash => {
+            if (txHash) {
+                // let content = `<a href="https://ropsten.etherscan.io/tx/${txHash}" target="_blank">Tx</a>`
+                // document.getElementById('result').innerHTML = content;
+                resolve(txHash);
+            }
+            else {
+                reject('Error: Unable to send HDC.');
+            }
+        });
     });
     // return false;
 }

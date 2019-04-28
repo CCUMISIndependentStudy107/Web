@@ -7,7 +7,7 @@
         $tableName = "product";
 
         // Create `product` table if not exists
-        $sql = "CREATE TABLE IF NOT EXISTS " . $tableName . " (" . $array[0] . " INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " . $array[1] . " VARCHAR(200), " . $array[2] . " INT, " . $array[3] . " INT, " . $array[4] . " VARCHAR(200), " . $array[5] . " FLOAT, " . $array[6] . " VARCHAR(100), " . $array[7] . " VARCHAR(100), " . $array[8] . " FLOAT, " . $array[9] . " VARCHAR(100), " . $array[10] . " VARCHAR(100));";
+        $sql = "CREATE TABLE IF NOT EXISTS " . $tableName . " (" . $array[0] . " INT NOT NULL AUTO_INCREMENT PRIMARY KEY, " . $array[1] . " VARCHAR(200), " . $array[2] . " INT, " . $array[3] . " INT, " . $array[4] . " VARCHAR(200), " . $array[5] . " FLOAT, " . $array[6] . " VARCHAR(100), " . $array[7] . " VARCHAR(100), " . $array[8] . " FLOAT, " . $array[9] . " VARCHAR(100), " . $array[10] . " VARCHAR(100), " . $array[11] . " VARCHAR(255));";
 
         // Catch error: failed to create table
         if($conn -> query($sql) == false)
@@ -19,11 +19,12 @@
     if (isset($_POST["id"]) && isset($_POST["status"])) { // Make sure really POST variable(s)
         $id = $_POST["id"];
         $status = $_POST["status"];
+        $tx = (isset($_POST["tx"])) ? $_POST["tx"] : "";
 
         // "$status == 1" means it is set to be an available product
         // In addition to update status in database, it IS ABOUT TO be inserted a copy into the new table, `product`
         if ($status == 1) {
-            $ProductInfoName = array("ID", "Name", "Price", "Quantity", "Information", "Weight", "Tag", "PictureName", "ReduceC", "FolderName", "Company");
+            $ProductInfoName = array("ID", "Name", "Price", "Quantity", "Information", "Weight", "Tag", "PictureName", "ReduceC", "FolderName", "Company", "tx");
             $newtable = CreateProductTable($servername, $username, $password, $db_name, $ProductInfoName);
 
             // If got error(s) while creating `product` table, shut down
@@ -36,13 +37,13 @@
         // Update status
         $conn = mysqli_connect($servername, $username, $password, $db_name);
         $tableName = "preprocess";
-        $sql = "UPDATE `" . $tableName . "` SET `checks`=" . $status . " WHERE `ID`=" . $id . ";";
+        $sql = "UPDATE `" . $tableName . "` SET `checks`=" . $status . ", `tx`=" . $tx . " WHERE `ID`=" . $id . ";";
 
         // Catch error
         if ($conn->query($sql) === false)
-            echo "Failed to update STATUS. \n";
+            echo "Failed to update STATUS. \n tx: " . $tx;
         else
-            echo "Record updated successfully. \n";
+            echo "Record updated successfully. \n tx: " . $tx;
 
         // Check `SUCCESS` and insert a copy into new table
         if ($status == 1) {
