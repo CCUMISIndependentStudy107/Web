@@ -72,3 +72,5 @@
         header("Location: Review.php", true, 301);
         exit();
     }
+
+?>
