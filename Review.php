@@ -57,6 +57,7 @@
         $ProductInfoName = array("ID", "Name", "Price", "Quantity", "Information", "Weight", "Tag", "PictureName", "ReduceC", "FolderName", "Company", "checks");
         $sql = SelectTable($ProductInfoName);
         // To show searching result(s)
+        $ProductInfo = array();
         if ($result = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($result) > 0) {
                 echo "<table>";
@@ -71,8 +72,12 @@
                     for ($i = 0, $j = 0; $i < count($ProductInfoName); $i++) {
                         echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
                         $id = $row[$ProductInfoName[0]];
-                        if ($i > 0)
+                        if ($i > 0){
+                            // echo $i."--".$row[$ProductInfoName[$i]];
+                            //product name = 1 company name=10
                             $info[$id][$j++] = $row[$ProductInfoName[$i]];
+                        }
+                        // echo "<br/>";
                     }
                     echo "<td>";;
                     echo "<button onclick=\"reviewToCheck(" . $id . ", 1)\">通過</button>";
