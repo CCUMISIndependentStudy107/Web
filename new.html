@@ -6,20 +6,34 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <title>新增商品</title>
+    <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <style>
+        #product_tag_help {
+            display: inline;
+        }
+
+        .custom-file-input:lang(en)~.custom-file-label::after {
+            content: "瀏覽";
+        }
+
+        .custom-file-label {
+            padding: 0.375rem 1rem;
+        }
+
+        .custom-file-input {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
     <div id="green-count">
         <div id="logo">
-            <img src="pic/zhbot.png">
+            <img src="pic/zhbot.png" onclick="window.location.reload();">
         </div>
-        <div id="top-bar">
-            <a href="home.html">首頁</a>
-            <a href="chart.html">購物車</a>
-            <a href="store.html">商城</a>
-            <a href="member.html">會員專區</a>
-            <a href="about.html">關於我們</a>
-        </div>
-        <div id="detail">
+        <!-- <div id="detail">
             <h2>錢包狀況</h2>
             <p id="main-wallet">
                 中心錢包：<input type="text" class="wallet" size="50" value="0xf4d80E82C4E3f44B71099e9C087a0Cd8Cd746B8f" oninput="getHDCBalance()">
@@ -29,23 +43,88 @@
                 廠商錢包：<input type="text" class="wallet" size="50" value="0x4A86D247d0f24f68fA0800A497D8b7Fb18b4e695" oninput="getHDCBalance()">
                 <span class="balance">0</span> HDC
             </p>
-        </div>
-        <div id="new-area">
+        </div> -->
+
+        <form action="myUpload.php" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="company_name">廠商名稱</label>
+                    <input type="text" class="form-control" id="company_name" name="company_name" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="product_name">商品名稱</label>
+                    <input type="text" class="form-control" id="product_name" name="product_name" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="product_picture">上傳圖片</label>
+                    <div class="custom-file form-group col-md-12">
+                        <input type="file" class="custom-file-input" id="product_picture" name="product_picture">
+                        <label class="custom-file-label" for="product_picture">選擇圖片</label>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="product_price">商品價格</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="product_price" name="product_price" v-model="amount" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">元</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="product_quantity">上架數量</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="product_quantity" name="product_quantity" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">個</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="product_info">商品簡介</label>
+                    <input type="text" class="form-control" id="product_info" name="product_info" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="product_weight">商品重量</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="product_weight" name="product_weight" v-model="weight" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">公克(g)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="product_tag">商品標籤
+                        <small class="form-text text-muted" id="product_tag_help">(以逗號(,)隔開)</small>
+                    </label>
+                    <input type="text" class="form-control" id="product_tag" name="product_tag" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <input type="text" readonly class="form-control-plaintext" id="reduceC" :value="count">
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-success" style="display: block">送出</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- <div id="new-area">
             <h2>商品上架</h2>
             <form action="myUpload.php" onsubmit="return sendHDC(green.co2);" method="post" enctype="multipart/form-data">
-                <p>廠商名稱：<input type="text" name="company_name" required></p>
-                <p>商品名稱：<input type="text" name="product_name" required></p>
-                <p>上傳圖片：<input type="file" name="product_picture"></p>
-                <p>商品價格：<input type="text" name="product_price" v-model="amount" required>元</p>
-                <p>上架數量：<input type="text" name="product_quantity" required>個</p>
-                <p>商品簡介：<input type="text" name="product_info" required></p>
-                <p>商品重量：<input type="number" name="product_weight" required v-model="weight">公克(g)</p>
-                <p>商品標籤：<input type="text" name="product_tag">(以逗號(,)隔開)</p>
+                <p>廠商名稱<input type="text" name="company_name" required></p>
+                <p>商品名稱<input type="text" name="product_name" required></p>
+                <p>上傳圖片<input type="file" name="product_picture"></p>
+                <p>商品價格<input type="text" name="product_price" v-model="amount" required>元</p>
+                <p>上架數量<input type="text" name="product_quantity" required>個</p>
+                <p>商品簡介<input type="text" name="product_info" required></p>
+                <p>商品重量<input type="number" name="product_weight" required v-model="weight">公克(g)</p>
+                <p>商品標籤<input type="text" name="product_tag">(以逗號(,)隔開)</p>
                 <p>您為地球減少了 {{ count }} 公克的二氧化碳</p>
                 <button>送出</button>
                 <p id="result"></p>
             </form>
-        </div>
+        </div> -->
+
         <div id=about-us></div>
     </div>
 </body>
@@ -59,7 +138,7 @@
         },
         computed: {
             count: function () {
-                return this.co2 = this.weight * 440/1000 * this.amount;
+                return this.co2 = '您為地球減少了 ' + this.weight * 440/1000 * this.amount + ' 公克的二氧化碳。';
             }
         }
     });
