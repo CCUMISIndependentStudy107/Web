@@ -112,6 +112,7 @@
         $ProductInfoName_chinese = array("ID", "商品名稱","商品價格", "上架數量", "商品簡介", "商品重量", "商品標籤", "圖片", "減碳量", "提交日期", "廠商名稱", "狀態");
         $sql = SelectTable($ProductInfoName);
         // To show searching result(s)
+        $ProductInfo = array();
         if ($result = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($result) > 0) {
                 echo "<div class='table-responsive'>";
@@ -146,8 +147,12 @@
                             echo "<td title='" . $row[$ProductInfoName[$i]] . "'>" . $row[$ProductInfoName[$i]] . "</td>";
                         }
                         $id = $row[$ProductInfoName[0]];
-                        if ($i > 0)
+                        if ($i > 0){
+                            // echo $i."--".$row[$ProductInfoName[$i]];
+                            //product name = 1 company name=10
                             $info[$id][$j++] = $row[$ProductInfoName[$i]];
+                        }
+                        // echo "<br/>";
                     }
                     echo "</tr>";
                 }
