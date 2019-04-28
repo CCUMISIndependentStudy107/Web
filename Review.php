@@ -25,6 +25,10 @@
             </p>
         </form>
         <script>
+            function ReloadPage(){
+                window.location.reload();
+            }
+
             function reviewToCheck(id, status) {
                 $.ajax({
                     url: 'Review_to_check.php',
@@ -39,6 +43,7 @@
                     success: function(res) {
                         // alert('Success.')
                         console.log(res);
+                        ReloadPage();
                     }
                 });
             }
@@ -50,27 +55,7 @@
 
     if (isset($_GET['Field']) && isset($_GET['key'])) { // Make sure really GET variable(s)
         $ProductInfoName = array("ID", "Name", "Price", "Quantity", "Information", "Weight", "Tag", "PictureName", "ReduceC", "FolderName", "Company", "checks");
-
-        $selected_value = $_GET['Field'];
-        $key = $_GET['key'];
-
-        $tableName = 'preprocess';
-        // Complex sql syntax
-        $sql = "SELECT * FROM " . $tableName . " ";
-        if ($selected_value == "Company" ||
-            $selected_value == "Name" ||
-            $selected_value == "Information" ||
-            $selected_value == "Tag" ||
-            $selected_value == "PictureName" ||
-            $selected_value == "FolderName")
-            $sql .= "WHERE " . $selected_value . " LIKE \"%" . $key . "%\"";
-        else{
-            if(is_numeric($key[0]))
-                $sql .= "WHERE ".$selected_value."=".$key;
-            else
-                $sql .= "WHERE " . $selected_value.$key;
-        }
-
+        $sql = SelectTable($ProductInfoName);
         // To show searching result(s)
         if ($result = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($result) > 0) {
@@ -111,4 +96,30 @@
 
     // Close connection
     mysqli_close($conn);
+?>
+
+<?php 
+    function SelectTable($ProductInfoName){
+        $ProductInfoName = array("ID", "Name", "Price", "Quantity", "Information", "Weight", "Tag", "PictureName", "ReduceC", "FolderName", "Company", "checks");
+        $selected_value = $_GET['Field'];
+        $key = $_GET['key'];
+
+        $tableName = 'preprocess';
+        // Complex sql syntax
+        $sql = "SELECT * FROM " . $tableName . " ";
+        if ($selected_value == "Company" ||
+            $selected_value == "Name" ||
+            $selected_value == "Information" ||
+            $selected_value == "Tag" ||
+            $selected_value == "PictureName" ||
+            $selected_value == "FolderName")
+            $sql .= "WHERE " . $selected_value . " LIKE \"%" . $key . "%\"";
+        else{
+            if(is_numeric($key[0]))
+                $sql .= "WHERE ".$selected_value."=".$key;
+            else
+                $sql .= "WHERE " . $selected_value.$key;
+        }
+        return $sql;
+    }
 ?>
