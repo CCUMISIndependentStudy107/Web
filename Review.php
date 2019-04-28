@@ -18,6 +18,7 @@
                     <option value="PictureName">產品照面</option>
                     <option value="FolderName">創建時間</option>
                     <option value="ReduceC">節碳量</option>
+                    <option value="Checks">審查狀態</option>
                 </select>
                 輸入關鍵字: <input type="text" name="key" value="">
                 <button>送出</button>
@@ -63,9 +64,12 @@
             $selected_value == "PictureName" ||
             $selected_value == "FolderName")
             $sql .= "WHERE " . $selected_value . " LIKE \"%" . $key . "%\"";
-        else
-            $sql .= "WHERE " . $selected_value.$key;
-
+        else{
+            if(is_numeric($key[0]))
+                $sql .= "WHERE ".$selected_value."=".$key;
+            else
+                $sql .= "WHERE " . $selected_value.$key;
+        }
 
         // To show searching result(s)
         if ($result = mysqli_query($conn, $sql)) {
