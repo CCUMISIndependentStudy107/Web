@@ -16,17 +16,22 @@
     <input type ="button" onclick="history.back()" value="回到上一頁"></input>
     <?php
         include "connect_sql.php";
-        include "Duplicate.php";
+        echo "<br/>";
         if(isset($_POST['CardID']) && isset($_POST['Ether'])){
             $cardID = $_POST['CardID'];
-            $ether = $_POST['Ether'];
-            $fieldname = array("ID","CardID","Ether");
-            $tableName = CreateMemberTable($servername,$username,$password,$db_name,$fieldname);
-            if(!DuplicateMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether)){
-                InsertMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether);
+            if(is_numeric($cardID)){
+                $ether = $_POST['Ether'];
+                $fieldname = array("ID","CardID","Ether");
+                $tableName = CreateMemberTable($servername,$username,$password,$db_name,$fieldname);
+                if(DuplicateMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether) == false){
+                    InsertMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether);
+                }
+                else
+                    echo "註冊失敗 : 卡號或以太坊位置重複註冊!<br/>";
             }
-            else
-                echo "註冊失敗 : 卡號或以太坊位置重複註冊!<br/>";
+            else{
+                echo "註冊失敗 : 卡號請用純數字代表!<br/>";
+            }
         }
     ?>
 </body>
@@ -45,40 +50,46 @@
         return $tableName;
     }
 
-    function DuplicateMember($servername,$username,$password,$db_name,$tablename,$fieldname,$cardid,$ether){
+    function DuplicateMember($servername,$username,$password,$db_name,$tablename,$fieldname,$cardID,$Ether){
         $conn = mysqli_connect($servername,$username,$password,$db_name);
         $sql = "SELECT * FROM ".$tablename." ";
         $arr = array();
-        $cardid = array($cardid);
-        $ether = array($ether);
+        $cardid = array();
+        $ether = array();
         $fieldnum = count($fieldname);
         if($res = mysqli_query($conn, $sql)){
             while($row = mysqli_fetch_array($res)){
                 for($i=0,$j=0;$i<$fieldnum;$i++){
-                    // echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
+                    // echo "<td>" . $row[$fieldname[$i]] . "</td><br/>";
                     $id = $row[$fieldname[0]];
                     if($i>0) $arr[$id][$j++]=$row[$fieldname[$i]];
                 }
             }
         }
+        // print_r($arr);
         $keys = array_keys($arr);
         // print_r($keys);
         for($i=0;$i<count($keys);$i++){
             array_push($cardid,$arr[$keys[$i]][0]);
             array_push($ether,$arr[$keys[$i]][1]);
         }
-        $result = findDuplicate($cardid,$ether);
+        $result = (findDuplicate($cardID,$cardid) || findDuplicate($Ether,$ether));
         return $result;
     }
 
     function InsertMember($servername,$username,$password,$db_name,$tablename,$fieldname,$cardid,$ether){
         $sql = "INSERT INTO $tablename($fieldname[1],$fieldname[2]) VALUES(\"$cardid\",\"$ether\");";
         // echo $sql;
-        $conn = mysqli_connect($servername,$username,$password,$db_name); 
-        echo "<br/>";
+        $conn = mysqli_connect($servername,$username,$password,$db_name);
         if($conn -> query($sql) == false)
             echo "Failed to create table ".$tablename."<br/>";
         else
             echo "註冊成功!<br/>";
+    }
+
+    function FindDuplicate($key,$array){
+        for($i=0;$i<count($array);$i++)
+            if($key == $array[$i]) return true;
+        return false;
     }
 ?>
