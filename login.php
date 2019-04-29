@@ -9,8 +9,9 @@
 <body>
     <form method="post" name="login">
         <p>會員卡號:<input type="text" name="CardID">
-        <button name="submit">送出</button></p>
+        <button name="submit">登入</button></p>
     </form>
+    <input type ="button" onclick="javascript:location.href='register.html'" value="註冊"></input>
     <?php
         include "connect_sql.php";
         if(isset($_POST['CardID'])){
