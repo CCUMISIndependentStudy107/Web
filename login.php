@@ -11,7 +11,7 @@
         <p>會員卡號:<input type="text" name="CardID">
         <button name="submit">登入</button></p>
     </form>
-    <input type ="button" onclick="javascript:location.href='register.html'" value="註冊"></input>
+    <input type ="button" onclick="javascript:location.href='register.php'" value="註冊"></input>
     <?php
         include "connect_sql.php";
         if(isset($_POST['CardID'])){
