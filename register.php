@@ -9,7 +9,7 @@
         InsertMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether);
     }
     else
-        echo "註冊失敗 : 卡號或以太坊位置重複註冊!";
+        echo "註冊失敗 : 卡號或以太坊位置重複註冊!<br/>";
 ?>
 
 <?php
@@ -58,6 +58,6 @@
         if($conn -> query($sql) == false)
             echo "Failed to create table ".$tablename."<br/>";
         else
-            echo "Insert successful!<br/>";
+            echo "註冊成功!<br/>";
     }
 ?>
