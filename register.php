@@ -1,16 +1,36 @@
-<?php
-    include "connect_sql.php";
-    include "Duplicate.php";
-    $cardID = $_POST['CardID'];
-    $ether = $_POST['Ether'];
-    $fieldname = array("ID","CardID","Ether");
-    $tableName = CreateMemberTable($servername,$username,$password,$db_name,$fieldname);
-    if(!DuplicateMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether)){
-        InsertMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether);
-    }
-    else
-        echo "註冊失敗 : 卡號或以太坊位置重複註冊!<br/>";
-?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>註冊</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+    <form action="register.php" method="POST">
+        <p>會員卡號 : <input name="CardID" type="text" required></p>
+        <p>乙太坊地址 : <input name="Ether" type="text" required></p>
+        <button type="submit">送出</button>
+        <button type="reset">重設</button>
+    </form>
+    <input type ="button" onclick="history.back()" value="回到上一頁"></input>
+    <?php
+        include "connect_sql.php";
+        include "Duplicate.php";
+        if(isset($_POST['CardID']) && isset($_POST['Ether'])){
+            $cardID = $_POST['CardID'];
+            $ether = $_POST['Ether'];
+            $fieldname = array("ID","CardID","Ether");
+            $tableName = CreateMemberTable($servername,$username,$password,$db_name,$fieldname);
+            if(!DuplicateMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether)){
+                InsertMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether);
+            }
+            else
+                echo "註冊失敗 : 卡號或以太坊位置重複註冊!<br/>";
+        }
+    ?>
+</body>
+</html>
 
 <?php
     function CreateMemberTable($servername,$username,$password,$db_name,$fieldname){
@@ -55,6 +75,7 @@
         $sql = "INSERT INTO $tablename($fieldname[1],$fieldname[2]) VALUES(\"$cardid\",\"$ether\");";
         // echo $sql;
         $conn = mysqli_connect($servername,$username,$password,$db_name); 
+        echo "<br/>";
         if($conn -> query($sql) == false)
             echo "Failed to create table ".$tablename."<br/>";
         else
