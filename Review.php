@@ -136,7 +136,7 @@
                     echo "<tr>";
                     for ($i = 0, $j = 0; $i < count($ProductInfoName); $i++) {
                         if ($i == count($ProductInfoName) - 2) {
-                            $txLink = "<a href='https:\/\/ropsten.etherscan.io\/tx\/" . $row[$ProductInfoName[$i]] . "' target='_blank'>Tx</a>";
+                            $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$ProductInfoName[$i]] . "' target='_blank'>Tx</a>";
                             continue;
                         }
                         if ($i == count($ProductInfoName) - 5)

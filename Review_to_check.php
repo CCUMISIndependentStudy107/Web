@@ -19,7 +19,7 @@
     if (isset($_POST["id"]) && isset($_POST["status"])) { // Make sure really POST variable(s)
         $id = $_POST["id"];
         $status = $_POST["status"];
-        $tx = (isset($_POST["tx"])) ? $_POST["tx"] : "";
+        $tx = ($status == 1) ? $_POST["tx"] : "fail";
 
         // "$status == 1" means it is set to be an available product
         // In addition to update status in database, it IS ABOUT TO be inserted a copy into the new table, `product`
@@ -37,11 +37,11 @@
         // Update status
         $conn = mysqli_connect($servername, $username, $password, $db_name);
         $tableName = "preprocess";
-        $sql = "UPDATE `" . $tableName . "` SET `checks`=" . $status . ", `tx`=" . $tx . " WHERE `ID`=" . $id . ";";
+        $sql = "UPDATE `" . $tableName . "` SET `checks`=" . $status . ", `tx`='" . $tx . "' WHERE `ID`=" . $id . ";";
 
         // Catch error
         if ($conn->query($sql) === false)
-            echo "Failed to update STATUS. \n tx: " . $tx;
+            echo "Failed to update STATUS. \n tx: " . $tx . "\n sql: " . $sql;
         else
             echo "Record updated successfully. \n tx: " . $tx;
 

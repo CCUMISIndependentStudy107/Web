@@ -14,4 +14,4 @@
     if($conn -> query($sql) == false) echo "Failed to create database<br/>";
     // else echo "Database create successfully!<br/>";
     $conn = mysqli_connect($servername,$username,$password,$db_name);
-?> 
+?>
