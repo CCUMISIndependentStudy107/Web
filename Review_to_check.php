@@ -41,9 +41,9 @@
 
         // Catch error
         if ($conn->query($sql) === false)
-            echo "Failed to update STATUS. \n tx: " . $tx . "\n sql: " . $sql;
+            echo "Failed to update STATUS.";
         else
-            echo "Record updated successfully. \n tx: " . $tx;
+            echo "Record updated successfully.";
 
         // Check `SUCCESS` and insert a copy into new table
         if ($status == 1) {
