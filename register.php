@@ -21,7 +21,7 @@
             $cardID = $_POST['CardID'];
             if(is_numeric($cardID)){
                 $ether = $_POST['Ether'];
-                $fieldname = array("ID","CardID","Ether");
+                $fieldname = array("ID","CardID","Ether","HDC");
                 $tableName = CreateMemberTable($servername,$username,$password,$db_name,$fieldname);
                 if(DuplicateMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether) == false){
                     InsertMember($servername,$username,$password,$db_name,$tableName,$fieldname,$cardID,$ether);
@@ -42,9 +42,9 @@
         $tableName = "member";
         $cardLength = 15;
         $etherLength = 50;
-        $sql = "CREATE TABLE IF NOT EXISTS $tableName ($fieldname[0] INT NOT NULL AUTO_INCREMENT PRIMARY KEY,$fieldname[1] VARCHAR($cardLength),$fieldname[2] VARCHAR($etherLength));";
+        $sql = "CREATE TABLE IF NOT EXISTS $tableName ($fieldname[0] INT NOT NULL AUTO_INCREMENT PRIMARY KEY,$fieldname[1] VARCHAR($cardLength),$fieldname[2] VARCHAR($etherLength),$fieldname[3] INT);";
         // echo $sql;
-        $conn = mysqli_connect($servername,$username,$password,$db_name); 
+        $conn = mysqli_connect($servername,$username,$password,$db_name);
         if($conn -> query($sql) == false) echo "Failed to create table ".$tableName."<br/>";
         // else echo "Table create successfully!<br/>";
         return $tableName;
