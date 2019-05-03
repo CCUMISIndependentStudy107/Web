@@ -6,7 +6,7 @@
 <html>
     <head>
         <title>上傳頁面</title>
-        <meta charset="UTF-8" http-equiv="refresh" content="1;url=<?php $url = "connect_zhbot.php"; echo $url; ?>"> 
+        <meta charset="UTF-8" http-equiv="refresh" content="1;url=<?php $url = "connect_zhbot.php"; echo $url; ?>">
     </head>
     <body>
     </body>
@@ -27,17 +27,17 @@
                     move_uploaded_file($file, $dest);   //將檔案移至指定位置
                 }
             }
-        } 
-        else 
-            echo '錯誤代碼：' . $_FILES['product_picture']['error'] . '<br/>';   
+        }
+        else
+            echo '錯誤代碼：' . $_FILES['product_picture']['error'] . '<br/>';
     }
 
     function IsImage($filetype){
-        $acceptable_file_ext = "image"; 
+        $acceptable_file_ext = "image";
         if(strpos($filetype,$acceptable_file_ext) !== false) return true;
         return false;
     }
-    
+
     function WriteFileInfo($file,$name,$information,$end){  //if end == false 不換行
         if($end==false) fwrite($file,$name.' : '.$information."\n");
         else fwrite($file,$name.' : '.$information);
@@ -72,7 +72,7 @@
         if(!file_exists($dest)) mkdir($dest,0777,true); //if not exists , create one
         $info_filename = $dest.'/ProductInfo.txt';   //write product information text file named ProductInfo.txt
         $plain_filename = $dest.'/PlainInfo.html';   //write plain information text file named PlainInfo.html
-        #Write info File 
+        #Write info File
         $info_file = fopen($info_filename,"w");
         WriteFileInfo($info_file,"商品名稱",$_POST['product_name'],false);
         WriteFileInfo($info_file,"商品價格",$_POST['product_price'],false);
