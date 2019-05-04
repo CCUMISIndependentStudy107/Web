@@ -38,12 +38,18 @@
             else{
                 $fieldnum = count($fieldName);
                 if($res = mysqli_query($conn, $sql)){
-                    while($row = mysqli_fetch_array($res)){
-                        for($i=0,$j=0;$i<$fieldnum;$i++){
+                    if(mysqli_num_rows($res)>0){
+                        while($row = mysqli_fetch_array($res)){
+                            for($i=0,$j=0;$i<$fieldnum;$i++){
                             // echo "<td>" . $row[$fieldname[$i]] . "</td><br/>";
-                            $id = $row[$fieldName[0]];
-                            $arr[$id][$j++]=$row[$fieldName[$i]];
+                                $id = $row[$fieldName[0]];
+                                $arr[$id][$j++]=$row[$fieldName[$i]];
+                            }
                         }
+                    }
+                    else{
+                        echo "No result!<br/>";
+                        return ;
                     }
                     mysqli_free_result($res);
                 }
