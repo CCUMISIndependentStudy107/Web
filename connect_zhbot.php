@@ -4,6 +4,7 @@
         <title>輸入資料庫</title>
     </head>
     <body>
+    <input type ="button" onclick="javascript:location.href='new.html'" value="繼續上架"></input><br/>
     </body>
 </html>
 <?php
@@ -45,8 +46,12 @@
         }
         $sql .= "0);";
         // echo $sql;
-        if($conn -> query($sql) == false) echo "Failed to Insert values <br/>";
-        else echo "成功輸入至資料庫！<br/>";
+        if($conn -> query($sql) == false){
+            echo "Failed to Insert values <br/>";
+        }
+        else{
+            echo "成功輸入至資料庫！<br/>";
+        }
         mysqli_close($conn);
     }
 ?>
