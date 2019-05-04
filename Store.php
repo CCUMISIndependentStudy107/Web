@@ -14,30 +14,17 @@
     </form>
     <?php
         include "connect_sql.php";
+        include "GetFieldName.php";
         if(isset($_POST["CompanyName"])){
             $companyName = $_POST["CompanyName"];
-            $tablename = "product";
-            FetchSQL($servername,$username,$password,$db_name,$tablename,$companyName);
+            // $tablename = "product";
+            $tablename = "preprocess";
+            $fieldName = GetFieldName($servername,$username,$db_name,$tablename);
+            FetchSQL($servername,$username,$password,$db_name,$tablename,$fieldName,$companyName);
         }
     ?>
     <?php
-        function FetchSQL($servername,$username,$password,$db_name,$tablename,$companyName){
-            $conn = mysqli_connect($servername, $username, $password, $db_name);
-            $arr = array();
-            $get_field = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`= \"$db_name\" AND `TABLE_NAME`= \"$tablename\";";
-            $res = mysqli_query($conn,$get_field);
-            // while($row = mysqli_fetch_array($res)){
-            //     echo $row['Name']."<br>";
-            // }
-            // if($res = mysqli_query($conn, $sql)){
-            //     while($row = mysqli_fetch_array($res)){
-            //         for($i=0,$j=0;$i<$fieldnum;$i++){
-            //             // echo "<td>" . $row[$fieldname[$i]] . "</td><br/>";
-            //             $id = $row[$fieldname[0]];
-            //             if($i>0) $arr[$id][$j++]=$row[$fieldname[$i]];
-            //         }
-            //     }
-            // }
+        function FetchSQL($servername,$username,$password,$db_name,$tablename,$fieldName,$companyName){
         }
     ?>
 </body>
