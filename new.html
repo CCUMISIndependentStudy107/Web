@@ -65,7 +65,7 @@
                 <div class="form-group col-md-6">
                     <label for="product_price">商品價格</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="product_price" name="product_price" v-model="amount" required>
+                        <input type="text" class="form-control" id="product_price" name="product_price" required>
                         <div class="input-group-append">
                             <span class="input-group-text">元</span>
                         </div>
@@ -74,7 +74,7 @@
                 <div class="form-group col-md-6">
                     <label for="product_quantity">上架數量</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="product_quantity" name="product_quantity" required>
+                        <input type="text" class="form-control" id="product_quantity" name="product_quantity" v-model="amount" required>
                         <div class="input-group-append">
                             <span class="input-group-text">個</span>
                         </div>
