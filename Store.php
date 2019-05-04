@@ -19,12 +19,40 @@
             $companyName = $_POST["CompanyName"];
             // $tablename = "product";
             $tablename = "preprocess";
-            $fieldName = GetFieldName($servername,$username,$db_name,$tablename);
+            $fieldName = GetFieldName($servername,$username,$password,$db_name,$tablename);   //array
             FetchSQL($servername,$username,$password,$db_name,$tablename,$fieldName,$companyName);
         }
     ?>
     <?php
         function FetchSQL($servername,$username,$password,$db_name,$tablename,$fieldName,$companyName){
+            // print_r($fieldName);
+            //[0] => ID [1] => Name [2] => Price [3] => Quantity [4] => Information [5] => Weight [6] => Tag
+            //[7] => PictureName [8] => ReduceC [9] => FolderName [10] => Company [11] => tx [12] => checks
+            $conn = mysqli_connect($servername,$username,$password,$db_name);
+            if (!$conn) die("Connection failed: " . mysqli_connect_error()."<br/>");    //not connected then die
+            $sql = "SELECT * FROM $tablename WHERE $fieldName[10] = \"$companyName\" AND $fieldName[12] = 1";
+            // echo $sql;
+            if($conn -> query($sql) == false){
+                echo "There is no result where company = $companyName<br/>";
+            }
+            else{
+                $fieldnum = count($fieldName);
+                if($res = mysqli_query($conn, $sql)){
+                    while($row = mysqli_fetch_array($res)){
+                        for($i=0,$j=0;$i<$fieldnum;$i++){
+                            // echo "<td>" . $row[$fieldname[$i]] . "</td><br/>";
+                            $id = $row[$fieldName[0]];
+                            if($i>0) $arr[$id][$j++]=$row[$fieldName[$i]];
+                        }
+                    }
+                }
+                $keys = array_keys($arr);
+                // print_r($keys);
+                for($i=0;$i<count($keys);$i++){
+                    $path = "uploads/";
+                    echo "<div><button type=\"button\"><img src=\"".$path.$arr[$keys[$i]][9]."/".$arr[$keys[$i]][7]."\">".$arr[$keys[$i]][1]."</button></div>";  //print 1=name 9=folder 7=pic
+                }
+            }
         }
     ?>
 </body>
