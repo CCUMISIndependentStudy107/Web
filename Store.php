@@ -45,6 +45,7 @@
                             $arr[$id][$j++]=$row[$fieldName[$i]];
                         }
                     }
+                    mysqli_free_result($res);
                 }
                 $keys = array_keys($arr);
                 // print_r($keys);
