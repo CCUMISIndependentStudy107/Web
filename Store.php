@@ -42,7 +42,7 @@
                         for($i=0,$j=0;$i<$fieldnum;$i++){
                             // echo "<td>" . $row[$fieldname[$i]] . "</td><br/>";
                             $id = $row[$fieldName[0]];
-                            if($i>0) $arr[$id][$j++]=$row[$fieldName[$i]];
+                            $arr[$id][$j++]=$row[$fieldName[$i]];
                         }
                     }
                 }
