@@ -1,5 +1,6 @@
 <?php
     include "connect_sql.php";
+    include "GetFieldName.php";
 
     // Create `product` table to database
     function CreateProductTable($servername, $username, $password, $db_name, $array) {
@@ -48,21 +49,26 @@
         // Check `SUCCESS` and insert a copy into new table
         if ($status == 1) {
             $oldtable = "preprocess";
-            // Complex sql syntax
-            $sql = "INSERT INTO " . $newtable . " (";
-            for ($i = 1; $i < count($ProductInfoName) - 1; $i++)
-                $sql .= $ProductInfoName[$i] . ",";
-            $sql .= $ProductInfoName[count($ProductInfoName) - 1] . ") SELECT ";
-            for ($i = 1; $i < count($ProductInfoName) - 1; $i++)
-                $sql .= $ProductInfoName[$i] . ",";
-            $sql .= $ProductInfoName[count($ProductInfoName) - 1];
-            $sql .= " FROM " . $oldtable . " WHERE ID=" . $id . ";";
+            if(!DuplicateID){
+                // Complex sql syntax
+                $sql = "INSERT INTO " . $newtable . " (";
+                for ($i = 1; $i < count($ProductInfoName) - 1; $i++)
+                    $sql .= $ProductInfoName[$i] . ",";
+                $sql .= $ProductInfoName[count($ProductInfoName) - 1] . ") SELECT ";
+                for ($i = 1; $i < count($ProductInfoName) - 1; $i++)
+                    $sql .= $ProductInfoName[$i] . ",";
+                $sql .= $ProductInfoName[count($ProductInfoName) - 1];
+                $sql .= " FROM " . $oldtable . " WHERE ID=" . $id . ";";
 
-            // Catch error
-            if($conn -> query($sql) == false)
-                echo "Failed to insert to table " . $newtable . " \n";
-            else
-                echo "Record insert successfully. \n";
+                // Catch error
+                if($conn -> query($sql) == false)
+                    echo "Failed to insert to table " . $newtable . " \n";
+                else
+                    echo "Record insert successfully. \n";
+            }
+            else{
+                echo "You have already insert into it!<br/>";
+            }
         }
 
         // Close connection
@@ -72,5 +78,22 @@
         // Catch error
         header("Location: Review.php", true, 301);
         exit();
+    }
+?>
+
+<?php
+    function DuplicateID($servername,$username,$password,$db_name,$tablename,$id){
+        // tablename = product
+        $conn = mysqli_connect($servername,$username,$password,$db_name);
+        if(!$conn) die("Failed to connect to sql!<br/>");
+        $fieldName = GetFieldName($servername,$username,$password,$db_name,$tablename);
+        $sql = "SELECT * FROM $tablename WHERE $fieldName[0] = $id";
+        if($result=mysqli_query($conn,$sql)){
+            if(mysqli_num_rows($result)>0) return true;
+        }
+        else{
+            echo "Can't select from table $tablename <br/>";
+        }
+        return false;
     }
 ?>
