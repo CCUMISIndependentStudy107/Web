@@ -100,7 +100,7 @@
 
     <?php
         include "connect_sql.php";
-        include "GetFieldName.php";
+        include "SQLRelative.php";
         if (isset($_POST["CompanyName"])) {
             $companyName = $_POST["CompanyName"];
             // $tablename = "product";
@@ -139,11 +139,18 @@
                     mysqli_free_result($res);
                 }
                 $keys = array_keys($arr);
+                $productinfo = array();
                 // print_r($keys);
                 for ($i = 0; $i < count($keys); $i++) {
                     $path = "uploads/";
                     echo "<div><button type=\"button\"><img src=\"".$path.$arr[$keys[$i]][9]."/".$arr[$keys[$i]][7]."\">".$arr[$keys[$i]][1]."</button></div>";  //print 1=name 9=folder 7=pic
+                    array_push($productinfo,GetProductInfo($servername,$username,$password,$db_name,$tablename,$arr[$keys[$i]][0]));
                 }
+                // print_r($productinfo);
+                //[0] => [0~12] see upside [1] => [0~12] ......
+                /*e.g.
+                first name = $productinfo[0][1]
+                second tag = $productinfo[1][6]*/
             }
         }
     ?>
