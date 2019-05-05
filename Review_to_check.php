@@ -1,6 +1,6 @@
 <?php
     include "connect_sql.php";
-    include "GetFieldName.php";
+    include "SQLRelative.php";
 
     // Create `product` table to database
     function CreateProductTable($servername, $username, $password, $db_name, $array) {
