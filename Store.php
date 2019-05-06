@@ -14,21 +14,17 @@
             cursor: pointer;
             transition: .2s;
         }
-
         .card:hover {
             filter: brightness(.95);
         }
-
         .card-img-top {
             width: 100%;
             height: 300px;
             object-fit: cover;
         }
-
         .form-control-plaintext {
             font-weight: bold;
         }
-
         .modal-xl {
             max-width: 1000px !important;
         }
@@ -53,20 +49,31 @@
 
     <script>
         function searchCompany() {
-            $.ajax({
-                url: 'Store_get_product.php',
-                type: 'POST',
-                data: {
-                    CompanyName: $('input[name="CompanyName"]').val()
-                },
-                error: function(xhr) {
-                    alert('Error.');
-                },
-                success: function(res) {
-                    $('#result').html(res);
-                }
+            getProduct($('input[name="CompanyName"]').val()).then(res => {
+                window.parent.SetCwinHeight();
+            }).catch(err => {
+                console.log('Error:', err);
             });
             return false;
+        }
+
+        function getProduct(CompanyName) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: 'Store_get_product.php',
+                    type: 'POST',
+                    data: {
+                        CompanyName: CompanyName
+                    },
+                    error: function(err) {
+                        reject(err);
+                    },
+                    success: function(res) {
+                        $('#result').html(res);
+                        resolve(res);
+                    }
+                });
+            });
         }
     </script>
 </body>
