@@ -1,5 +1,5 @@
 <?php
-    function GetFieldName($servername,$username,$password,$db_name,$tablename){
+    function GetFieldName($servername, $username, $password, $db_name, $tablename){
         $db = new mysqli($servername, $username, $password, $db_name);
         $get_field = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`= \"$db_name\" AND `TABLE_NAME`= \"$tablename\";";
         $query = $db->query($get_field);
@@ -11,10 +11,10 @@
         return $fields;
     }
 
-    function GetProductInfo($servername,$username,$password,$db_name,$tablename,$pid){
-        $conn = mysqli_connect($servername,$username,$password,$db_name);
+    function GetProductInfo($servername, $username, $password, $db_name, $tablename, $pid){
+        $conn = mysqli_connect($servername, $username, $password, $db_name);
         if(!$conn) die("Can't access to sql!<br/>");
-        $fieldName = GetFieldName($servername,$username,$password,$db_name,$tablename);
+        $fieldName = GetFieldName($servername, $username, $password, $db_name, $tablename);
         $fieldnum = count($fieldName);
         $sql = "SELECT * FROM $tablename WHERE ".$fieldName[0]."=$pid";
         $arr = array();
