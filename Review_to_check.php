@@ -49,7 +49,7 @@
         // Check `SUCCESS` and insert a copy into new table
         if ($status == 1) {
             $oldtable = "preprocess";
-            if(!DuplicateID){
+            if(!DuplicateID($servername,$username,$password,$db_name,$newtable,$id)){
                 // Complex sql syntax
                 $sql = "INSERT INTO " . $newtable . " (";
                 for ($i = 1; $i < count($ProductInfoName) - 1; $i++)
