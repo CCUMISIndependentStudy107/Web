@@ -28,6 +28,10 @@
         .form-control-plaintext {
             font-weight: bold;
         }
+
+        .modal-xl {
+            max-width: 1000px !important;
+        }
     </style>
 </head>
 <body>
