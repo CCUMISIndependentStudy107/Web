@@ -29,7 +29,7 @@
     function writeInfo($title,$product){
         $filename = "print.html";
         $file = fopen($filename,"w");
-        for($i=0;$i<count($title);$i++) fwrite($file,$title[$i].":".$product[$i]);
+        for($i=0;$i<count($title);$i++) fwrite($file,$title[$i].":".$product[$i]." \n");
         fclose($file);
     }
     function myPrint($str){
