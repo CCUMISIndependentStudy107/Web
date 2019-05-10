@@ -30,7 +30,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="searchCompany()">
     <!-- <button type="button"><img src=""></button> -->
     <form onsubmit="return searchCompany();" method="POST" name="Test">
         <div class="form-row mx-0">
@@ -74,6 +74,33 @@
                     }
                 });
             });
+        }
+
+        function purchaseProduct(id) {
+            console.log('id', id);
+            let AllInfo = [];
+            for (let i = 0; i < 6; i++)
+                AllInfo.push($('#product-details-' + id + ' input[type="text"]').eq(i).val());
+            AllInfo.push($('#product-details-' + id + ' textarea').val());
+            AllInfo.push($('#buyamount' + id).val());
+            // return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: 'Purchase.php',
+                    type: 'POST',
+                    data: {
+                        AllInfo: AllInfo
+                    },
+                    error: function(err) {
+                        // reject(err);
+                        console.log('Error:', err);
+                    },
+                    success: function(res) {
+                        // resolve(res);
+                        console.log('res:\n', res);
+                    }
+                });
+            // });
+            return false;
         }
     </script>
 </body>
