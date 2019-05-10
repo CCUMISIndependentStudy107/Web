@@ -1,5 +1,5 @@
 <?php
-    header("Content-Type:text/html; charset=big5");
+    // header("Content-Type:text/html; charset=big5");
     /* for ($i = 0; $i < count($_POST['AllInfo']); $i++)
         echo $_POST['AllInfo'][$i] . ",";*/
     //[0]=>名稱 [1]=>標籤 [2]=>節碳量 [3]=>單價 [4]=>數量 [5]=>重量 [6]=>資訊 [7]=>購買數量
@@ -25,7 +25,7 @@
     // echo $str;
 ?>
 <?php
-    header("Content-Type:text/html; charset=big5");
+    // header("Content-Type:text/html; charset=big5");
     function writeInfo($title,$product){
         $filename = "print.html";
         $file = fopen($filename,"w");
