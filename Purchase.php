@@ -63,6 +63,7 @@
             }
             mysqli_free_result($res);
         }
+        echo $sqlQuantity;
         if($sqlQuantity<$quantity) return false;
         return true;
     }
