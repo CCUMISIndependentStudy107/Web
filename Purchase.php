@@ -1,18 +1,5 @@
 <?php
     include "connect_sql.php";
-    // header("Content-Type:text/html; charset=utf-8");
-    /* for ($i = 0; $i < count($_POST['AllInfo']); $i++)
-        echo $_POST['AllInfo'][$i] . ",";*/
-    //[0]=>???蝔? [1]=>璅?蝐? [2]=>蝭?蝣喲?? [3]=>??桀?? [4]=>??賊?? [5]=>?????? [6]=>鞈?閮? [7]=>鞈潸眺??賊??
-    // $file = "http://140.123.94.145/zhbot/myText.txt";
-    // $file2 = "http://localhost/myText.txt";
-    // $f = fopen($file,"r");
-    // iconv("UTF-8","gbk//TRANSLIT",$f);
-    // $str = "";
-    // while(!feof($f)){
-    //     $str .= fgets($f);
-    // }
-    // $ProductChineseName = array("???蝔?","璅?蝐?","蝭?蝣喲??","??桀??","??賊??","??????","鞈?閮?","鞈潸眺??賊??");
     $ProductChineseName = array("名稱","標籤","節碳量","單價","數量","重量","資訊","購買數量");
     $ProductEnglishName = array("Name","Tag","ReduceC","Price","Quantity","Weight","Information","Purchase Quantity");
     $product = array();
@@ -20,20 +7,17 @@
         $str = mb_convert_encoding($_POST['AllInfo'][$i], "BIG5", "UTF-8"); //原始編碼為BIG5轉UTF-8
         array_push($product,$str);
     }
-    // print_r($product);
-    // 0 "名稱" 1 "標籤" 2 "節碳量" 3 "單價" 4 "數量" 5 "重量" 6 "資訊" 7 "購買數量"
+    print_r($product);
+    // 0 ID "名稱" 1 "標籤" 2 "節碳量" 3 "單價" 4 "數量" 5 "重量" 6 "資訊" 7 "購買數量"
     if(Judge($conn,$id,$product[4])){
         $filename = "print.html";
         writeInfo($ProductChineseName,$product,$filename);
         // writeInfo($ProductEnglishName,$product,$filename);
         $url='http://140.123.94.145/web/'.$filename;
-        // $url = 'http://localhost/web/'.$filename;
         $html = file_get_contents($url);
-        echo $html;
-        // fclose($f);
-        // myPrint($str);
+        // echo $html;
+        SQLDeletion($conn,$id,$)
         myPrint($html);
-        // echo $str;
     }
     else{
         echo "數量不足";
