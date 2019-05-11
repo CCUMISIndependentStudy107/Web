@@ -53,6 +53,7 @@
         $sql = "SELECT Quantity From $tablename WHERE ID = $id";
         $sqlQuantity=0;
         if ($res = mysqli_query($conn, $sql)) {
+            echo mysqli_num_rows($res);
             if (mysqli_num_rows($res) > 0) {
                 while ($row = mysqli_fetch_assoc($res)) {
                     $sqlQuantity = $row['Quantity'];
