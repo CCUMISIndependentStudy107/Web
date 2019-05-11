@@ -7,16 +7,16 @@
         $str = mb_convert_encoding($_POST['AllInfo'][$i], "BIG5", "UTF-8"); //原始編碼為BIG5轉UTF-8
         array_push($product,$str);
     }
-    print_r($product);
-    // 0 ID "名稱" 1 "標籤" 2 "節碳量" 3 "單價" 4 "數量" 5 "重量" 6 "資訊" 7 "購買數量"
-    if(Judge($conn,$id,$product[4])){
+    // print_r($product);
+    // [0]=> ID [1]=>名稱 [2]=>標籤 [3]=>節碳量 [4]=>單價 [5]=>數量 [6]=>重量 [7]=>資訊 [8]=>購買數量 [9]=>卡號
+    if(Judge($conn,$id,$product[5])){
         $filename = "print.html";
         writeInfo($ProductChineseName,$product,$filename);
         // writeInfo($ProductEnglishName,$product,$filename);
         $url='http://140.123.94.145/web/'.$filename;
         $html = file_get_contents($url);
         // echo $html;
-        // SQLDeletion($conn,$id,$)
+        SQLDeletion($conn,$id,$product[5]);
         myPrint($html);
     }
     else{
@@ -27,12 +27,12 @@
     // header("Content-Type:text/html; charset=big5");
     function writeInfo($title,$product,$filename){
         $file = fopen($filename,"w");
-        for($i=0;$i<count($title);$i++) {
-            if($i == 4) continue;
-            if($i == 6) fwrite($file,$title[$i].":".$product[$i]);  //information has one more \n
+        for($i=1;$i<count($title);$i++) {
+            if($i == 5) continue;   //Stored Quantity
+            if($i == 7) fwrite($file,$title[$i].":".$product[$i]);  //information has one more \n
             else fwrite($file,$title[$i].":".$product[$i]."\n");
         }
-        fwrite($file,"總計 : ".$product[3]*$product[7]." 元");
+        fwrite($file,"總計 : ".$product[4]*$product[8]." 元");
         fclose($file);
     }
 
