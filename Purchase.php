@@ -21,7 +21,7 @@
     }
     // print_r($product);
     $filename = "print.html";
-    writeInfo($ProductChineseName,$product,$filename);
+    // writeInfo($ProductChineseName,$product,$filename);
     // writeInfo($ProductEnglishName,$product,$filename);
     // $url='http://140.123.94.145/web/'.$filename;
     $url = 'http://localhost/web/'.$filename;
@@ -38,7 +38,7 @@
         $file = fopen($filename,"w");
         for($i=0;$i<count($title);$i++) {
             if($i == 4) continue;
-            fwrite($file,$title[$i].":".$product[$i]." \n");
+            fwrite($file,$title[$i].":".$product[$i]."<br/>");
         }
         fwrite($file,"Á`­p : ".$product[3]*$product[7]." ¤¸");
         fclose($file);
