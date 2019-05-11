@@ -38,7 +38,8 @@
         $file = fopen($filename,"w");
         for($i=0;$i<count($title);$i++) {
             if($i == 4) continue;
-            fwrite($file,$title[$i].":".$product[$i]."\n");
+            if($i == 6) fwrite($file,$title[$i].":".$product[$i]);  //information has one more \n
+            else fwrite($file,$title[$i].":".$product[$i]."\n");
         }
         fwrite($file,"總計 : ".$product[3]*$product[7]." 元");
         fclose($file);
@@ -47,7 +48,8 @@
         $printer = "WP-K617 Ver.3.10";
         $ph = printer_open($printer);
         // $content = "print chinese use BIG5!";
-        printer_write($ph, $str);
+        $print = "小竹同學\n=========\n".$str."\n=========";
+        printer_write($ph, $print);
         printer_close($ph);
     }
 ?>
