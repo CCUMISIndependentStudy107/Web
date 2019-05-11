@@ -24,10 +24,10 @@
     // 0 "名稱" 1 "標籤" 2 "節碳量" 3 "單價" 4 "數量" 5 "重量" 6 "資訊" 7 "購買數量"
     if(Judge($conn,$id,$product[4])){
         $filename = "print.html";
-        // writeInfo($ProductChineseName,$product,$filename);
+        writeInfo($ProductChineseName,$product,$filename);
         // writeInfo($ProductEnglishName,$product,$filename);
-        // $url='http://140.123.94.145/web/'.$filename;
-        $url = 'http://localhost/web/'.$filename;
+        $url='http://140.123.94.145/web/'.$filename;
+        // $url = 'http://localhost/web/'.$filename;
         $html = file_get_contents($url);
         echo $html;
         // fclose($f);
