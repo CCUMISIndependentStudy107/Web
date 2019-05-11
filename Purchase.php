@@ -64,10 +64,32 @@
     function Judge($conn,$id,$quantity){
         $tablename = "preprocess";
         $sql = "SELECT Quantity From $tablename WHERE ID = $id";
-        
+        $sqlQuantity;
+        if ($res = mysqli_query($conn, $sql)) {
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_array($res)) {
+                    $sqlQuantity = $row[$fieldName[$i]];
+                }
+            }
+            else {
+                echo "No result!<br/>";
+                return ;
+            }
+            mysqli_free_result($res);
+        }
+        if($sqlQuantity<$quantity) return false;
+        return true;
     }
 
     function SQLDeletion($conn,$id,$quantity){
-
+        $tablename = "preprocess";
+        $sql = "UPDATE $tablename SET Quantity = (Quantity-$quantity) WHERE ID = $id;";
+        if($conn -> query($sql) == false){
+            echo "Failed to update values <br/>";
+        }
+        else{
+            echo "成功輸入至資料庫！<br/>";
+        }
+        mysqli_close($conn);
     }
 ?>
