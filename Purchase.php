@@ -1,4 +1,5 @@
 <?php
+    include "connect_sql.php";
     // header("Content-Type:text/html; charset=utf-8");
     /* for ($i = 0; $i < count($_POST['AllInfo']); $i++)
         echo $_POST['AllInfo'][$i] . ",";*/
@@ -20,17 +21,23 @@
         array_push($product,$str);
     }
     // print_r($product);
-    $filename = "print.html";
-    // writeInfo($ProductChineseName,$product,$filename);
-    // writeInfo($ProductEnglishName,$product,$filename);
-    // $url='http://140.123.94.145/web/'.$filename;
-    $url = 'http://localhost/web/'.$filename;
-    $html = file_get_contents($url);
-    echo $html;
-    // fclose($f);
-    // myPrint($str);
-    myPrint($html);
-    // echo $str;
+    // 0 "名稱" 1 "標籤" 2 "節碳量" 3 "單價" 4 "數量" 5 "重量" 6 "資訊" 7 "購買數量"
+    if(Judge($conn,$id,$product[4])){
+        $filename = "print.html";
+        // writeInfo($ProductChineseName,$product,$filename);
+        // writeInfo($ProductEnglishName,$product,$filename);
+        // $url='http://140.123.94.145/web/'.$filename;
+        $url = 'http://localhost/web/'.$filename;
+        $html = file_get_contents($url);
+        echo $html;
+        // fclose($f);
+        // myPrint($str);
+        myPrint($html);
+        // echo $str;
+    }
+    else{
+        echo "數量不足";
+    }
 ?>
 <?php
     // header("Content-Type:text/html; charset=big5");
@@ -44,6 +51,7 @@
         fwrite($file,"總計 : ".$product[3]*$product[7]." 元");
         fclose($file);
     }
+
     function myPrint($str){
         $printer = "WP-K617 Ver.3.10";
         $ph = printer_open($printer);
@@ -51,5 +59,15 @@
         $print = "小竹同學\n=========\n".$str."\n=========";
         printer_write($ph, $print);
         printer_close($ph);
+    }
+
+    function Judge($conn,$id,$quantity){
+        $tablename = "preprocess";
+        $sql = "SELECT Quantity From $tablename WHERE ID = $id";
+        
+    }
+
+    function SQLDeletion($conn,$id,$quantity){
+
     }
 ?>
