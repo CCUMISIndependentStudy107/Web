@@ -7,16 +7,18 @@
         $str = mb_convert_encoding($_POST['AllInfo'][$i], "BIG5", "UTF-8"); //原始編碼為BIG5轉UTF-8
         array_push($product,$str);
     }
+    $id = $product[0];
+    $quantity = $product[5];
     // print_r($product);
     // [0]=> ID [1]=>名稱 [2]=>標籤 [3]=>節碳量 [4]=>單價 [5]=>數量 [6]=>重量 [7]=>資訊 [8]=>購買數量 [9]=>卡號
-    if(Judge($conn,$id,$product[5])){
+    if(Judge($conn,$id,$quantity)){
         $filename = "print.html";
         writeInfo($ProductChineseName,$product,$filename);
         // writeInfo($ProductEnglishName,$product,$filename);
         $url='http://140.123.94.145/web/'.$filename;
         $html = file_get_contents($url);
         // echo $html;
-        SQLDeletion($conn,$id,$product[5]);
+        SQLDeletion($conn,$id,$quantity);
         myPrint($html);
     }
     else{
