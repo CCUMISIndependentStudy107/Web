@@ -1,5 +1,5 @@
 <?php
-    // header("Content-Type:text/html; charset=big5");
+    header("Content-Type:text/html; charset=utf-8");
     /* for ($i = 0; $i < count($_POST['AllInfo']); $i++)
         echo $_POST['AllInfo'][$i] . ",";*/
     //[0]=>名稱 [1]=>標籤 [2]=>節碳量 [3]=>單價 [4]=>數量 [5]=>重量 [6]=>資訊 [7]=>購買數量
@@ -12,12 +12,15 @@
     //     $str .= fgets($f);
     // }
     $ProductChineseName = array("名稱","標籤","節碳量","單價","數量","重量","資訊","購買數量");
+    $ProductEnglishName = array("Name","Tag","ReduceC","Price","Quantity","Weight","Information","Purchase Quantity");
     $product = array();
     for($i=0;$i<count($_POST['AllInfo']);$i++) array_push($product,$_POST['AllInfo'][$i]);
     // print_r($product);
     $filename = "print.html";
-    writeInfo($ProductChineseName,$product,$filename);
-    $url='http://140.123.94.145/web/'.$filename;
+    // writeInfo($ProductChineseName,$product,$filename);
+    writeInfo($ProductEnglishName,$product,$filename);
+    // $url='http://140.123.94.145/web/'.$filename;
+    $url = 'http://localhost/web/'.$filename;
     $html= file_get_contents($url);
     echo $html;
     // fclose($f);
