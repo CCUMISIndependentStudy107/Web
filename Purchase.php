@@ -14,20 +14,20 @@
     $ProductChineseName = array("名稱","標籤","節碳量","單價","數量","重量","資訊","購買數量");
     $product = array();
     for($i=0;$i<count($_POST['AllInfo']);$i++) array_push($product,$_POST['AllInfo'][$i]);
-    print_r($product);
-    writeInfo($ProductChineseName,$product);
-    /*$url='http://140.123.94.145/zhbot/myText.html';
+    // print_r($product);
+    $filename = "print.html";
+    writeInfo($ProductChineseName,$product,$filename);
+    $url='http://140.123.94.145/web/'.$filename;
     $html= file_get_contents($url);
     echo $html;
     // fclose($f);
     // myPrint($str);
-    myPrint($html);*/
+    myPrint($html);
     // echo $str;
 ?>
 <?php
     // header("Content-Type:text/html; charset=big5");
-    function writeInfo($title,$product){
-        $filename = "print.html";
+    function writeInfo($title,$product,$filename){
         $file = fopen($filename,"w");
         for($i=0;$i<count($title);$i++) fwrite($file,$title[$i].":".$product[$i]." \n");
         fclose($file);
