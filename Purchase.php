@@ -18,10 +18,10 @@
     // print_r($product);
     $filename = "print.html";
     // writeInfo($ProductChineseName,$product,$filename);
-    writeInfo($ProductEnglishName,$product,$filename);
+    // writeInfo($ProductEnglishName,$product,$filename);
     // $url='http://140.123.94.145/web/'.$filename;
     $url = 'http://localhost/web/'.$filename;
-    $html= file_get_contents($url);
+    $html = file_get_contents($url);
     echo $html;
     // fclose($f);
     // myPrint($str);
@@ -32,7 +32,11 @@
     // header("Content-Type:text/html; charset=big5");
     function writeInfo($title,$product,$filename){
         $file = fopen($filename,"w");
-        for($i=0;$i<count($title);$i++) fwrite($file,$title[$i].":".$product[$i]." \n");
+        for($i=0;$i<count($title);$i++) {
+            if($i == 4) continue;
+            fwrite($file,$title[$i].":".$product[$i]." \n");
+        }
+        fwrite($file,"Total : ".$product[3]*$product[7]);
         fclose($file);
     }
     function myPrint($str){
