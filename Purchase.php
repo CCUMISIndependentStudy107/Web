@@ -15,10 +15,13 @@
     $ProductChineseName = array("名稱","標籤","節碳量","單價","數量","重量","資訊","購買數量");
     $ProductEnglishName = array("Name","Tag","ReduceC","Price","Quantity","Weight","Information","Purchase Quantity");
     $product = array();
-    for($i=0;$i<count($_POST['AllInfo']);$i++) array_push($product,$_POST['AllInfo'][$i]);
+    for($i=0;$i<count($_POST['AllInfo']);$i++){
+        $str = mb_convert_encoding($_POST['AllInfo'][$i], "BIG5", "UTF-8"); //原始編碼為BIG5轉UTF-8
+        array_push($product,$str);
+    }
     // print_r($product);
     $filename = "print.html";
-    // writeInfo($ProductChineseName,$product,$filename);
+    writeInfo($ProductChineseName,$product,$filename);
     // writeInfo($ProductEnglishName,$product,$filename);
     // $url='http://140.123.94.145/web/'.$filename;
     $url = 'http://localhost/web/'.$filename;
@@ -37,7 +40,7 @@
             if($i == 4) continue;
             fwrite($file,$title[$i].":".$product[$i]." \n");
         }
-        fwrite($file,"Total : ".$product[3]*$product[7]);
+        fwrite($file,"總計 : ".$product[3]*$product[7]." 元");
         fclose($file);
     }
     function myPrint($str){
