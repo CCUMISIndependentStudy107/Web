@@ -4,12 +4,12 @@
     $ProductEnglishName = array("Name","Tag","ReduceC","Price","Quantity","Weight","Information","Purchase Quantity");
     $product = array();
     for($i=0;$i<count($_POST['AllInfo']);$i++){
-        $str = mb_convert_encoding($_POST['AllInfo'][$i], "BIG5", "UTF-8"); //原始編碼為BIG5轉UTF-8
+        $str = mb_convert_encoding($_POST['AllInfo'][$i], "BIG5", "UTF-8"); //原始編碼轉BIG5
         array_push($product,$str);
     }
     $id = $product[0];
-    // echo $id;
-    $quantity = $product[5];
+    // echo "ID = $id";
+    $quantity = $product[8];
     // print_r($product);
     // [0]=> ID [1]=>名稱 [2]=>標籤 [3]=>節碳量 [4]=>單價 [5]=>數量 [6]=>重量 [7]=>資訊 [8]=>購買數量 [9]=>卡號
     if(Judge($conn,$id,$quantity)){
@@ -23,7 +23,7 @@
         myPrint($html);
     }
     else{
-        echo "數量不足";
+        echo "Not enough!";
     }
 ?>
 <?php
@@ -51,12 +51,14 @@
     function Judge($conn,$id,$quantity){
         $tablename = "preprocess";
         $sql = "SELECT Quantity From $tablename WHERE ID = $id";
+        // echo $sql."\n";
         $sqlQuantity=0;
         if ($res = mysqli_query($conn, $sql)) {
-            echo mysqli_num_rows($res);
+            // echo "MM=".mysqli_num_rows($res)."\n";
             if (mysqli_num_rows($res) > 0) {
-                while ($row = mysqli_fetch_assoc($res)) {
+                while ($row = mysqli_fetch_array($res)) {
                     $sqlQuantity = $row['Quantity'];
+                    // echo "sqlQuantity = $sqlQuantity!";
                 }
             }
             else {
@@ -65,8 +67,8 @@
             }
             mysqli_free_result($res);
         }
-        echo $sqlQuantity;
-        if($sqlQuantity<$quantity) return false;
+        // echo "SQ=$sqlQuantity , Q=$quantity !!";
+        if($quantity>$sqlQuantity) return false;
         return true;
     }
 
