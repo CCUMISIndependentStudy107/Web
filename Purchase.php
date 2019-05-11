@@ -1,4 +1,5 @@
 <?php
+    //USE BIG5 to see
     include "connect_sql.php";
     $ProductChineseName = array("名稱","標籤","節碳量","單價","數量","重量","資訊","購買數量");
     $ProductEnglishName = array("Name","Tag","ReduceC","Price","Quantity","Weight","Information","Purchase Quantity");
