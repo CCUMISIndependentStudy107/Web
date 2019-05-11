@@ -8,6 +8,7 @@
         array_push($product,$str);
     }
     $id = $product[0];
+    echo $id;
     $quantity = $product[5];
     // print_r($product);
     // [0]=> ID [1]=>名稱 [2]=>標籤 [3]=>節碳量 [4]=>單價 [5]=>數量 [6]=>重量 [7]=>資訊 [8]=>購買數量 [9]=>卡號
