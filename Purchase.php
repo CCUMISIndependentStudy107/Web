@@ -1,8 +1,8 @@
 <?php
-    header("Content-Type:text/html; charset=utf-8");
+    // header("Content-Type:text/html; charset=utf-8");
     /* for ($i = 0; $i < count($_POST['AllInfo']); $i++)
         echo $_POST['AllInfo'][$i] . ",";*/
-    //[0]=>Е░█Г╗╠ [1]=>Ф╗≥Г╠╓ [2]=>Г╞─Г╒ЁИ┤▐ [3]=>Е√╝Е┐╧ [4]=>Ф∙╦И┤▐ [5]=>И┤█И┤▐ [6]=>ХЁ┤Х╗┼ [7]=>ХЁ╪Х╡╥Ф∙╦И┤▐
+    //[0]=>???Г╗? [1]=>Ф╗?Г╠? [2]=>Г╞?Г╒ЁИ?? [3]=>??╝Е?? [4]=>??╦И?? [5]=>?????? [6]=>ХЁ?Х╗? [7]=>ХЁ╪Х╡╥??╦И??
     // $file = "http://140.123.94.145/zhbot/myText.txt";
     // $file2 = "http://localhost/myText.txt";
     // $f = fopen($file,"r");
@@ -11,7 +11,8 @@
     // while(!feof($f)){
     //     $str .= fgets($f);
     // }
-    $ProductChineseName = array("Е░█Г╗╠","Ф╗≥Г╠╓","Г╞─Г╒ЁИ┤▐","Е√╝Е┐╧","Ф∙╦И┤▐","И┤█И┤▐","ХЁ┤Х╗┼","ХЁ╪Х╡╥Ф∙╦И┤▐");
+    // $ProductChineseName = array("???Г╗?","Ф╗?Г╠?","Г╞?Г╒ЁИ??","??╝Е??","??╦И??","??????","ХЁ?Х╗?","ХЁ╪Х╡╥??╦И??");
+    $ProductChineseName = array("╕W╨ы","╪пер","╦`╨р╤q","ЁФ╩Ы","╪ф╤q","╜╚╤q","╦Й╟T","ай╤R╪ф╤q");
     $ProductEnglishName = array("Name","Tag","ReduceC","Price","Quantity","Weight","Information","Purchase Quantity");
     $product = array();
     for($i=0;$i<count($_POST['AllInfo']);$i++) array_push($product,$_POST['AllInfo'][$i]);
