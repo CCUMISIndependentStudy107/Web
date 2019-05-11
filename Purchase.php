@@ -8,7 +8,7 @@
         array_push($product,$str);
     }
     $id = $product[0];
-    echo $id;
+    // echo $id;
     $quantity = $product[5];
     // print_r($product);
     // [0]=> ID [1]=>名稱 [2]=>標籤 [3]=>節碳量 [4]=>單價 [5]=>數量 [6]=>重量 [7]=>資訊 [8]=>購買數量 [9]=>卡號
@@ -51,16 +51,16 @@
     function Judge($conn,$id,$quantity){
         $tablename = "preprocess";
         $sql = "SELECT Quantity From $tablename WHERE ID = $id";
-        $sqlQuantity;
+        $sqlQuantity=0;
         if ($res = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($res) > 0) {
-                while ($row = mysqli_fetch_array($res)) {
+                while ($row = mysqli_fetch_assoc($res)) {
                     $sqlQuantity = $row['Quantity'];
                 }
             }
             else {
                 echo "No result!<br/>";
-                return ;
+                return false;
             }
             mysqli_free_result($res);
         }
@@ -73,10 +73,10 @@
         $tablename = "preprocess";
         $sql = "UPDATE $tablename SET Quantity = (Quantity-$quantity) WHERE ID = $id;";
         if($conn -> query($sql) == false){
-            echo "Failed to update values <br/>";
+            echo "Failed to update value<br/>";
         }
         else{
-            echo "成功輸入至資料庫！<br/>";
+            echo "Success to update value<br/>";
         }
         mysqli_close($conn);
     }
