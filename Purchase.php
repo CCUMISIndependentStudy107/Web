@@ -16,7 +16,7 @@
         $url='http://140.123.94.145/web/'.$filename;
         $html = file_get_contents($url);
         // echo $html;
-        SQLDeletion($conn,$id,$)
+        // SQLDeletion($conn,$id,$)
         myPrint($html);
     }
     else{
