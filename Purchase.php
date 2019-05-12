@@ -21,9 +21,9 @@
         $url='http://140.123.94.145/web/'.$filename;
         $html = file_get_contents($url);
         // echo $html;
+        Transaction($conn,$product);
         SQLDeletion($conn,$id,$quantity);
         myPrint($html);
-        Transaction($conn,$product);
     }
     else{
         echo "Not enough!";
@@ -92,10 +92,11 @@
         $card_length = 20;
         $fieldname = array("ID","CardID","ProductID","Price","Quantity");
         $sql = "CREATE TABLE IF NOT EXISTS $tablename (".$fieldname[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ".$fieldname[1]." VARCHAR($card_length),".$fieldname[2]." INT,".$fieldname[3]." INT,".$fieldname[4]." INT)";
-        if($conn -> query($sql) == false) echo "Can't Create table $tablename";
-        $sql = "INSERT INTO $tablename ($fieldname[1],$fieldname[2],$fieldname[3],$fieldname[4])
-                VALUES(\"$product[9]\",$product[0],$product[4],$product[8])";
-        if($conn -> query($sql) == false) echo "Can't INSERT to table";
-        else echo "Successful.";
+        // echo $sql;
+        if(!mysqli_query($conn,$sql)) echo "Can't Create table $tablename";
+        $sql = "INSERT INTO $tablename ($fieldname[1],$fieldname[2],$fieldname[3],$fieldname[4]) VALUES(\"$product[9]\",$product[0],".intval($product[4]).",$product[8])";
+        // echo $sql;
+        if(!mysqli_query($conn,$sql)) echo "Can't INSERT to table";
+        else echo "Success to insert in.";
     }
 ?>
