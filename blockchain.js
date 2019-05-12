@@ -74,16 +74,16 @@ function getERC20TokenDecimals(callback) {
     });
 }
 
-function getHDCBalance(e) {
+function getHDCBalance(addr) {
     // _WALLET_ADDRESS = document.querySelector('#main-wallet .wallet').value;
     // _RECIPIENTS_ADDRESS = document.querySelector('#vendor-wallet .wallet').value;
-    if (_WALLET_ADDRESS && _RECIPIENTS_ADDRESS) {
-        getERC20TokenBalance(_TOKEN_ADDRESS, _WALLET_ADDRESS, balance => {
-            // document.querySelector('#main-wallet .balance').innerText = balance.toString();
+    if (addr) {
+        getERC20TokenBalance(_TOKEN_ADDRESS, addr, balance => {
+            $('#wallet-money').val(balance.toString());
         });
-        getERC20TokenBalance(_TOKEN_ADDRESS, _RECIPIENTS_ADDRESS, balance => {
+        // getERC20TokenBalance(_TOKEN_ADDRESS, _RECIPIENTS_ADDRESS, balance => {
             // document.querySelector('#vendor-wallet .balance').innerText = balance.toString();
-        });
+        // });
 
         window.tokenContract = getERC20TokenContract(_TOKEN_ADDRESS);
         getERC20TokenDecimals(decimals => {
@@ -100,12 +100,12 @@ function transferERC20Token(toAddress, value, callback) {
 }
 
 function exchangeRateAlgorithm(val) {
-    return 0.1 * val;
+    return 0.01 * val;
 }
 
-function sendHDC(val) {
+function sendHDC(val, recipientsAddress) {
     return new Promise((resolve, reject) => {
-        let toAddress = _RECIPIENTS_ADDRESS;
+        let toAddress = recipientsAddress; // _RECIPIENTS_ADDRESS;
         let decimals = _TOKEN_DECIMALS;
         let amount = web3.toBigNumber(val)
         let sendValue = exchangeRateAlgorithm(amount.times(web3.toBigNumber(10).pow(decimals)));

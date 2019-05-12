@@ -63,7 +63,8 @@
             function reviewToCheck(id, status, reduceC = 0) {
                 if (status === 1) {
                     if (confirm('確定通過？') == true) {
-                        sendHDC(reduceC).then(tx => {
+                        let toAddr = $('#preprocess' + id).text();
+                        sendHDC(reduceC, toAddr).then(tx => {
                             $.ajax({
                                 url: 'Review_to_check.php',
                                 type: 'POST',

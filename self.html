@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <title>新增商品</title>
+    <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <style>
+        #product_tag_help {
+            display: inline;
+        }
+
+        .custom-file-input:lang(en)~.custom-file-label::after {
+            content: "瀏覽";
+        }
+
+        .custom-file-label {
+            padding: 0.375rem 1rem;
+        }
+
+        .custom-file-input {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="self-info">
+        <div id="logo">
+            <img src="pic/zhbot.png" onclick="window.location.reload();">
+        </div>
+
+        <form method="POST">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="wallet-addr">錢包地址</label>
+                    <input type="text" class="form-control" id="wallet-addr" name="wallet-addr" :value="walletAddr" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="wallet-money">錢包餘額</label>
+                    <input type="text" class="form-control" id="wallet-money" name="wallet-money" :value="walletMoney" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="./blockchain.js"></script>
+<script>
+    function getWalletAddr() {
+        $.ajax({
+            url: 'Self.php',
+            type: 'POST',
+            data: {
+                username: window.parent.document.querySelector('#menu-item-2814 a').textContent
+            },
+            error: function(err) {
+                // reject(err);
+            },
+            success: function(res) {
+                console.log('addr:', res);
+                // resolve(res);
+            }
+        });
+    }
+
+    var green = new Vue({
+        el: '#self-info',
+        data: {
+            walletAddr: '0x4A86D247d0f24f68fA0800A497D8b7Fb18b4e695'
+        },
+        created: function () {
+            getWalletAddr();
+        },
+        computed: {
+            walletMoney: function () {
+                return getHDCBalance(this.walletAddr);
+            }
+        }
+    });
+</script>
+</html>
