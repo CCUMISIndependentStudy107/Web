@@ -98,6 +98,7 @@
                     },
                     success: function(res) {
                         // resolve(res);
+                        $('#productDetailModal' + id).modal('hide');
                         console.log('res:\n', res);
                     }
                 });

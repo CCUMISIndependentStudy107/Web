@@ -43,7 +43,7 @@
             }
             $keys = array_keys($arr);
             $productinfo = array();
-            // print_r($keys);
+            // print_r($arr);
 
 
             $result = "<div class=\"container-fluid\"><div class=\"row\">";
