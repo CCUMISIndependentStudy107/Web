@@ -5,7 +5,7 @@
         $name = $_POST['username'];
         // $name = 'zhbot';
         $eth = getEthernet($servername,$username,$password,$db_name,$name);
-        // echo $eth;
+        echo $eth;
     }
 ?>
 

@@ -99,25 +99,26 @@
 <?php
     include "connect_sql.php";
     include "SQLRelative.php";
-    //get reduce c by id = record.id (Order.php)
-    getReduceC($servername, $username, $password, $db_name,$id);
     if (isset($_GET['key'])) { // Make sure really GET variable(s)
         $key = $_GET['key'];
         $tablename = "record";
         $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
         $sql = SelectTable($tablename,$key);
+        // print_r($fieldname); die();
+        // [0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => Status
         // echo $sql;
         // To show searching result(s)
         $OrderInfo = array();
+        $fieldname_chinese = array("ID", "買方","商品名稱", "商品價格", "購買數量", "提交日期", "廠商名稱", "狀態");
         if ($result = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($result) > 0) {
                 echo "<div class='table-responsive'>";
                 echo "<table class='table table-striped'>";
                 echo "<thead>";
                 echo "<tr>";
-                for ($i = 0; $i < count($fieldname); $i++) {
+                for ($i = 0; $i < count($fieldname_chinese); $i++) {
                     if ($i != 0) {
-                        echo "<th scope='col'>" . $fieldname[$i] . "</th>";
+                        echo "<th scope='col'>" . $fieldname_chinese[$i] . "</th>";
                     }
                 }
                 echo "</tr>";

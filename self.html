@@ -51,29 +51,35 @@
 <script src="./blockchain.js"></script>
 <script>
     function getWalletAddr() {
-        $.ajax({
-            url: 'Self.php',
-            type: 'POST',
-            data: {
-                username: window.parent.document.querySelector('#menu-item-2814 a').textContent
-            },
-            error: function(err) {
-                // reject(err);
-            },
-            success: function(res) {
-                console.log('addr:', res);
-                // resolve(res);
-            }
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'Self.php',
+                type: 'POST',
+                data: {
+                    username: window.parent.document.querySelector('#menu-item-2814 a').textContent
+                },
+                error: function(err) {
+                    reject(err);
+                },
+                success: function(res) {
+                    console.log('addr:', res);
+                    resolve(res);
+                }
+            });
         });
     }
 
     var green = new Vue({
         el: '#self-info',
         data: {
-            walletAddr: '0x4A86D247d0f24f68fA0800A497D8b7Fb18b4e695'
+            walletAddr: ''
         },
-        created: function () {
-            getWalletAddr();
+        beforeMount: function () {
+            getWalletAddr().then(addr => {
+                this.walletAddr = addr;
+            }).catch(err => {
+                console.log('Error:', err);
+            });
         },
         computed: {
             walletMoney: function () {
