@@ -2,9 +2,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>輸入資料庫</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     </head>
     <body>
-    <input type ="button" onclick="javascript:location.href='new.html'" value="繼續上架"></input><br/>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <button type="button" class="btn btn-success" onclick="javascript:location.href='new.html'">繼續上架</button>
+                </div>
+            </div>
+        </form>
+        <br/>
     </body>
 </html>
 <?php

@@ -83,7 +83,7 @@
         $tags = $_POST['product_tag'];
         if(substr($tags,-1) == ',') $tags = substr_replace($tags,'',-1); //防呆 若,在最後面的時候
         WriteFileInfo($info_file,"商品標籤",$tags,false);
-        WriteFileInfo($info_file,"商品照面",$_FILES['product_picture']['name'],false);
+        WriteFileInfo($info_file,"商品照片",$_FILES['product_picture']['name'],false);
         WriteFileInfo($info_file,"節碳量",ReduceC()."公克(g)",false);
         WriteFileInfo($info_file,"廠商名稱",$_POST['company_name'],true);
         #Write plain File

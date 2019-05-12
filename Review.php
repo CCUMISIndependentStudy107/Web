@@ -27,7 +27,7 @@
         </style>
     </head>
     <body>
-        <form action="Review.php" method="GET">
+        <form id="review-form" action="Review.php" method="GET">
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="field">選擇欄位</label>
@@ -127,8 +127,12 @@
                 echo "<table class='table table-striped'>";
                 echo "<thead>";
                 echo "<tr>";
-                for ($i = 0; $i < count($ProductInfoName_chinese); $i++)
-                    echo "<th scope='col'>" . $ProductInfoName_chinese[$i] . "</th>";
+                for ($i = 0; $i < count($ProductInfoName_chinese); $i++) {
+                    if ($i == 0 || $i == 5 || $i == 6 || $i == 7) {}
+                    else {
+                        echo "<th scope='col'>" . $ProductInfoName_chinese[$i] . "</th>";
+                    }
+                }
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
@@ -158,7 +162,11 @@
                             }
                         }
                         else {
-                            echo "<td title='" . $row[$ProductInfoName[$i]] . "'>" . $row[$ProductInfoName[$i]] . "</td>";
+                            // 不要顯示 `id(-13), 重量(-8), 標籤(-7), 圖片(-6)`
+                            if ($i == count($ProductInfoName) - 13 || $i == count($ProductInfoName) - 8 || $i == count($ProductInfoName) - 7 || $i == count($ProductInfoName) - 6) {}
+                            else {
+                                echo "<td title='" . $row[$ProductInfoName[$i]] . "'>" . $row[$ProductInfoName[$i]] . "</td>";
+                            }
                         }
                         $id = $row[$ProductInfoName[0]];
                         if ($i > 0){
@@ -212,6 +220,6 @@
             else
                 $sql .= "WHERE " . $selected_value.$key;
         }
-        return $sql;
+        return $sql . " ORDER BY id DESC";
     }
 ?>
