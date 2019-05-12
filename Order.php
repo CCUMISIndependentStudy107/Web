@@ -28,11 +28,9 @@
     </head>
     <body>
         <form action="Order.php" method="GET">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <p>廠商名稱 : </p>
-                </div>
+            <div class="form-row mx-0">
                 <div class="form-group col-md-6">
+                    <label for="key">廠商名稱</label>
                     <input type="text" class="form-control" id="key" name="key" value="">
                 </div>
                 <div class="form-group col-md-2">
@@ -106,7 +104,7 @@
         $tablename = "record";
         $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
         $sql = SelectTable($tablename,$key);
-        echo $sql;
+        // echo $sql;
         // To show searching result(s)
         $OrderInfo = array();
         if ($result = mysqli_query($conn, $sql)) {
@@ -122,32 +120,33 @@
                 echo "<tbody>";
                 while ($row = mysqli_fetch_array($result)) {
                     echo "<tr>";
+                    // print_r($row[$fieldname[count($fieldname) - 1]]); die();
                     for ($i = 0, $j = 0; $i < count($fieldname); $i++) {
-                        // if ($i == count($fieldname) - 2) {
+                        // if ($i == count($fieldname) - 1) {
                         //     $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$ProductInfoName[$i]] . "' target='_blank'>Tx</a>";
                         //     continue;
                         // }
                         // if ($i == count($fieldname) - 5)
                         //     $reduceC = $row[$fieldname[$i]];
-                        // if ($i == count($fieldname) - 1) {
-                        //     switch ($row[$fieldname[$i]]) {
-                        //         case 1:
-                        //             echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
-                        //             break;
-                        //         case 2:
-                        //             echo "<td><span class='text-danger'>FAIL</span></td>";
-                        //             break;
-                        //         default:
-                        //             echo "<td>";
-                        //             echo "<span class='badge badge-success' onclick='reviewToCheck(" . $id . ", 1, " . $reduceC . ")'>PASS</span>";
-                        //             echo "<span class='badge badge-danger' onclick='reviewToCheck(" . $id . ", 2)'>FAIL</span>";
-                        //             echo "</td>";
-                        //             break;
-                        //     }
-                        // }
-                        // else {
-                        echo "<td title='" . $row[$fieldname[$i]] . "'>" . $row[$fieldname[$i]] . "</td>";
-                        // }
+                        if ($i == count($fieldname) - 1) {
+                            switch ($row[$fieldname[$i]]) {
+                                case 1:
+                                    echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
+                                    break;
+                                case 2:
+                                    echo "<td><span class='text-danger'>FAIL</span></td>";
+                                    break;
+                                default:
+                                    echo "<td>";
+                                    echo "<span class='badge badge-success' onclick='orderToCheck(" . $id . ", 1)'>PASS</span>";
+                                    echo "<span class='badge badge-danger' onclick='orderToCheck(" . $id . ", 2)'>FAIL</span>";
+                                    echo "</td>";
+                                    break;
+                            }
+                        }
+                        else {
+                            echo "<td title='" . $row[$fieldname[$i]] . "'>" . $row[$fieldname[$i]] . "</td>";
+                        }
                         $id = $row[$fieldname[0]];
                         // if ($i > 0){
                             // echo $i."--".$row[$ProductInfoName[$i]];
@@ -181,7 +180,7 @@
 
 <?php
     function SelectTable($tablename,$key) {
-        $sql = "SELECT * FROM $tablename WHERE Company LIKE \"%$key%\"";
+        $sql = "SELECT * FROM $tablename WHERE Company LIKE \"%$key%\" ORDER BY id DESC";
         return $sql;
     }
 ?>
