@@ -97,7 +97,7 @@
         $sql = "CREATE TABLE IF NOT EXISTS $tablename (".$fieldname[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ".$fieldname[1]." VARCHAR($card_length),".$fieldname[2]." INT,".$fieldname[3]." INT,".$fieldname[4]." INT,".$fieldname[5]." DATETIME,".$fieldname[6]." VARCHAR(100),".$fieldname[7]." BOOLEAN DEFAULT 0)";
         echo $sql;
         if(!mysqli_query($conn,$sql)) echo "Can't Create table $tablename";
-        $sql = "INSERT INTO $tablename ($fieldname[1],$fieldname[2],$fieldname[3],$fieldname[4],$fieldname[5],$fieldname[6]) VALUES(\"$product[9]\",$product[0],".intval($product[4]).",$product[8],\"$date\",$product[10])";
+        $sql = "INSERT INTO $tablename ($fieldname[1],$fieldname[2],$fieldname[3],$fieldname[4],$fieldname[5],$fieldname[6]) VALUES(\"$product[9]\",$product[0],".intval($product[4]).",$product[8],\"$date\",\"$product[10]\")";
         // echo $sql;
         if(!mysqli_query($conn,$sql)) echo "Can't INSERT to table";
         else echo "Success to insert in.";
