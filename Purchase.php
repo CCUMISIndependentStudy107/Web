@@ -4,6 +4,7 @@
     $ProductChineseName = array("名稱","標籤","節碳量","單價","數量","重量","資訊","購買數量");
     $ProductEnglishName = array("Name","Tag","ReduceC","Price","Quantity","Weight","Information","Purchase Quantity");
     $product = array();
+    print_r($_POST['AllInfo']);
     for($i=0;$i<count($_POST['AllInfo']);$i++){
         $str = mb_convert_encoding($_POST['AllInfo'][$i], "BIG5", "UTF-8"); //原始編碼轉BIG5
         array_push($product,$str);

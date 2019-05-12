@@ -81,7 +81,7 @@
             let AllInfo = [id];
             for (let i = 0; i < 6; i++)
                 AllInfo.push($('#product-details-' + id + ' input[type="text"]').eq(i).val());
-            AllInfo.push($('#product-details-' + id + ' textarea').val());
+            AllInfo.push($('#product-details-' + id + ' textarea').val().trim());
             AllInfo.push($('#buyamount' + id).val());
             AllInfo.push($('#cardID' + id).val());
             // return new Promise((resolve, reject) => {
