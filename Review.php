@@ -64,7 +64,6 @@
                 if (status === 1) {
                     if (confirm('確定通過？') == true) {
                         sendHDC(reduceC).then(tx => {
-                            alert(tx);
                             $.ajax({
                                 url: 'Review_to_check.php',
                                 type: 'POST',
@@ -146,6 +145,10 @@
                         if ($i == count($ProductInfoName) - 5)
                             $reduceC = $row[$ProductInfoName[$i]];
                         if ($i == count($ProductInfoName) - 1) {
+                            // 抓 status
+                            // >> status == 1: 通過(綠)，顯示 `PASS` 和 Tx address
+                            // >> status == 2: 駁回(紅)，顯示 `FAIL`
+                            // >> status == 0: 處理中，顯示 `PASS` 和 `FAIL`
                             switch ($row[$ProductInfoName[$i]]) {
                                 case 1:
                                     echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
