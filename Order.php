@@ -99,6 +99,8 @@
 <?php
     include "connect_sql.php";
     include "SQLRelative.php";
+    //get reduce c by id = record.id (Order.php)
+    getReduceC($servername, $username, $password, $db_name,$id);
     if (isset($_GET['key'])) { // Make sure really GET variable(s)
         $key = $_GET['key'];
         $tablename = "record";
@@ -194,6 +196,7 @@
         $sql = "SELECT * FROM $tablename WHERE Company LIKE \"%$key%\" ORDER BY id DESC";
         return $sql;
     }
+
     function getEthernetBYCID($servername,$username,$password,$db_name,$id){
         $member_table = "member";
         $member_fieldname = GetFieldName($servername, $username, $password, $db_name, $member_table);
@@ -221,5 +224,52 @@
         }
         // print($eth);
         return $eth;
+    }
+
+    function getReduceC($servername,$username,$password,$db_name,$id){
+        $record_table = "record";
+        $record_fieldname = GetFieldName($servername, $username, $password, $db_name,$record_table);
+        // print_r($record_fieldname);
+        //[0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => Status
+        $preprocess_table = "preprocess";
+        $preprocess_fieldname = GetFieldName($servername, $username, $password, $db_name,$preprocess_table);
+        // print_r($preprocess_fieldname);
+        //[0] => ID [1] => Name [2] => Price [3] => Quantity [4] => Information [5] => Weight [6] => Tag [7] => PictureName [8] => ReduceC [9] => FolderName [10] => Company [11] => tx [12] => checks
+        $sql = "SELECT ".$record_fieldname[4]." FROM ".$record_table." WHERE ".$record_fieldname[0]."=".$id.";";
+        // echo $sql;
+        $conn = mysqli_connect($servername, $username, $password, $db_name);
+        $quantity;
+        $weight;
+        if ($res = mysqli_query($conn, $sql)) {
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_array($res)) {
+                    $quantity = $row[$record_fieldname[4]];
+                }
+            }
+            else {
+                echo "No result for quantity!<br/>";
+                return ;
+            }
+            mysqli_free_result($res);
+        }
+        // echo "Q=".$quantity."<br/>";
+        $sql = "SELECT ".$preprocess_fieldname[5]." FROM ".$record_table.",".$preprocess_table." WHERE ".$record_table.".".$record_fieldname[2]."=".$preprocess_table.".".$preprocess_fieldname[0]." AND ".$record_table.".".$record_fieldname[0]."=".$id.";";
+        // echo $sql;
+        if ($res = mysqli_query($conn, $sql)) {
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_array($res)) {
+                    $weight = $row[$preprocess_fieldname[5]];
+                }
+            }
+            else {
+                echo "No result for weight!<br/>";
+                return ;
+            }
+            mysqli_free_result($res);
+        }
+        // echo $weight;
+        // echo "W = ".$weight." Q = ".$quantity;
+        $reduce = (float)$quantity*$weight*0.44;
+        return $reduce;
     }
 ?>
