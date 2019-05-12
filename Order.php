@@ -44,7 +44,7 @@
                 window.location.reload();
             }
 
-            function reviewToCheck(id, status, reduceC = 0) {
+            function orderToCheck(id, status, reduceC = 0) {
                 if (status === 1) {
                     if (confirm('確定通過？') == true) {
                         sendHDC(reduceC).then(tx => {
@@ -99,8 +99,6 @@
 <?php
     include "connect_sql.php";
     include "SQLRelative.php";
-    //$id = Order.php 's ID
-    $eth = getEthernetBYCID($servername,$username,$password,$db_name,$id);
     if (isset($_GET['key'])) { // Make sure really GET variable(s)
         $key = $_GET['key'];
         $tablename = "record";
@@ -115,14 +113,18 @@
                 echo "<table class='table table-striped'>";
                 echo "<thead>";
                 echo "<tr>";
-                for ($i = 0; $i < count($fieldname); $i++)
-                    echo "<th scope='col'>" . $fieldname[$i] . "</th>";
+                for ($i = 0; $i < count($fieldname); $i++) {
+                    if ($i != 0) {
+                        echo "<th scope='col'>" . $fieldname[$i] . "</th>";
+                    }
+                }
                 echo "</tr>";
                 echo "</thead>";
                 echo "<tbody>";
                 while ($row = mysqli_fetch_array($result)) {
                     echo "<tr>";
-                    // print_r($row[$fieldname[count($fieldname) - 1]]); die();
+                    // print_r($fieldname); die();
+                    // [0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => Status
                     for ($i = 0, $j = 0; $i < count($fieldname); $i++) {
                         // if ($i == count($fieldname) - 1) {
                         //     $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$ProductInfoName[$i]] . "' target='_blank'>Tx</a>";
@@ -147,7 +149,14 @@
                             }
                         }
                         else {
-                            echo "<td title='" . $row[$fieldname[$i]] . "'>" . $row[$fieldname[$i]] . "</td>";
+                            if ($i == 0) {
+                                $id = $row[$fieldname[$i]];
+                                $eth = getEthernetBYCID($servername, $username, $password, $db_name, $id);
+                                echo "<td id='record" . $id . "' style='display: none'>" . $eth . "</td>";
+                            }
+                            else {
+                                echo "<td title='" . $row[$fieldname[$i]] . "'>" . $row[$fieldname[$i]] . "</td>";
+                            }
                         }
                         $id = $row[$fieldname[0]];
                         // if ($i > 0){
