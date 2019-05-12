@@ -21,9 +21,11 @@
         $url='http://140.123.94.145/web/'.$filename;
         $html = file_get_contents($url);
         // echo $html;
-        Transaction($conn,$product);
-        SQLDeletion($conn,$id,$quantity);
-        myPrint($html);
+        $status = Transaction($conn,$product);
+        if($status){
+            SQLDeletion($conn,$id,$quantity);
+            myPrint($html);
+        }
     }
     else{
         echo "Not enough!";
@@ -99,7 +101,13 @@
         if(!mysqli_query($conn,$sql)) echo "Can't Create table $tablename";
         $sql = "INSERT INTO $tablename ($fieldname[1],$fieldname[2],$fieldname[3],$fieldname[4],$fieldname[5],$fieldname[6]) VALUES(\"$product[9]\",$product[0],".intval($product[4]).",$product[8],\"$date\",\"$product[10]\")";
         // echo $sql;
-        if(!mysqli_query($conn,$sql)) echo "Can't INSERT to table";
-        else echo "Success to insert in.";
+        if(!mysqli_query($conn,$sql)){
+            echo "Can't INSERT to table";
+            return false;
+        }
+        else{
+            echo "Success to insert in.";
+            return true;
+        }
     }
 ?>
