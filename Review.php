@@ -113,7 +113,9 @@
 
 <?php
     include "connect_sql.php";
-
+    include "SQLRelative.php";
+    //$id = record.id
+    $eth = getEthernetBYPID($servername,$username,$password,$db_name,$id);
     if (isset($_GET['Field']) && isset($_GET['key'])) { // Make sure really GET variable(s)
         $ProductInfoName = array("ID", "Name", "Price", "Quantity", "Information", "Weight", "Tag", "PictureName", "ReduceC", "FolderName", "Company", "tx", "checks");
         $ProductInfoName_chinese = array("ID", "商品名稱","商品價格", "上架數量", "商品簡介", "商品重量", "商品標籤", "圖片", "減碳量", "提交日期", "廠商名稱", "狀態");
@@ -224,5 +226,34 @@
                 $sql .= "WHERE " . $selected_value.$key;
         }
         return $sql . " ORDER BY id DESC";
+    }
+
+    function getEthernetBYPID($servername,$username,$password,$db_name,$id){
+        $member_table = "member";
+        $member_fieldname = GetFieldName($servername, $username, $password, $db_name, $member_table);
+        $record_table = "record";
+        $record_fieldname = GetFieldName($servername, $username, $password, $db_name,$record_table);
+        // print_r($member_fieldname);
+        //[0] => ID [1] => name [2] => CardID [3] => Ether [4] => HDC
+        // print_r($record_fieldname);
+        //[0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => Status
+        $sql = "SELECT ".$member_table.".".$member_fieldname[3]." FROM ".$member_table.",".$record_table." WHERE ".$member_table.".".$member_fieldname[1]."=".$record_table.".".$record_fieldname[6]." AND ".$record_table.".".$member_fieldname[0]."=".$id.";";
+        // echo $sql;
+        $conn = mysqli_connect($servername, $username, $password, $db_name);
+        $eth;
+        if ($res = mysqli_query($conn, $sql)) {
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_array($res)) {
+                    $eth = $row[$member_fieldname[3]];
+                }
+            }
+            else {
+                echo "No result!<br/>";
+                return -1;
+            }
+            mysqli_free_result($res);
+        }
+        print($eth);
+        return $eth;
     }
 ?>
