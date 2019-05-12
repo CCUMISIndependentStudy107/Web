@@ -90,11 +90,14 @@
     function Transaction($conn,$product){
         $tablename = "record";
         $card_length = 20;
-        $fieldname = array("ID","CardID","ProductID","Price","Quantity");
-        $sql = "CREATE TABLE IF NOT EXISTS $tablename (".$fieldname[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ".$fieldname[1]." VARCHAR($card_length),".$fieldname[2]." INT,".$fieldname[3]." INT,".$fieldname[4]." INT)";
+        date_default_timezone_set("Asia/Taipei");   //change time zone to Taipei https://www.php.net/manual/en/timezones.php
+        $date = new DateTime('now');
+        $date = $date->format('Y-m-d H:i:s');   //date format
+        $fieldname = array("ID","CardID","ProductID","Price","Quantity","Time");
+        $sql = "CREATE TABLE IF NOT EXISTS $tablename (".$fieldname[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ".$fieldname[1]." VARCHAR($card_length),".$fieldname[2]." INT,".$fieldname[3]." INT,".$fieldname[4]." INT,".$fieldname[5]." DATETIME)";
         // echo $sql;
         if(!mysqli_query($conn,$sql)) echo "Can't Create table $tablename";
-        $sql = "INSERT INTO $tablename ($fieldname[1],$fieldname[2],$fieldname[3],$fieldname[4]) VALUES(\"$product[9]\",$product[0],".intval($product[4]).",$product[8])";
+        $sql = "INSERT INTO $tablename ($fieldname[1],$fieldname[2],$fieldname[3],$fieldname[4],$fieldname[5]) VALUES(\"$product[9]\",$product[0],".intval($product[4]).",$product[8],\"$date\")";
         // echo $sql;
         if(!mysqli_query($conn,$sql)) echo "Can't INSERT to table";
         else echo "Success to insert in.";
