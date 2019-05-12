@@ -105,7 +105,7 @@
         $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
         $sql = SelectTable($tablename,$key);
         // print_r($fieldname); die();
-        // [0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => Status
+        // [0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => tx [8] => Status
         // echo $sql;
         // To show searching result(s)
         $OrderInfo = array();
@@ -152,10 +152,18 @@
                             }
                         }
                         else {
+                            // 隱藏 `id` 欄位，用以抓取買方的 wallet-Address
                             if ($i == 0) {
                                 $id = $row[$fieldname[$i]];
                                 $eth = getEthernetBYCID($servername, $username, $password, $db_name, $id);
                                 echo "<td id='record" . $id . "' style='display: none'>" . $eth . "</td>";
+                            }
+                            // 不要顯示 `tx(7)`
+                            else if ($i == 7) {}
+                            else if ($i == 1) {
+                                $id = $row[$fieldname[0]];
+                                $name = getNameBYCID($servername, $username, $password, $db_name, $id);
+                                echo "<td title='" . $name . "'>" . $name . "</td>";
                             }
                             else {
                                 echo "<td title='" . $row[$fieldname[$i]] . "'>" . $row[$fieldname[$i]] . "</td>";
@@ -198,11 +206,40 @@
         return $sql;
     }
 
+    function getNameBYCID($servername,$username,$password,$db_name,$id){
+        $member_table = "member";
+        $member_fieldname = GetFieldName($servername, $username, $password, $db_name, $member_table);
+        $record_table = "record";
+        $record_fieldname = GetFieldName($servername, $username, $password, $db_name, $record_table);
+        // print_r($member_fieldname);
+        //[0] => ID [1] => name [2] => CardID [3] => Ether [4] => HDC
+        // print_r($record_fieldname);
+        //[0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => Status
+        $sql = "SELECT ".$member_table.".".$member_fieldname[1]." FROM ".$member_table.",".$record_table." WHERE ".$member_table.".".$member_fieldname[2]."=".$record_table.".".$record_fieldname[1]." AND ".$record_table.".".$member_fieldname[0]."=".$id.";";
+        // echo $sql; die();
+        $conn = mysqli_connect($servername, $username, $password, $db_name);
+        $name;
+        if ($res = mysqli_query($conn, $sql)) {
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_array($res)) {
+                    $name = $row[$member_fieldname[1]];
+                }
+            }
+            else {
+                echo "No result!<br/>";
+                return -1;
+            }
+            mysqli_free_result($res);
+        }
+        // print($name);
+        return $name;
+    }
+
     function getEthernetBYCID($servername,$username,$password,$db_name,$id){
         $member_table = "member";
         $member_fieldname = GetFieldName($servername, $username, $password, $db_name, $member_table);
         $record_table = "record";
-        $record_fieldname = GetFieldName($servername, $username, $password, $db_name,$record_table);
+        $record_fieldname = GetFieldName($servername, $username, $password, $db_name, $record_table);
         // print_r($member_fieldname);
         //[0] => ID [1] => name [2] => CardID [3] => Ether [4] => HDC
         // print_r($record_fieldname);
