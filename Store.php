@@ -84,6 +84,7 @@
             AllInfo.push($('#product-details-' + id + ' textarea').val().trim());
             AllInfo.push($('#buyamount' + id).val());
             AllInfo.push($('#cardID' + id).val());
+            AllInfo.push($('#companyName' + id).val());
             // return new Promise((resolve, reject) => {
                 $.ajax({
                     url: 'Purchase.php',
