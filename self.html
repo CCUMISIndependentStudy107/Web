@@ -94,8 +94,12 @@
                         </div>
                     </div>
                     <div class="form-group col-md-6" style="display: none;">
+                        <label for="company">廠商名稱</label>
+                        <input type="hidden" class="form-control" id="company" name="company">
+                    </div>
+                    <div class="form-group col-md-6" style="display: none;">
                         <label for="tx">交易位置</label>
-                        <input type="hidden" class="form-control" id="tx" name="tx" >
+                        <input type="hidden" class="form-control" id="tx" name="tx">
                     </div>
                     <div class="form-group col-md-6">
                         <label for=""></label>
@@ -239,16 +243,15 @@
     function authSmartContract() {
         let category = $('#material').val();
         let base = parseInt($('#quantity').val()) * parseInt($('#weight').val());
-        // setvalue(category, base).then(res => {
-            let res = '0x282BA262A8d9452F55c8c7373486920Aa9ff90f2';
+        setvalue(category, base).then(res => {
             console.log(res);
-            let txLink = '<a href="https://ropsten.etherscan.io/tx/' + res + '" target="_blank">Tx Link</a>';
-            $('#tx').val(res)
-            $('#tx-addr').html(txLink);
+            window.open('https://ropsten.etherscan.io/tx/' + res, '_blank');
+            $('#company').val(window.parent.document.querySelector('#menu-item-2814 a').textContent);
+            $('#tx').val(res);
             $('#alpha-table').submit();
-        // }).catch(err => {
-        //     console.log(err);
-        // });
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     window.onload = function () {
@@ -265,12 +268,14 @@
         try {
             var myAbi = web3.eth.contract(abi);
             var myfunction = myAbi.at(_CONSTRACT_ADDRESS);
-            myfunction.get.call(function (err, xname) {
+            myfunction.get.call(function (err, storedData) {
                 if (err) {
                     console.log(err);
                 }
-                if (xname) {
-                    // document.getElementById("xbalance").innerHTML = "last inserted value into the blockchain is : " + xname;
+                if (storedData) {
+                    // document.getElementById("xbalance").innerHTML = "last inserted value into the blockchain is : " + storedData;
+                    console.log('storedData:', storedData);
+                    // alert(storedData)
                     window.parent.SetCwinHeight();
                 }
             });

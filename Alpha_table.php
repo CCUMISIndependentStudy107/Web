@@ -2,21 +2,16 @@
     include "connect_sql.php";
     include "SQLRelative.php";
     if (isset($_POST['name'])){
-        date_default_timezone_set("Asia/Taipei");   //change time zone to Taipei https://www.php.net/manual/en/timezones.php
+        date_default_timezone_set("Asia/Taipei");
         $date = new DateTime('now');
-        $date = $date->format('Y-m-d-H-i-s');   //date format
+        $date = $date->format('Y-m-d-H-i-s');
         $productname = $_POST['name'];
         $quantity = $_POST['quantity'];
         $material = $_POST['material'];
         $weight = $_POST['weight'];
         $tx = $_POST['tx'];
+        $company = $_POST['company'];
         $img_name = ImageCheck($date);
-        $company = "leaflu";
-        // $eth = getEthernet($servername, $username, $password, $db_name, $company);
-        // echo $eth;
-        // To split `$eth` and `#record-table` as <hr>
-        // 94 分隔線分隔線分隔線分隔線分隔線的部分
-        // echo "8877887";
 
         $tablename = "profile";
         $sql = "CREATE TABLE IF NOT EXISTS $tablename (ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,Company VARCHAR(100),ProductName VARCHAR(100),Quantity INT,Material VARCHAR(100),Weight FLOAT,Contract VARCHAR(100),Image VARCHAR(100),Date DATETIME)";
@@ -26,23 +21,23 @@
         $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
         // print_r($fieldname);
         //[0] => ID [1] => Company [2] => ProductName [3] => Quantity [4] => Material [5] => Weight [6] => Contract [7] => Image [8] => Date
-        if(!Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$productname,$company)){
+        if (!Duplicate($servername, $username, $password, $db_name, $tablename, $fieldname, $productname, $company)) {
             $sql = "INSERT INTO $tablename(";
-            for($i=1;$i<count($fieldname);$i++){
-                if($i != count($fieldname)-1)
-                    $sql .= $fieldname[$i].",";
+            for ($i = 1; $i < count($fieldname); $i++) {
+                if ($i != count($fieldname) - 1)
+                    $sql .= $fieldname[$i] . ",";
                 else
-                    $sql .= $fieldname[$i].") VALUES(";
+                    $sql .= $fieldname[$i] . ") VALUES(";
             }
             $sql .= "\"$company\",\"$productname\",$quantity,\"$material\",$weight,\"$tx\",\"$img_name\",\"$date\")";
             // echo $sql;
-            if($conn -> query($sql) == false) {
+            if ($conn -> query($sql) == false) {
                 echo "Failed to insert values! <br/>";
                 header("refresh:1; url=./self.html", true, 301);
                 exit();
             }
         }
-        else{
+        else {
             echo "Duplicate! can't insert values! <br/>";
             header("refresh:1; url=./self.html", true, 301);
             exit();
