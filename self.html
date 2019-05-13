@@ -29,6 +29,14 @@
         .custom-file-input {
             opacity: 1;
         }
+
+        .card-body {
+            padding: .6rem 1.25rem;
+        }
+
+        p.card-text {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
@@ -37,23 +45,27 @@
             <img src="pic/zhbot.png" onclick="window.location.reload();">
         </div>
 
-        <form method="POST" style="margin-bottom: 2rem;">
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="wallet-addr">錢包地址</label>
-                    <input type="text" class="form-control" id="wallet-addr" name="wallet-addr" :value="walletAddr" readonly>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="wallet-money">錢包餘額</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="wallet-money" name="wallet-money" readonly>
-                        <div class="input-group-append">
-                            <span class="input-group-text">HDC</span>
+
+        <section class="simple-section">
+            <h3>基本資料</h3>
+            <form method="POST">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="wallet-addr">錢包地址</label>
+                        <input type="text" class="form-control" id="wallet-addr" name="wallet-addr" :value="walletAddr" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="wallet-money">錢包餘額</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="wallet-money" name="wallet-money" readonly>
+                            <div class="input-group-append">
+                                <span class="input-group-text">HDC</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </section>
 
         <section class="simple-section">
             <h3>α 審查表</h3>
@@ -122,58 +134,74 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h3>減碳計算公式來自Booming Bamboo：由博士所著。</h3>
-                        <h4>該書表示：</h4>
+                        <!-- <h3>減碳計算公式來自Booming Bamboo：由博士所著。</h3>
+                        <h4>該書表示：</h4> -->
+                        <p class="lead">減碳計算公式來自《Booming Bamboo》，由 <strong><u>dr. ir. Pablo van der Lugt</u></strong> 所著。作者對各種材質生產時所產生的二氧化碳進行量化比較，而我們則利用這些比較進行計算來得出我們的數據。<small>公式：[種類(W) * 排放量(C) = 結果(R)]</small></p>
 
-                        <div class="row">
-                            <div class="col-6">
-                                <p>竹子：<br/>
-                                　和竹子比，排放W*(0)<br/>
-                                　和木頭比，排放W*(-440)<br/>
-                                　和鋼鐵比，排放W*(-2470)<br/>
-                                　和塑膠比，排放W*(-3160)<br/>
-                                　和鋁比，排放W*-(7240)</p>
-                            </div>
-
-                            <div class="col-6">
-                                <p>木頭：<br/>
-                                　和竹子比，排放W*(440)<br/>
-                                　和木頭比，排放W*(0)<br/>
-                                　和鋼鐵比，排放W*(-2030)<br/>
-                                　和塑膠比，排放W*(-2720)<br/>
-                                　和鋁比，排放W*-(6800)</p>
-                            </div>
-
-                            <div class="col-6">
-                                <p>鋼鐵：<br/>
-                                　和竹子比，排放W*(2470)<br/>
-                                　和木頭比，排放W*(2030)<br/>
-                                　和鋼鐵比，排放W*(0)<br/>
-                                　和塑膠比，排放W*(-490)<br/>
-                                　和鋁比，排放W*(-4770)</p>
-                            </div>
-
-                            <div class="col-6">
-                                <p>塑膠：<br/>
-                                　和竹子比，排放W*(3160)<br/>
-                                　和木頭比，排放W*(2720)<br/>
-                                　和鋼鐵比，排放W*(490)<br/>
-                                　和塑膠比，排放W*(0)<br/>
-                                　和鋁比，排放W*(-4080)</p>
-                            </div>
-
-                            <div class="col-6">
-                                <p>鋁：<br/>
-                                　和竹子比，排放W*(7240)<br/>
-                                　和木頭比，排放W*(6800)<br/>
-                                　和鋼鐵比，排放W*(4707)<br/>
-                                　和塑膠比，排放W*(4080)<br/>
-                                　和鋁比，排放W*(0)</p>
+                        <div class="container">
+                            <div class="row justify-content-around">
+                                <div class="card mb-2" style="width: 22rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">竹子</h5>
+                                        <p class="card-text">
+                                            <span class="text-muted">和 竹子 比，將排放 W * (0)　　 克的碳。</span><br/>
+                                            和 木頭 比，將排放 W * (-440)&nbsp;&nbsp; 克的碳。<br/>
+                                            和 鋼鐵 比，將排放 W * (-2470) 克的碳。<br/>
+                                            和 塑膠 比，將排放 W * (-3160) 克的碳。<br/>
+                                            和 &nbsp;&nbsp;鋁&nbsp;&nbsp; 比，將排放 W * (-7240) 克的碳。
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="card mb-2" style="width: 22rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">木頭</h5>
+                                        <p class="card-text">
+                                            和 竹子 比，將排放 W * (440)　 克的碳。<br/>
+                                            <span class="text-muted">和 木頭 比，將排放 W * (0)　　 克的碳。</span><br/>
+                                            和 鋼鐵 比，將排放 W * (-2030) 克的碳。<br/>
+                                            和 塑膠 比，將排放 W * (-2720) 克的碳。<br/>
+                                            和 &nbsp;&nbsp;鋁&nbsp;&nbsp; 比，將排放 W * (-6800) 克的碳。
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="card mb-2" style="width: 22rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">鋼鐵</h5>
+                                        <p class="card-text">
+                                            和 竹子 比，將排放 W * (2470)　克的碳。<br/>
+                                            和 木頭 比，將排放 W * (2030)　克的碳。<br/>
+                                            <span class="text-muted">和 鋼鐵 比，將排放 W * (0)&nbsp;　　 克的碳。</span><br/>
+                                            和 塑膠 比，將排放 W * (-490)　克的碳。<br/>
+                                            和 &nbsp;&nbsp;鋁&nbsp;&nbsp; 比，將排放 W * (-4770) 克的碳。
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="card mb-2" style="width: 22rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">塑膠</h5>
+                                        <p class="card-text">
+                                            和 竹子 比，將排放 W * (3160)　克的碳。<br/>
+                                            和 木頭 比，將排放 W * (2720)　克的碳。<br/>
+                                            和 鋼鐵 比，將排放 W * (490)　 克的碳。<br/>
+                                            <span class="text-muted">和 塑膠 比，將排放 W * (0)&nbsp;　　 克的碳。</span><br/>
+                                            和 &nbsp;&nbsp;鋁&nbsp;&nbsp; 比，將排放 W * (-4080) 克的碳。
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="card mb-2" style="width: 22rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">鋁</h5>
+                                        <p class="card-text">
+                                            和 竹子 比，將排放 W * (7240) 克的碳。<br/>
+                                            和 木頭 比，將排放 W * (6800) 克的碳。<br/>
+                                            和 鋼鐵 比，將排放 W * (4707) 克的碳。<br/>
+                                            和 塑膠 比，將排放 W * (4080) 克的碳。<br/>
+                                            <span class="text-muted">和 &nbsp;&nbsp;鋁&nbsp;&nbsp; 比，將排放 W * (0)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 克的碳。</span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -239,6 +267,33 @@
             "stateMutability": "view"
         }
     ];
+
+    function getNewestData() {
+        let username = window.parent.document.querySelector('#menu-item-2814 a').textContent;
+        getAlphaTable(username).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    function getAlphaTable(username) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'Alpha_table_get.php',
+                type: 'POST',
+                data: {
+                    username: username
+                },
+                error: function(err) {
+                    reject(err);
+                },
+                success: function(res) {
+                    resolve(res);
+                }
+            });
+        });
+    }
 
     function authSmartContract() {
         let category = $('#material').val();
