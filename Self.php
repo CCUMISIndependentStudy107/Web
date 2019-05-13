@@ -216,7 +216,7 @@
 
 <?php
     function SelectTable($tablename,$fieldname,$key) {
-        $sql = "SELECT * FROM $tablename WHERE $fieldname LIKE \"%$key%\" ORDER BY id DESC";
+        $sql = "SELECT * FROM $tablename WHERE $fieldname =\"$key\" ORDER BY id DESC";
         return $sql;
     }
 
