@@ -11,20 +11,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <style>
-        #product_tag_help {
-            display: inline;
-        }
-
-        .custom-file-input:lang(en)~.custom-file-label::after {
-            content: "瀏覽";
-        }
-
-        .custom-file-label {
-            padding: 0.375rem 1rem;
-        }
-
-        .custom-file-input {
-            opacity: 1;
+        .simple-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 1rem;
         }
     </style>
 </head>
@@ -34,7 +25,7 @@
             <img src="pic/zhbot.png" onclick="window.location.reload();">
         </div>
 
-        <form method="POST">
+        <form method="POST"style="margin-bottom: 2rem;">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="wallet-addr">錢包地址</label>
@@ -42,18 +33,46 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="wallet-money">錢包餘額</label>
-                    <input type="text" class="form-control" id="wallet-money" name="wallet-money" readonly>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="wallet-money" name="wallet-money" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text">HDC</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
+
+        <section class="simple-section">
+            <h3>α 審查表</h3>
+            <form method="POST">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="name">名稱</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="quantity">數量</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="material">材質</label>
+                        <input type="text" class="form-control" id="material" name="material" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="weight">重量</label>
+                        <input type="number" class="form-control" id="weight" name="weight" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for=""></label>
+                        <input type="submit" class="btn btn-success" value="送出">
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section id="record-table" class="simple-section"></section>
     </div>
-    <form method = "post" action="Self.php">
-        名稱:<input type="text" name="name" required>
-        數量:<input type="number" name="quantity" required>
-        材質:<input type="text" name="material" required>
-        重量:<input type="number" name="weight" required>
-        <button type="submit">送出</button>
-    </form>
 </body>
 <script src="./blockchain.js"></script>
 <script>
@@ -69,7 +88,6 @@
                     reject(err);
                 },
                 success: function(res) {
-                    console.log('addr:', res);
                     resolve(res);
                 }
             });
@@ -83,8 +101,10 @@
         },
         beforeMount: function () {
             getWalletAddr().then(addr => {
-                this.walletAddr = addr;
-                _RECIPIENTS_ADDRESS = addr;
+                this.walletAddr = addr.split('8877887')[0];
+                _RECIPIENTS_ADDRESS = addr.split('8877887')[0];
+                $('#record-table').html(addr.split('8877887')[1]);
+                window.parent.SetCwinHeight();
                 getHDCBalance();
             }).catch(err => {
                 console.log('Error:', err);
