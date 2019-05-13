@@ -18,7 +18,7 @@
 <?php
     include "connect_sql.php";
     include "Duplicate.php";
-    $ProductInfoName = array("ID","Name","Price","Quantity","Information","Weight","Tag","PictureName","ReduceC","FolderName","Company");
+    $ProductInfoName = array("ID","Name","Price","Quantity","Information","Weight","Tag","PictureName","ReduceC","FolderName","Company", "tx");
     $check = "checks";
     $tablename = CreateTable($servername,$username,$password,$db_name,$ProductInfoName,$check);
     $ProductInfo = ReadPlainText();
@@ -40,7 +40,10 @@
     }
     else{
         $sql = "INSERT INTO ".$tablename."(";
-        for($i=1;$i<count($ProductInfoName);$i++) $sql .= $ProductInfoName[$i].",";
+        for($i=1;$i<count($ProductInfoName);$i++)
+            if ($i != count($ProductInfoName)-1)
+                $sql .= $ProductInfoName[$i].",";
+
         $sql .= $check.") VALUES(";
         for($i=0;$i<count($ProductInfo);$i++){
             switch($i){
@@ -53,7 +56,7 @@
             }
         }
         $sql .= "0);";
-        // echo $sql;
+        // echo $sql; die();
         if($conn -> query($sql) == false){
             echo "Failed to Insert values <br/>";
         }
@@ -69,7 +72,7 @@
         /* CREATE TABLE */
         $conn = mysqli_connect($servername,$username,$password,$db_name);
         $tableName = 'preprocess';
-        $sql = "CREATE TABLE IF NOT EXISTS ".$tableName." (".$array[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY,".$array[1]." VARCHAR(200),".$array[2]." INT,".$array[3]." INT,".$array[4]." VARCHAR(200),".$array[5]." FLOAT,".$array[6]." VARCHAR(100),".$array[7]." VARCHAR(100),".$array[8]." FLOAT,".$array[9]." VARCHAR(100),".$array[10]." VARCHAR(100),".$check." BOOLEAN);";
+        $sql = "CREATE TABLE IF NOT EXISTS ".$tableName." (".$array[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY,".$array[1]." VARCHAR(200),".$array[2]." INT,".$array[3]." INT,".$array[4]." VARCHAR(200),".$array[5]." FLOAT,".$array[6]." VARCHAR(100),".$array[7]." VARCHAR(100),".$array[8]." FLOAT,".$array[9]." VARCHAR(100),".$array[10]." VARCHAR(100),".$array[11]." VARCHAR(255) NULL,".$check." BOOLEAN);";
         // echo $sql;
         if($conn -> query($sql) == false) echo "Failed to create table ".$tableName."<br/>";
         // else echo "Table create successfully!<br/>";

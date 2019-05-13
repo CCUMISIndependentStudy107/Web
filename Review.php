@@ -65,6 +65,7 @@
                     if (confirm('確定通過？') == true) {
                         let toAddr = $('#preprocess' + id).text();
                         sendHDC(reduceC, toAddr).then(tx => {
+                            alert(tx)
                             $.ajax({
                                 url: 'Review_to_check.php',
                                 type: 'POST',
@@ -140,7 +141,9 @@
                     echo "<tr>";
                     for ($i = 0, $j = 0; $i < count($ProductInfoName); $i++) {
                         if ($i == count($ProductInfoName) - 2) {
-                            $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$ProductInfoName[$i]] . "' target='_blank'>Tx</a>";
+                            // var_dump($row[$ProductInfoName[$i]]); die();
+                            if (!empty($row[$ProductInfoName[$i]]))
+                                $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$ProductInfoName[$i]] . "' target='_blank'>Tx</a>";
                             continue;
                         }
                         if ($i == count($ProductInfoName) - 5)
