@@ -269,12 +269,13 @@
     function getNewestData() {
         let username = window.parent.document.querySelector('#menu-item-2814 a').textContent;
         getAlphaTable(username).then(res => {
-            data = JSON.parse(res);
-            $('#name').val(data.productName);
-            $('#quantity').val(data.quantity);
-            $('#material').val(data.material);
-            $('#weight').val(data.weight);
-            $('#tx-addr').html(data.tx);
+            // data = JSON.parse(res);
+            console.log('resresereseresfwedfsfefsdfsd\n', res)
+            // $('#name').val(data.productName);
+            // $('#quantity').val(data.quantity);
+            // $('#material').val(data.material);
+            // $('#weight').val(data.weight);
+            // $('#tx-addr').html(data.tx);
         }).catch(err => {
             console.log(err);
         });
