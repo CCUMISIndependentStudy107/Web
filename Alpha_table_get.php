@@ -3,24 +3,36 @@
     include "SQLRelative.php";
     $tablename = "profile";
     $companyname = $_POST['username'];
-    $Txs = getAllTx($servername,$username,$password,$db_name,$tablename,$companyname);
-    $result = $Txs[0];
-    for ($i = 1; $i < count($Txs); $i++) {
-        $result .= "," . $Txs[$i];
-    }
+
     $ProductName = getAllProduct($servername,$username,$password,$db_name,$tablename,$companyname);
-    print_r($ProductName);
+    // print_r($ProductName); die();
+    // $product_name = $ProductName[0];
+    // for ($i = 1; $i < count($ProductName); $i++) {
+    //     $product_name .= "," . $ProductName[$i];
+    // }
     // $AllInfo = getAll($servername,$username,$password,$db_name,$tablename,$companyname);
     // print_r($AllInfo);
     // [0] => Company [1] => ProductName [2] => Quantity [3] => Material [4] => Weight [5] => Contract [6] => Image [7] => Date
-    // $dataToJson = [
-    //     "productName" => $AllInfo[1],
-    //     "quantity" => $AllInfo[2],
-    //     "material" => $AllInfo[3],
-    //     "weight" => $AllInfo[4],
-    //     "tx" => $AllInfo[5]
-    // ];
+    $dataToJson = [
+        "productName" => $ProductName[0][1],
+        "quantity" => $ProductName[0][2],
+        "material" => $ProductName[0][3],
+        "weight" => $ProductName[0][4],
+        "tx" => $ProductName[0][5]
+    ];
     // $result = json_encode($dataToJson, JSON_UNESCAPED_UNICODE);
+    // echo $product_name . '@' . $tx;
+    $result = json_encode($dataToJson, JSON_UNESCAPED_UNICODE);
+    for ($i = 1; $i < count($ProductName); $i++) {
+        $dataToJson = [
+            "productName" => $ProductName[$i][1],
+            "quantity" => $ProductName[$i][2],
+            "material" => $ProductName[$i][3],
+            "weight" => $ProductName[$i][4],
+            "tx" => $ProductName[$i][5]
+        ];
+        $result .= ";" . json_encode($dataToJson, JSON_UNESCAPED_UNICODE);
+    }
     echo $result;
 ?>
 
@@ -97,7 +109,7 @@
         // print_r($keys);
         $ProductName = array();
         for($i=0;$i<count($keys);$i++){
-            array_push($ProductName,$arr[$keys[$i]][1]);
+            array_push($ProductName,$arr[$keys[$i]]); // array_push($ProductName,$arr[$keys[$i]][1]);
         }
         return $ProductName;
     }

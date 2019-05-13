@@ -37,6 +37,10 @@
         p.card-text {
             margin-bottom: 0;
         }
+
+        #tx-addr tbody tr td:not(:first-of-type) {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -68,8 +72,28 @@
         </section>
 
         <section class="simple-section">
+            <h3 class="row justify-content-between" style="padding: 0 1rem;"><span>審查結果表</span><span id="total-reduce-carbon"></span></h3>
+            <div id="tx-addr" class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">商品名稱</th>
+                            <th scope="col">與竹製品比較(g)</th>
+                            <th scope="col">與木製品比較(g)</th>
+                            <th scope="col">與鋼鐵製品比較(g)</th>
+                            <th scope="col">與塑膠製品比較(g)</th>
+                            <th scope="col">與鋁製品比較(g)</th>
+                            <th scope="col">原始耗碳量(g)</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="simple-section">
             <h3>α 審查表</h3>
-            <div id="tx-addr" class="lead"></div>
             <form id="alpha-table" action="Alpha_table.php" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -269,13 +293,48 @@
     function getNewestData() {
         let username = window.parent.document.querySelector('#menu-item-2814 a').textContent;
         getAlphaTable(username).then(res => {
-            // data = JSON.parse(res);
-            console.log('resresereseresfwedfsfefsdfsd\n', res)
-            // $('#name').val(data.productName);
-            // $('#quantity').val(data.quantity);
-            // $('#material').val(data.material);
-            // $('#weight').val(data.weight);
-            // $('#tx-addr').html(data.tx);
+            singleDataFragment = res.split(';');
+            let dataHtml = '';
+            for (let i = singleDataFragment.length-1; i >= 0; i--) {
+                let data = JSON.parse(singleDataFragment[i]);
+                let base = parseInt(data.quantity) * parseInt(data.weight);
+                let compare = getCompareValue(data.material, base);
+                dataHtml += `
+                    <tr>
+                        <td>
+                            ${ data.productName }
+                        </td>
+                        <td>
+                            ${ compare[0] }
+                        </td>
+                        <td>
+                            ${ compare[1] }
+                        </td>
+                        <td>
+                            ${ compare[2] }
+                        </td>
+                        <td>
+                            ${ compare[3] }
+                        </td>
+                        <td>
+                            ${ compare[4] }
+                        </td>
+                        <td class="original-reduce-carbon">
+                            ${ compare[5] }
+                        </td>
+                        <td>
+                            <a href="https://ropsten.etherscan.io/tx/${ data.tx }" target="_blank">Tx</a>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            $('#tx-addr tbody').html(dataHtml);
+            let originalReduceCarbon = 0;
+            for (let i = $('.original-reduce-carbon').length-1; i >= 0; i--) {
+                originalReduceCarbon += parseInt($('.original-reduce-carbon').eq(i).text().trim());
+            }
+            $('#total-reduce-carbon').html('總耗碳量 ' + originalReduceCarbon + ' 公克');
         }).catch(err => {
             console.log(err);
         });
@@ -299,6 +358,65 @@
         });
     }
 
+    function getCompareValue(material, base) {
+        let result = [];
+        switch (material) {
+            case 'bamboo':
+                storedData = "Compare to `bamboo`.";
+                result.push(0 * base);
+                result.push(-440 * base);
+                result.push(-2470 * base);
+                result.push(-3160 * base);
+                result.push(-7240 * base);
+                result.push(-450 * base);
+                break;
+            case 'wood':
+                storedData = "Compare to `wood`.";
+                result.push(440 * base);
+                result.push(0 * base);
+                result.push(-2030 * base);
+                result.push(-2720 * base);
+                result.push(-6800 * base);
+                result.push(-10 * base);
+                break;
+            case 'steel':
+                storedData = "Compare to `steel`.";
+                result.push(2470 * base);
+                result.push(2030 * base);
+                result.push(0 * base);
+                result.push(-490 * base);
+                result.push(-4770 * base);
+                result.push(2020 * base);
+                break;
+            case 'pvc':
+                storedData = "Compare to `pvc`.";
+                result.push(3160 * base);
+                result.push(2720 * base);
+                result.push(490 * base);
+                result.push(0 * base);
+                result.push(-4080 * base);
+                result.push(2710 * base);
+                break;
+            case 'alum':
+                storedData = "Compare to `alum`.";
+                result.push(7240 * base);
+                result.push(6800 * base);
+                result.push(4707 * base);
+                result.push(4080 * base);
+                result.push(0 * base);
+                result.push(6790 * base);
+                break;
+            default:
+                result.push(0);
+                result.push(0);
+                result.push(0);
+                result.push(0);
+                result.push(0);
+                result.push(0);
+        }
+        return result;
+    }
+
     function authSmartContract() {
         let category = $('#material').val();
         let base = parseInt($('#quantity').val()) * parseInt($('#weight').val());
@@ -307,6 +425,7 @@
             window.open('https://ropsten.etherscan.io/tx/' + res, '_blank');
             $('#company').val(window.parent.document.querySelector('#menu-item-2814 a').textContent);
             $('#tx').val(res);
+            getCompareValue(material, base);
             $('#alpha-table').submit();
         }).catch(err => {
             console.log(err);
@@ -335,7 +454,7 @@
                 if (storedData) {
                     // document.getElementById("xbalance").innerHTML = "last inserted value into the blockchain is : " + storedData;
                     console.log('storedData:', storedData);
-                    document.getElementById('tx-addr').innerHTML = (storedData);
+                    // document.getElementById('tx-addr').innerHTML = (storedData);
                     window.parent.SetCwinHeight();
                 }
             });
