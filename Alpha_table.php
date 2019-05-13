@@ -10,16 +10,11 @@
         $material = $_POST['material'];
         $weight = $_POST['weight'];
         $tx = $_POST['tx'];
+        $company = $_POST['company'];
         $img_name = ImageCheck($date);
-        $company = "leaflu";
         // [0] => Company [1] => ProductName [2] => Quantity [3] => Material [4] => Weight [5] => Contract [6] => Image [7] => Date
         $arr = array($company,$productname,$quantity,$material,$weight,$tx,$img_name,$date);
         // print_r($arr);
-        // $eth = getEthernet($servername, $username, $password, $db_name, $company);
-        // echo $eth;
-        // To split `$eth` and `#record-table` as <hr>
-        // 94 分隔線分隔線分隔線分隔線分隔線的部分
-        // echo "8877887";
 
         $tablename = "profile";
         $backupTable = "profile_backup";
@@ -159,7 +154,7 @@
                 }
             }
             // echo $sql;
-            // if($conn -> query($sql) == false) die("Failed to insert to backup table ".$backupTable."<br/>");
+            if($conn -> query($sql) == false) die("Failed to insert to backup table ".$backupTable."<br/>");
             // DELETE OLD VALUES
             $sql = "DELETE FROM $tablename WHERE $fieldname[1] = \"$company\";";
             if($conn -> query($sql) == false) die("Failed to delete row : company = ".$company."<br/>");
