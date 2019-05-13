@@ -12,6 +12,9 @@
         $tx = $_POST['tx'];
         $img_name = ImageCheck($date);
         $company = "leaflu";
+        // [0] => Company [1] => ProductName [2] => Quantity [3] => Material [4] => Weight [5] => Contract [6] => Image [7] => Date
+        $arr = array($company,$productname,$quantity,$material,$weight,$tx,$img_name,$date);
+        // print_r($arr);
         // $eth = getEthernet($servername, $username, $password, $db_name, $company);
         // echo $eth;
         // To split `$eth` and `#record-table` as <hr>
@@ -19,6 +22,7 @@
         // echo "8877887";
 
         $tablename = "profile";
+        $backupTable = "profile_backup";
         $sql = "CREATE TABLE IF NOT EXISTS $tablename (ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,Company VARCHAR(100),ProductName VARCHAR(100),Quantity INT,Material VARCHAR(100),Weight FLOAT,Contract VARCHAR(100),Image VARCHAR(100),Date DATETIME)";
         // echo $sql;
         if($conn -> query($sql) == false) echo "Failed to create table ".$tablename."<br/>";
@@ -26,7 +30,7 @@
         $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
         // print_r($fieldname);
         //[0] => ID [1] => Company [2] => ProductName [3] => Quantity [4] => Material [5] => Weight [6] => Contract [7] => Image [8] => Date
-        if(!Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$productname,$company)){
+        if(!Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$company)){
             $sql = "INSERT INTO $tablename(";
             for($i=1;$i<count($fieldname);$i++){
                 if($i != count($fieldname)-1)
@@ -43,7 +47,10 @@
             }
         }
         else{
-            echo "Duplicate! can't insert values! <br/>";
+            // echo "Duplicate! can't insert values! <br/>";
+            $backupTable = "profile_backup";
+            CreateBackupTable($conn,$backupTable);
+            UpdateTable($servername,$username,$password,$db_name,$tablename,$backupTable,$company,$arr);
             header("refresh:1; url=./self.html", true, 301);
             exit();
         }
@@ -84,12 +91,13 @@
         return false;
     }
 
-    function Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$productname,$companyname){
+    function Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$companyname){
         $conn = mysqli_connect($servername,$username,$password,$db_name);
-        $sql = "SELECT * FROM ".$tablename." ";
+        // print_r($fieldname);
+        // [0] => ID [1] => Company [2] => ProductName [3] => Quantity [4] => Material [5] => Weight [6] => Contract [7] => Image [8] => Date
+        $sql = "SELECT * FROM ".$tablename." WHERE $fieldname[1] = \"$companyname\"";
+        // echo $sql;
         $arr = array();
-        $product = array($productname);
-        $company = array($companyname);
         if($res = mysqli_query($conn, $sql)){
             while($row = mysqli_fetch_array($res)){
                 for($i=0,$j=0;$i<count($fieldname);$i++){
@@ -100,28 +108,87 @@
             }
         }
         // print_r($arr);
-        //[0] => Companyname [1] => ProductName [2] => Quantity [3] => Material [4] => Weight [5] => tx [6] => Imgname [7] => Date
         $keys = array_keys($arr);
         // print_r($keys);
-        for($i=0;$i<count($keys);$i++){
-            array_push($product,$arr[$keys[$i]][1]);
-            array_push($company,$arr[$keys[$i]][0]);
-        }
-        // print_r($product)."QQQ";
-        // print_r($company)."AAA";
-        $result = findDuplicate($product,$company);
-        // if($result) echo "Yes";
-        return $result;
+        if(count($keys)>0) return true;
+        return false;
     }
 
-    function findDuplicate($productname,$companyname){
-        for($i=0;$i<count($productname);$i++){
-            for($j=$i+1;$j<count($productname);$j++){
-                if($productname[$i] == $productname[$j] && $companyname[$i] == $companyname[$j]){
-                    return true;
+    function UpdateTable($servername,$username,$password,$db_name,$tablename,$backupTable,$company,$info){
+        $conn = mysqli_connect($servername,$username,$password,$db_name);
+        $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
+        // print_r($fieldname);
+        //[0] => ID [1] => Company [2] => ProductName [3] => Quantity [4] => Material [5] => Weight [6] => Contract [7] => Image [8] => Date
+        $sql = "SELECT * FROM $tablename WHERE $fieldname[1] = \"$company\"";
+        // echo $sql;
+        $arr = array();
+        if($res = mysqli_query($conn, $sql)){
+            while($row = mysqli_fetch_array($res)){
+                for($i=0,$j=0;$i<count($fieldname);$i++){
+                    // echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
+                    $id = $row[$fieldname[0]];
+                    if($i>0) $arr[$id][$j++]=$row[$fieldname[$i]];
                 }
             }
         }
-        return false;
+        // print_r($arr);
+        //[key] => {[0],[1],....}
+        // [0] => leaflu [1] => leaflu [2] => 1 [3] => bamboo [4] => 123 [5] => 0x282BA262A8d9452F55c8c7373486920Aa9ff90f2
+        // [6] => 1010152_913705305313905_769581291051537142_n.jpg [7] => 2019-05-13 20:35:56
+        $keys = array_keys($arr);
+        // print_r($keys);
+        if(count($keys)>0){
+            //INSERT INTO BACKUP TABLE
+            $sql = "INSERT INTO $backupTable (";
+            for($i=1;$i<count($fieldname);$i++){
+                if($i != count($fieldname)-1)
+                    $sql .= $fieldname[$i].",";
+                else
+                    $sql .= $fieldname[$i].") VALUES(";
+            }
+            for($i=0;$i<count($fieldname)-1;$i++){
+                switch($i){
+                    case 0: case 1: case 3: case 5: case 6:
+                        $sql .= "\"".$arr[$keys[0]][$i]."\",";
+                        break;
+                    case count($fieldname)-2:
+                        $sql .= "\"".$arr[$keys[0]][$i]."\")";
+                        break;
+                    default:
+                        $sql .= $arr[$keys[0]][$i].",";
+                }
+            }
+            // echo $sql;
+            if($conn -> query($sql) == false) die("Failed to insert to backup table ".$backupTable."<br/>");
+            // DELETE OLD VALUES
+            $sql = "DELETE FROM $tablename WHERE $fieldname[1] = \"$company\";";
+            if($conn -> query($sql) == false) die("Failed to delete row : company = ".$company."<br/>");
+            $sql = "INSERT INTO $tablename (";
+            for($i=1;$i<count($fieldname);$i++){
+                if($i != count($fieldname)-1)
+                    $sql .= $fieldname[$i].",";
+                else
+                    $sql .= $fieldname[$i].") VALUES(";
+            }
+            for($i=0;$i<count($fieldname)-1;$i++){
+                switch($i){
+                    case 0: case 1: case 3: case 5: case 6:
+                        $sql .= "\"".$info[$i]."\",";
+                        break;
+                    case count($fieldname)-2:
+                        $sql .= "\"".$info[$i]."\")";
+                        break;
+                    default:
+                        $sql .= $info[$i].",";
+                }
+            }
+            // echo $sql;
+            if($conn -> query($sql) == false) die("Failed to update values <br/>");
+        }
+    }
+
+    function CreateBackupTable($conn,$tablename){
+        $sql = "CREATE TABLE IF NOT EXISTS $tablename (ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,Company VARCHAR(100),ProductName VARCHAR(100),Quantity INT,Material VARCHAR(100),Weight FLOAT,Contract VARCHAR(100),Image VARCHAR(100),Date DATETIME)";
+        if($conn -> query($sql) == false) die("Failed to create table ".$tablename."<br/>");
     }
 ?>
