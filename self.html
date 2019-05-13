@@ -45,10 +45,10 @@
 
         <section class="simple-section">
             <h3>α 審查表</h3>
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data" action="Self.php">
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="name">名稱</label>
+                        <label for="name">商品名稱</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="form-group col-md-6">
@@ -62,6 +62,17 @@
                     <div class="form-group col-md-6">
                         <label for="weight">重量</label>
                         <input type="number" class="form-control" id="weight" name="weight" required>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="tx">交易位置</label>
+                        <input type="text" class="form-control" id="tx" name="tx" >
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="product_picture">上傳圖片</label>
+                        <div class="custom-file form-group col-md-12">
+                            <input type="file" class="custom-file-input" id="product_picture" name="product_picture">
+                            <label class="custom-file-label" for="product_picture">選擇圖片</label>
+                        </div>
                     </div>
                     <div class="form-group col-md-6">
                         <label for=""></label>
