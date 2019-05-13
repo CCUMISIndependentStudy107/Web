@@ -2,16 +2,24 @@
     include "connect_sql.php";
     include "SQLRelative.php";
     if (isset($_POST['name'])){
-        date_default_timezone_set("Asia/Taipei");
+        date_default_timezone_set("Asia/Taipei");   //change time zone to Taipei https://www.php.net/manual/en/timezones.php
         $date = new DateTime('now');
-        $date = $date->format('Y-m-d-H-i-s');
+        $date = $date->format('Y-m-d-H-i-s');   //date format
         $productname = $_POST['name'];
         $quantity = $_POST['quantity'];
         $material = $_POST['material'];
         $weight = $_POST['weight'];
         $tx = $_POST['tx'];
-        $company = $_POST['company'];
         $img_name = ImageCheck($date);
+        $company = "leaflu";
+        // [0] => Company [1] => ProductName [2] => Quantity [3] => Material [4] => Weight [5] => Contract [6] => Image [7] => Date
+        $arr = array($company,$productname,$quantity,$material,$weight,$tx,$img_name,$date);
+        // print_r($arr);
+        // $eth = getEthernet($servername, $username, $password, $db_name, $company);
+        // echo $eth;
+        // To split `$eth` and `#record-table` as <hr>
+        // 94 分隔線分隔線分隔線分隔線分隔線的部分
+        // echo "8877887";
 
         $tablename = "profile";
         $backupTable = "profile_backup";
@@ -22,24 +30,27 @@
         $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
         // print_r($fieldname);
         //[0] => ID [1] => Company [2] => ProductName [3] => Quantity [4] => Material [5] => Weight [6] => Contract [7] => Image [8] => Date
-        if (!Duplicate($servername, $username, $password, $db_name, $tablename, $fieldname, $productname, $company)) {
+        if(!Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$company)){
             $sql = "INSERT INTO $tablename(";
-            for ($i = 1; $i < count($fieldname); $i++) {
-                if ($i != count($fieldname) - 1)
-                    $sql .= $fieldname[$i] . ",";
+            for($i=1;$i<count($fieldname);$i++){
+                if($i != count($fieldname)-1)
+                    $sql .= $fieldname[$i].",";
                 else
-                    $sql .= $fieldname[$i] . ") VALUES(";
+                    $sql .= $fieldname[$i].") VALUES(";
             }
             $sql .= "\"$company\",\"$productname\",$quantity,\"$material\",$weight,\"$tx\",\"$img_name\",\"$date\")";
             // echo $sql;
-            if ($conn -> query($sql) == false) {
+            if($conn -> query($sql) == false) {
                 echo "Failed to insert values! <br/>";
                 header("refresh:1; url=./self.html", true, 301);
                 exit();
             }
         }
-        else {
-            echo "Duplicate! can't insert values! <br/>";
+        else{
+            // echo "Duplicate! can't insert values! <br/>";
+            $backupTable = "profile_backup";
+            CreateBackupTable($conn,$backupTable);
+            UpdateTable($servername,$username,$password,$db_name,$tablename,$backupTable,$company,$arr);
             header("refresh:1; url=./self.html", true, 301);
             exit();
         }
@@ -148,7 +159,7 @@
                 }
             }
             // echo $sql;
-            if($conn -> query($sql) == false) die("Failed to insert to backup table ".$backupTable."<br/>");
+            // if($conn -> query($sql) == false) die("Failed to insert to backup table ".$backupTable."<br/>");
             // DELETE OLD VALUES
             $sql = "DELETE FROM $tablename WHERE $fieldname[1] = \"$company\";";
             if($conn -> query($sql) == false) die("Failed to delete row : company = ".$company."<br/>");
