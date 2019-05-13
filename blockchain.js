@@ -77,13 +77,13 @@ function getERC20TokenDecimals(callback) {
 function getHDCBalance(addr) {
     // _WALLET_ADDRESS = document.querySelector('#main-wallet .wallet').value;
     // _RECIPIENTS_ADDRESS = document.querySelector('#vendor-wallet .wallet').value;
-    if (addr) {
-        getERC20TokenBalance(_TOKEN_ADDRESS, addr, balance => {
-            $('#wallet-money').val(balance.toString());
-        });
-        // getERC20TokenBalance(_TOKEN_ADDRESS, _RECIPIENTS_ADDRESS, balance => {
-            // document.querySelector('#vendor-wallet .balance').innerText = balance.toString();
+    if (_WALLET_ADDRESS && _RECIPIENTS_ADDRESS) {
+        // getERC20TokenBalance(_TOKEN_ADDRESS, _WALLET_ADDRESS, balance => {
+        //     document.querySelector('#main-wallet .balance').innerText = balance.toString();
         // });
+        getERC20TokenBalance(_TOKEN_ADDRESS, _RECIPIENTS_ADDRESS, balance => {
+            document.querySelector('#wallet-money').value = balance.toString();
+        });
 
         window.tokenContract = getERC20TokenContract(_TOKEN_ADDRESS);
         getERC20TokenDecimals(decimals => {

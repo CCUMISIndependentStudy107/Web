@@ -42,7 +42,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="wallet-money">錢包餘額</label>
-                    <input type="text" class="form-control" id="wallet-money" name="wallet-money" :value="walletMoney" readonly>
+                    <input type="text" class="form-control" id="wallet-money" name="wallet-money" readonly>
                 </div>
             </div>
         </form>
@@ -77,13 +77,15 @@
         beforeMount: function () {
             getWalletAddr().then(addr => {
                 this.walletAddr = addr;
+                _RECIPIENTS_ADDRESS = addr;
+                getHDCBalance();
             }).catch(err => {
                 console.log('Error:', err);
             });
         },
         computed: {
             walletMoney: function () {
-                return getHDCBalance(this.walletAddr);
+                return ;
             }
         }
     });

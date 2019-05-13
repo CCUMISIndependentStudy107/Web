@@ -47,8 +47,8 @@
             function orderToCheck(id, status, reduceC = 0) {
                 if (status === 1) {
                     if (confirm('確定通過？') == true) {
-                        sendHDC(reduceC).then(tx => {
-                            alert(tx);
+                        let toAddr = $('#record' + id).text();
+                        sendHDC(reduceC, toAddr).then(tx => {
                             $.ajax({
                                 url: 'Order_to_check.php',
                                 type: 'POST',
@@ -126,16 +126,16 @@
                 echo "<tbody>";
                 while ($row = mysqli_fetch_array($result)) {
                     echo "<tr>";
-                    // print_r($fieldname); die();
-                    // [0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => Status
                     for ($i = 0, $j = 0; $i < count($fieldname); $i++) {
-                        // if ($i == count($fieldname) - 1) {
-                        //     $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$ProductInfoName[$i]] . "' target='_blank'>Tx</a>";
-                        //     continue;
-                        // }
+                        if ($i == count($fieldname) - 2) {
+                            $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$fieldname[$i]] . "' target='_blank'>Tx</a>";
+                            continue;
+                        }
                         // if ($i == count($fieldname) - 5)
                         //     $reduceC = $row[$fieldname[$i]];
                         if ($i == count($fieldname) - 1) {
+                            $id = $row[$fieldname[0]];
+                            $reduceC = getReduceC($servername, $username, $password, $db_name, $id);
                             switch ($row[$fieldname[$i]]) {
                                 case 1:
                                     echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
@@ -145,7 +145,7 @@
                                     break;
                                 default:
                                     echo "<td>";
-                                    echo "<span class='badge badge-success' onclick='orderToCheck(" . $id . ", 1)'>PASS</span>";
+                                    echo "<span class='badge badge-success' onclick='orderToCheck(" . $id . ", 1, " . $reduceC . ")'>PASS</span>";
                                     echo "<span class='badge badge-danger' onclick='orderToCheck(" . $id . ", 2)'>FAIL</span>";
                                     echo "</td>";
                                     break;
@@ -154,7 +154,7 @@
                         else {
                             // 隱藏 `id` 欄位，用以抓取買方的 wallet-Address
                             if ($i == 0) {
-                                $id = $row[$fieldname[$i]];
+                                $id = $row[$fieldname[0]];
                                 $eth = getEthernetBYCID($servername, $username, $password, $db_name, $id);
                                 echo "<td id='record" . $id . "' style='display: none'>" . $eth . "</td>";
                             }
@@ -163,6 +163,11 @@
                             else if ($i == 1) {
                                 $id = $row[$fieldname[0]];
                                 $name = getNameBYCID($servername, $username, $password, $db_name, $id);
+                                echo "<td title='" . $name . "'>" . $name . "</td>";
+                            }
+                            else if ($i == 2) {
+                                $id = $row[$fieldname[0]];
+                                $name = getProductBYID($servername, $username, $password, $db_name, $id);
                                 echo "<td title='" . $name . "'>" . $name . "</td>";
                             }
                             else {
@@ -204,6 +209,35 @@
     function SelectTable($tablename,$key) {
         $sql = "SELECT * FROM $tablename WHERE Company LIKE \"%$key%\" ORDER BY id DESC";
         return $sql;
+    }
+
+    function getProductBYID($servername,$username,$password,$db_name,$id){
+        $member_table = "preprocess";
+        $member_fieldname = GetFieldName($servername, $username, $password, $db_name, $member_table);
+        $record_table = "record";
+        $record_fieldname = GetFieldName($servername, $username, $password, $db_name, $record_table);
+        // print_r($member_fieldname); die();
+        // [0] => ID [1] => Name [2] => Price [3] => Quantity [4] => Information [5] => Weight [6] => Tag [7] => PictureName [8] => ReduceC [9] => FolderName [10] => Company [11] => tx [12] => checks
+        // print_r($record_fieldname);
+        //[0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => tx [8] => Status
+        $sql = "SELECT ".$member_table.".".$member_fieldname[1]." FROM ".$member_table.",".$record_table." WHERE ".$member_table.".".$member_fieldname[0]."=".$record_table.".".$record_fieldname[2]." AND ".$record_table.".".$member_fieldname[0]."=".$id.";";
+        // echo $sql; die();
+        $conn = mysqli_connect($servername, $username, $password, $db_name);
+        $name;
+        if ($res = mysqli_query($conn, $sql)) {
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_array($res)) {
+                    $name = $row[$member_fieldname[1]];
+                }
+            }
+            else {
+                echo "No result!<br/>";
+                return -1;
+            }
+            mysqli_free_result($res);
+        }
+        // print($name);
+        return $name;
     }
 
     function getNameBYCID($servername,$username,$password,$db_name,$id){

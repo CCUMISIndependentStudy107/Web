@@ -7,7 +7,7 @@
         $tx = ($status == 1) ? $_POST["tx"] : "fail";
         // "$status == 1" means it is set to be an available product
         // In addition to update status in database, it IS ABOUT TO be inserted a copy into the new table, `product`
-        if ($status == 1) {
+        // if ($status == 1) {
             $conn = mysqli_connect($servername, $username, $password, $db_name);
             $tableName = "record";
             $sql = "UPDATE " . $tableName . " SET tx=\"" . $tx . "\",Status=".$status." WHERE ID=" . $id . ";";
@@ -15,7 +15,7 @@
                 echo "Failed to update STATUS.";
             else
                 echo "Record updated successfully.";
-        }
+        // }
         // Close connection
         mysqli_close($conn);
     }
