@@ -212,22 +212,22 @@
     }
 
     function getProductBYID($servername,$username,$password,$db_name,$id){
-        $member_table = "preprocess";
-        $member_fieldname = GetFieldName($servername, $username, $password, $db_name, $member_table);
+        $preprocess_table = "preprocess";
+        $preprocess_fieldname = GetFieldName($servername, $username, $password, $db_name, $preprocess_table);
         $record_table = "record";
         $record_fieldname = GetFieldName($servername, $username, $password, $db_name, $record_table);
-        // print_r($member_fieldname); die();
+        // print_r($preprocess_fieldname); die();
         // [0] => ID [1] => Name [2] => Price [3] => Quantity [4] => Information [5] => Weight [6] => Tag [7] => PictureName [8] => ReduceC [9] => FolderName [10] => Company [11] => tx [12] => checks
         // print_r($record_fieldname);
         //[0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => tx [8] => Status
-        $sql = "SELECT ".$member_table.".".$member_fieldname[1]." FROM ".$member_table.",".$record_table." WHERE ".$member_table.".".$member_fieldname[0]."=".$record_table.".".$record_fieldname[2]." AND ".$record_table.".".$member_fieldname[0]."=".$id.";";
+        $sql = "SELECT ".$preprocess_table.".".$preprocess_fieldname[1]." FROM ".$preprocess_table.",".$record_table." WHERE ".$preprocess_table.".".$preprocess_fieldname[0]."=".$record_table.".".$record_fieldname[2]." AND ".$record_table.".".$preprocess_fieldname[0]."=".$id.";";
         // echo $sql; die();
         $conn = mysqli_connect($servername, $username, $password, $db_name);
         $name;
         if ($res = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($res) > 0) {
                 while ($row = mysqli_fetch_array($res)) {
-                    $name = $row[$member_fieldname[1]];
+                    $name = $row[$preprocess_fieldname[1]];
                 }
             }
             else {
