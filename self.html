@@ -57,7 +57,7 @@
 
         <section class="simple-section">
             <h3>α 審查表</h3>
-            <form action="Alpha_table.php" method="POST" enctype="multipart/form-data">
+            <form id="alpha-table" action="Alpha_table.php" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="name">商品名稱</label>
@@ -99,9 +99,10 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for=""></label>
-                        <input type="submit" class="btn btn-success" value="送出">
+                        <input type="button" class="btn btn-success" value="送出" onclick="authSmartContract()">
                         <label for=""></label>
                         <input type="button" class="btn btn-secondary" data-toggle="modal" data-target="#reduce-carbon-algorithm-modal" value="節碳量說明">
+                        <div id="tx-addr"></div>
                     </div>
                 </div>
             </form>
@@ -179,6 +180,126 @@
 </body>
 <script src="./blockchain.js"></script>
 <script>
+    const _CONSTRACT_ADDRESS = '0x9d517955a1d1aeacc1bc35fc2da30dc4f8fa9f28';
+    const abi = [
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "material",
+                    "type": "string"
+                },
+                {
+                    "name": "base",
+                    "type": "int256"
+                }
+            ],
+            "name": "set",
+            "outputs": [],
+            "payable": false,
+            "type": "function",
+            "stateMutability": "nonpayable"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "get",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "name": "",
+                    "type": "int256"
+                },
+                {
+                    "name": "",
+                    "type": "int256"
+                },
+                {
+                    "name": "",
+                    "type": "int256"
+                },
+                {
+                    "name": "",
+                    "type": "int256"
+                },
+                {
+                    "name": "",
+                    "type": "int256"
+                }
+            ],
+            "payable": false,
+            "type": "function",
+            "stateMutability": "view"
+        }
+    ];
+
+    function authSmartContract() {
+        let category = $('#material').val();
+        let base = parseInt($('#quantity').val()) * parseInt($('#weight').val());
+        // setvalue(category, base).then(res => {
+            let res = '0x282BA262A8d9452F55c8c7373486920Aa9ff90f2';
+            console.log(res);
+            let txLink = '<a href="https://ropsten.etherscan.io/tx/' + res + '" target="_blank">Tx Link</a>';
+            $('#tx').val(res)
+            $('#tx-addr').html(txLink);
+            $('#alpha-table').submit();
+        // }).catch(err => {
+        //     console.log(err);
+        // });
+    }
+
+    window.onload = function () {
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        }
+        else {
+            web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io'));
+        }
+        getvalue();
+    }
+
+    function getvalue() {
+        try {
+            var myAbi = web3.eth.contract(abi);
+            var myfunction = myAbi.at(_CONSTRACT_ADDRESS);
+            myfunction.get.call(function (err, xname) {
+                if (err) {
+                    console.log(err);
+                }
+                if (xname) {
+                    // document.getElementById("xbalance").innerHTML = "last inserted value into the blockchain is : " + xname;
+                    window.parent.SetCwinHeight();
+                }
+            });
+        }
+        catch (err) {
+            // document.getElementById("xbalance").innerHTML = err;
+        }
+    }
+
+    function setvalue(category, base) {
+        return new Promise((resolve, reject) => {
+            try {
+                var myAbi = web3.eth.contract(abi);
+                var myfunction = myAbi.at(_CONSTRACT_ADDRESS);
+                myfunction.set.sendTransaction(category, base, { from: web3.eth.accounts[0], gas: 4000000 }, function (error, result) {
+                    if (!error) {
+                        resolve(result);
+                    }
+                    else {
+                        reject(error);
+                    }
+                });
+            }
+            catch (err) {
+                reject(err);
+            }
+        });
+    }
+
     function getWalletAddr() {
         return new Promise((resolve, reject) => {
             $.ajax({
