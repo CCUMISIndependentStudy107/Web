@@ -69,6 +69,7 @@
 
         <section class="simple-section">
             <h3>α 審查表</h3>
+            <div id="tx-addr" class="lead"></div>
             <form id="alpha-table" action="Alpha_table.php" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -114,11 +115,9 @@
                         <input type="hidden" class="form-control" id="tx" name="tx">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for=""></label>
                         <input type="button" class="btn btn-success" value="送出" onclick="authSmartContract()">
-                        <label for=""></label>
                         <input type="button" class="btn btn-secondary" data-toggle="modal" data-target="#reduce-carbon-algorithm-modal" value="節碳量說明">
-                        <div id="tx-addr"></div>
+                        <input type="button" class="btn btn-light" value="送出" onclick="">
                     </div>
                 </div>
             </form>
@@ -209,7 +208,6 @@
 
         <section id="record-table" class="simple-section"></section>
     </div>
-</body>
 <script src="./blockchain.js"></script>
 <script>
     const _CONSTRACT_ADDRESS = '0x9d517955a1d1aeacc1bc35fc2da30dc4f8fa9f28';
@@ -271,7 +269,12 @@
     function getNewestData() {
         let username = window.parent.document.querySelector('#menu-item-2814 a').textContent;
         getAlphaTable(username).then(res => {
-            console.log(res);
+            data = JSON.parse(res);
+            $('#name').val(data.productName);
+            $('#quantity').val(data.quantity);
+            $('#material').val(data.material);
+            $('#weight').val(data.weight);
+            $('#tx-addr').html(data.tx);
         }).catch(err => {
             console.log(err);
         });
@@ -317,6 +320,7 @@
             web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io'));
         }
         getvalue();
+        getNewestData();
     }
 
     function getvalue() {
@@ -330,7 +334,7 @@
                 if (storedData) {
                     // document.getElementById("xbalance").innerHTML = "last inserted value into the blockchain is : " + storedData;
                     console.log('storedData:', storedData);
-                    // alert(storedData)
+                    document.getElementById('tx-addr').innerHTML = (storedData);
                     window.parent.SetCwinHeight();
                 }
             });
@@ -389,7 +393,7 @@
                 _RECIPIENTS_ADDRESS = addr.split('8877887')[0];
                 $('#record-table').html(addr.split('8877887')[1]);
                 window.parent.SetCwinHeight();
-                console.log(addr);
+                // console.log(addr);
                 getHDCBalance();
             }).catch(err => {
                 console.log('Error:', err);
@@ -402,4 +406,5 @@
         }
     });
 </script>
+</body>
 </html>

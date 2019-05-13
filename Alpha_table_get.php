@@ -2,12 +2,19 @@
     include "connect_sql.php";
     include "SQLRelative.php";
     $tablename = "profile";
-    $companyname = "leaflu";
+    $companyname = $_POST['username'];
     $AllInfo = getAll($servername,$username,$password,$db_name,$tablename,$companyname);
     // print_r($AllInfo);
     // [0] => Company [1] => ProductName [2] => Quantity [3] => Material [4] => Weight [5] => Contract [6] => Image [7] => Date
-    $tx = $AllInfo[5];
-    // print($tx);
+    $dataToJson = [
+        "productName" => $AllInfo[1],
+        "quantity" => $AllInfo[2],
+        "material" => $AllInfo[3],
+        "weight" => $AllInfo[4],
+        "tx" => $AllInfo[5]
+    ];
+    $result = json_encode($dataToJson, JSON_UNESCAPED_UNICODE);
+    echo $result;
 ?>
 
 <?php
