@@ -17,6 +17,18 @@
             border: 1px solid #ced4da;
             border-radius: 1rem;
         }
+
+        .custom-file-input:lang(en)~.custom-file-label::after {
+            content: "瀏覽";
+        }
+
+        .custom-file-label {
+            padding: 0.375rem 1rem;
+        }
+
+        .custom-file-input {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -25,7 +37,7 @@
             <img src="pic/zhbot.png" onclick="window.location.reload();">
         </div>
 
-        <form method="POST"style="margin-bottom: 2rem;">
+        <form method="POST" style="margin-bottom: 2rem;">
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="wallet-addr">錢包地址</label>
@@ -45,7 +57,7 @@
 
         <section class="simple-section">
             <h3>α 審查表</h3>
-            <form method="POST" enctype="multipart/form-data" action="Self.php">
+            <form action="Alpha_table.php" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="name">商品名稱</label>
@@ -57,68 +69,112 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label for="material">材質</label>
-                        <input type="text" class="form-control" id="material" name="material" required>
+                        <select class="form-control" id="material" name="material" required>
+                            <option value="bamboo" selected>竹子</option>
+                            <option value="wood">木頭</option>
+                            <option value="steel">鋼鐵</option>
+                            <option value="pvc">塑膠</option>
+                            <option value="alum">鋁</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="weight">重量</label>
-                        <input type="number" class="form-control" id="weight" name="weight" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="tx">交易位置</label>
-                        <input type="text" class="form-control" id="tx" name="tx" >
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="weight" name="weight" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">公克</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="product_picture">上傳圖片</label>
                         <div class="custom-file form-group col-md-12">
-                            <input type="file" class="custom-file-input" id="product_picture" name="product_picture">
+                            <input type="file" class="custom-file-input" id="product_picture" name="product_picture" required>
                             <label class="custom-file-label" for="product_picture">選擇圖片</label>
                         </div>
+                    </div>
+                    <div class="form-group col-md-6" style="display: none;">
+                        <label for="tx">交易位置</label>
+                        <input type="hidden" class="form-control" id="tx" name="tx" >
                     </div>
                     <div class="form-group col-md-6">
                         <label for=""></label>
                         <input type="submit" class="btn btn-success" value="送出">
+                        <label for=""></label>
+                        <input type="button" class="btn btn-secondary" data-toggle="modal" data-target="#reduce-carbon-algorithm-modal" value="節碳量說明">
                     </div>
                 </div>
             </form>
         </section>
 
-        <!-- <section id="record-table" class="simple-section"></section> -->
-        減碳計算公式來自Booming Bamboo：由博士所著。該書<br/>
+        <div class="modal fade" id="reduce-carbon-algorithm-modal" tabindex="-1" role="dialog" aria-labelledby="Reduce-Carbon-Algorithm-Modal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">節碳量說明</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>減碳計算公式來自Booming Bamboo：由博士所著。</h3>
+                        <h4>該書表示：</h4>
 
-        竹子：<br/>
-        和竹子比，排放W*(0)<br/>
-        和木頭比，排放W*(-440)<br/>
-        和鋼鐵比，排放W*(-2470)<br/>
-        和塑膠比，排放W*(-3160)<br/>
-        和鋁比，排放W*-(7240)<br/>
+                        <div class="row">
+                            <div class="col-6">
+                                <p>竹子：<br/>
+                                　和竹子比，排放W*(0)<br/>
+                                　和木頭比，排放W*(-440)<br/>
+                                　和鋼鐵比，排放W*(-2470)<br/>
+                                　和塑膠比，排放W*(-3160)<br/>
+                                　和鋁比，排放W*-(7240)</p>
+                            </div>
 
-        木頭：<br/>
-        和竹子比，排放W*(440)<br/>
-        和木頭比，排放W*(0)<br/>
-        和鋼鐵比，排放W*(-2030)<br/>
-        和塑膠比，排放W*(-2720)<br/>
-        和鋁比，排放W*-(6800)<br/>
+                            <div class="col-6">
+                                <p>木頭：<br/>
+                                　和竹子比，排放W*(440)<br/>
+                                　和木頭比，排放W*(0)<br/>
+                                　和鋼鐵比，排放W*(-2030)<br/>
+                                　和塑膠比，排放W*(-2720)<br/>
+                                　和鋁比，排放W*-(6800)</p>
+                            </div>
 
-        鋼鐵：<br/>
-        和竹子比，排放W*(2470)<br/>
-        和木頭比，排放W*(2030)<br/>
-        和鋼鐵比，排放W*(0)<br/>
-        和塑膠比，排放W*(-490)<br/>
-        和鋁比，排放W*(-4770)<br/>
+                            <div class="col-6">
+                                <p>鋼鐵：<br/>
+                                　和竹子比，排放W*(2470)<br/>
+                                　和木頭比，排放W*(2030)<br/>
+                                　和鋼鐵比，排放W*(0)<br/>
+                                　和塑膠比，排放W*(-490)<br/>
+                                　和鋁比，排放W*(-4770)</p>
+                            </div>
 
-        塑膠：<br/>
-        和竹子比，排放W*(3160)<br/>
-        和木頭比，排放W*(2720)<br/>
-        和鋼鐵比，排放W*(490)<br/>
-        和塑膠比，排放W*(0)<br/>
-        和鋁比，排放W*(-4080)<br/>
+                            <div class="col-6">
+                                <p>塑膠：<br/>
+                                　和竹子比，排放W*(3160)<br/>
+                                　和木頭比，排放W*(2720)<br/>
+                                　和鋼鐵比，排放W*(490)<br/>
+                                　和塑膠比，排放W*(0)<br/>
+                                　和鋁比，排放W*(-4080)</p>
+                            </div>
 
-        鋁：<br/>
-        和竹子比，排放W*(7240)<br/>
-        和木頭比，排放W*(6800)<br/>
-        和鋼鐵比，排放W*(4707)<br/>
-        和塑膠比，排放W*(4080)<br/>
-        和鋁比，排放W*(0)<br/>
+                            <div class="col-6">
+                                <p>鋁：<br/>
+                                　和竹子比，排放W*(7240)<br/>
+                                　和木頭比，排放W*(6800)<br/>
+                                　和鋼鐵比，排放W*(4707)<br/>
+                                　和塑膠比，排放W*(4080)<br/>
+                                　和鋁比，排放W*(0)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="record-table" class="simple-section"></section>
     </div>
 </body>
 <script src="./blockchain.js"></script>
@@ -152,6 +208,7 @@
                 _RECIPIENTS_ADDRESS = addr.split('8877887')[0];
                 $('#record-table').html(addr.split('8877887')[1]);
                 window.parent.SetCwinHeight();
+                console.log(addr);
                 getHDCBalance();
             }).catch(err => {
                 console.log('Error:', err);

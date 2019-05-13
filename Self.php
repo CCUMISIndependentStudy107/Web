@@ -1,136 +1,107 @@
 <?php
     include "connect_sql.php";
     include "SQLRelative.php";
-    if (isset($_POST['name'])){
-        date_default_timezone_set("Asia/Taipei");   //change time zone to Taipei https://www.php.net/manual/en/timezones.php
-        $date = new DateTime('now');
-        $date = $date->format('Y-m-d-H-i-s');   //date format
-        $productname = $_POST['name'];
-        $quantity = $_POST['quantity'];
-        $material = $_POST['material'];
-        $weight = $_POST['weight'];
-        $tx = $_POST['tx'];
-        $img_name = ImageCheck($date);
-        $company = "leaflu";
-        // $eth = getEthernet($servername, $username, $password, $db_name, $company);
-        // echo $eth;
+    if (isset($_POST['username'])){
+        $name = $_POST['username'];
+        $eth = getEthernet($servername, $username, $password, $db_name, $name);
+        echo $eth;
+
         // To split `$eth` and `#record-table` as <hr>
         // 94 分隔線分隔線分隔線分隔線分隔線的部分
-        // echo "8877887";
+        echo "8877887";
 
-        $tablename = "profile";
-        $sql = "CREATE TABLE IF NOT EXISTS $tablename (ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,Company VARCHAR(100),ProductName VARCHAR(100),Quantity INT,Material VARCHAR(100),Weight FLOAT,Contract VARCHAR(100),Image VARCHAR(100),Date DATETIME)";
-        // echo $sql;
-        if($conn -> query($sql) == false) echo "Failed to create table ".$tablename."<br/>";
-        // else echo "Table create successfully!<br/>";
+        $tablename = "record";
         $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
-        // print_r($fieldname);
-        //[0] => ID [1] => Company [2] => ProductName [3] => Quantity [4] => Material [5] => Weight [6] => Contract [7] => Image [8] => Date
-        if(!Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$productname,$company)){
-            $sql = "INSERT INTO $tablename(";
-            for($i=1;$i<count($fieldname);$i++){
-                if($i != count($fieldname)-1)
-                    $sql .= $fieldname[$i].",";
-                else
-                    $sql .= $fieldname[$i].") VALUES(";
-            }
-            $sql .= "\"$company\",\"$productname\",$quantity,\"$material\",$weight,\"$tx\",\"$img_name\",\"$date\")";
-            // echo $sql;
-            if($conn -> query($sql) == false) echo "Failed to insert values! <br/>";
-        }
-        else{
-            echo "Duplicate! can't insert values! <br/>";
-        }
-        // $cardID = getCIDBYName($servername, $username, $password, $db_name, $name);
-        // $sql = SelectTable($tablename, $fieldname, $cardID);
+        $cardID = getCIDBYName($servername, $username, $password, $db_name, $name);
+        $sql = SelectTable($tablename, $fieldname, $cardID);
         // print_r($fieldname); die();
         // [0] => ID [1] => CardID [2] => ProductID [3] => Price [4] => Quantity [5] => Time [6] => Company [7] => tx [8] => Status
         // echo $sql; die();
-        // // To show searching result(s)
-        // $OrderInfo = array();
-        // $fieldname_chinese = array("ID", "買方","商品名稱", "商品價格", "購買數量", "提交日期", "廠商名稱", "狀態");
-        // if ($result = mysqli_query($conn, $sql)) {
-        //     if (mysqli_num_rows($result) > 0) {
-        //         echo "<h3>購買紀錄</h3>";
-        //         echo "<div class='table-responsive'>";
-        //         echo "<table class='table table-striped'>";
-        //         echo "<thead>";
-        //         echo "<tr>";
-        //         for ($i = 0; $i < count($fieldname_chinese); $i++) {
-        //             if ($i != 0 && $i != 1) {
-        //                 echo "<th scope='col'>" . $fieldname_chinese[$i] . "</th>";
-        //             }
-        //         }
-        //         echo "</tr>";
-        //         echo "</thead>";
-        //         echo "<tbody>";
-        //         while ($row = mysqli_fetch_array($result)) {
-        //             echo "<tr>";
-        //             for ($i = 0, $j = 0; $i < count($fieldname); $i++) {
-        //                 if ($i == count($fieldname) - 2) {
-        //                     $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$fieldname[$i]] . "' target='_blank'>Tx</a>";
-        //                     continue;
-        //                 }
-        //                 // if ($i == count($fieldname) - 5)
-        //                 //     $reduceC = $row[$fieldname[$i]];
-        //                 if ($i == count($fieldname) - 1) {
-        //                     $id = $row[$fieldname[0]];
-        //                     $reduceC = getReduceC($servername, $username, $password, $db_name, $id);
-        //                     switch ($row[$fieldname[$i]]) {
-        //                         case 1:
-        //                             echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
-        //                             break;
-        //                         case 2:
-        //                             echo "<td><span class='text-danger'>FAIL</span></td>";
-        //                             break;
-        //                         default:
-        //                             echo "<td><span class='text-warning'>PENDING(" . $txLink . ")</span></td>";
-        //                             break;
-        //                     }
-        //                 }
-        //                 else {
-        //                     // 隱藏 `id` 欄位，用以抓取買方的 wallet-Address
-        //                     if ($i == 0) {
-        //                         $id = $row[$fieldname[0]];
-        //                         $eth = getEthernetBYCID($servername, $username, $password, $db_name, $id);
-        //                         echo "<td id='record" . $id . "' style='display: none'>" . $eth . "</td>";
-        //                     }
-        //                     else if ($i == 7) { /* 不要顯示 `tx(7)` */ }
-        //                     else if ($i == 1) { /* 不必要顯示買方名稱 */ }
-        //                     else if ($i == 2) {
-        //                         $id = $row[$fieldname[0]];
-        //                         $name = getProductBYID($servername, $username, $password, $db_name, $id);
-        //                         echo "<td title='" . $name . "'>" . $name . "</td>";
-        //                     }
-        //                     else {
-        //                         echo "<td title='" . $row[$fieldname[$i]] . "'>" . $row[$fieldname[$i]] . "</td>";
-        //                     }
-        //                 }
-        //                 $id = $row[$fieldname[0]];
-        //                 // if ($i > 0){
-        //                     // echo $i."--".$row[$ProductInfoName[$i]];
-        //                     //product name = 1 company name=10
-        //                 $OrderInfo[$id][$j++] = $row[$fieldname[$i]];
-        //                 // }
-        //                 // echo "<br/>";
-        //             }
-        //             echo "</tr>";
-        //         }
-        //         // print_r($OrderInfo);
-        //         echo "</tbody>";
-        //         echo "</table>";
-        //         echo "</div>";
-        //         mysqli_free_result($result);
-        //     }
-        //     else {
-        //         // Catch error
-        //         echo "No records matching your query were found. \n";
-        //     }
-        // }
-        // else {
-        //     // Catch error
-        //     echo "ERROR: Could not able to execute $sql " . mysqli_error($conn) . " \n";
-        // }
+        // To show searching result(s)
+        $OrderInfo = array();
+        $fieldname_chinese = array("ID", "買方","商品名稱", "商品價格", "購買數量", "提交日期", "廠商名稱", "狀態");
+        if ($result = mysqli_query($conn, $sql)) {
+            if (mysqli_num_rows($result) > 0) {
+                echo "<h3>購買紀錄</h3>";
+                echo "<div class='table-responsive'>";
+                echo "<table class='table table-striped'>";
+                echo "<thead>";
+                echo "<tr>";
+                for ($i = 0; $i < count($fieldname_chinese); $i++) {
+                    if ($i != 0 && $i != 1) {
+                        echo "<th scope='col'>" . $fieldname_chinese[$i] . "</th>";
+                    }
+                }
+                echo "</tr>";
+                echo "</thead>";
+                echo "<tbody>";
+                while ($row = mysqli_fetch_array($result)) {
+                    echo "<tr>";
+                    for ($i = 0, $j = 0; $i < count($fieldname); $i++) {
+                        if ($i == count($fieldname) - 2) {
+                            $txLink = "<a href='https://ropsten.etherscan.io/tx/" . $row[$fieldname[$i]] . "' target='_blank'>Tx</a>";
+                            continue;
+                        }
+                        // if ($i == count($fieldname) - 5)
+                        //     $reduceC = $row[$fieldname[$i]];
+                        if ($i == count($fieldname) - 1) {
+                            $id = $row[$fieldname[0]];
+                            $reduceC = getReduceC($servername, $username, $password, $db_name, $id);
+                            switch ($row[$fieldname[$i]]) {
+                                case 1:
+                                    echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
+                                    break;
+                                case 2:
+                                    echo "<td><span class='text-danger'>FAIL</span></td>";
+                                    break;
+                                default:
+                                    echo "<td><span class='text-warning'>PENDING(" . $txLink . ")</span></td>";
+                                    break;
+                            }
+                        }
+                        else {
+                            // 隱藏 `id` 欄位，用以抓取買方的 wallet-Address
+                            if ($i == 0) {
+                                $id = $row[$fieldname[0]];
+                                $eth = getEthernetBYCID($servername, $username, $password, $db_name, $id);
+                                echo "<td id='record" . $id . "' style='display: none'>" . $eth . "</td>";
+                            }
+                            else if ($i == 7) { /* 不要顯示 `tx(7)` */ }
+                            else if ($i == 1) { /* 不必要顯示買方名稱 */ }
+                            else if ($i == 2) {
+                                $id = $row[$fieldname[0]];
+                                $name = getProductBYID($servername, $username, $password, $db_name, $id);
+                                echo "<td title='" . $name . "'>" . $name . "</td>";
+                            }
+                            else {
+                                echo "<td title='" . $row[$fieldname[$i]] . "'>" . $row[$fieldname[$i]] . "</td>";
+                            }
+                        }
+                        $id = $row[$fieldname[0]];
+                        // if ($i > 0){
+                            // echo $i."--".$row[$ProductInfoName[$i]];
+                            //product name = 1 company name=10
+                        $OrderInfo[$id][$j++] = $row[$fieldname[$i]];
+                        // }
+                        // echo "<br/>";
+                    }
+                    echo "</tr>";
+                }
+                // print_r($OrderInfo);
+                echo "</tbody>";
+                echo "</table>";
+                echo "</div>";
+                mysqli_free_result($result);
+            }
+            else {
+                // Catch error
+                echo "No records matching your query were found. \n";
+            }
+        }
+        else {
+            // Catch error
+            echo "ERROR: Could not able to execute $sql " . mysqli_error($conn) . " \n";
+        }
 
         // // Close connection
         mysqli_close($conn);
@@ -294,76 +265,5 @@
         }
         // print($eth);
         return $eth;
-    }
-
-    function ImageCheck($date){
-        # 檢查檔案是否上傳成功
-        if ($_FILES['product_picture']['error'] === UPLOAD_ERR_OK){
-            $filetype = $_FILES['product_picture']['type'];
-            if(!file_exists('uploads')) mkdir('uploads',0777,true); //0777 is already the default mode for directories and may still be modified by the current umask.
-            $upload_folder = 'uploads/'.$date;
-            if(!file_exists($upload_folder)) mkdir($upload_folder,0777,true); //if not exists , create one
-            if(IsImage($filetype)){
-                # 檢查檔案是否已經存在
-                if (file_exists($upload_folder . $_FILES['product_picture']['name'])) echo '檔案已存在。<br/>';
-                else{
-                    $file = $_FILES['product_picture']['tmp_name'];
-                    $dest = $upload_folder . "/". $_FILES['product_picture']['name'];
-                    move_uploaded_file($file, $dest);   //將檔案移至指定位置
-                }
-            }
-        }
-        else{
-            echo '錯誤代碼：' . $_FILES['product_picture']['error'] . '<br/>';
-            return false;
-        }
-        return $_FILES['product_picture']['name'];
-    }
-
-    function IsImage($filetype){
-        $acceptable_file_ext = "image";
-        if(strpos($filetype,$acceptable_file_ext) !== false) return true;
-        return false;
-    }
-
-    function Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$productname,$companyname){
-        $conn = mysqli_connect($servername,$username,$password,$db_name);
-        $sql = "SELECT * FROM ".$tablename." ";
-        $arr = array();
-        $product = array($productname);
-        $company = array($companyname);
-        if($res = mysqli_query($conn, $sql)){
-            while($row = mysqli_fetch_array($res)){
-                for($i=0,$j=0;$i<count($fieldname);$i++){
-                    // echo "<td>" . $row[$ProductInfoName[$i]] . "</td>";
-                    $id = $row[$fieldname[0]];
-                    if($i>0) $arr[$id][$j++]=$row[$fieldname[$i]];
-                }
-            }
-        }
-        // print_r($arr);
-        //[0] => Companyname [1] => ProductName [2] => Quantity [3] => Material [4] => Weight [5] => tx [6] => Imgname [7] => Date
-        $keys = array_keys($arr);
-        // print_r($keys);
-        for($i=0;$i<count($keys);$i++){
-            array_push($product,$arr[$keys[$i]][1]);
-            array_push($company,$arr[$keys[$i]][0]);
-        }
-        // print_r($product)."QQQ";
-        // print_r($company)."AAA";
-        $result = findDuplicate($product,$company);
-        // if($result) echo "Yes";
-        return $result;
-    }
-
-    function findDuplicate($productname,$companyname){
-        for($i=0;$i<count($productname);$i++){
-            for($j=$i+1;$j<count($productname);$j++){
-                if($productname[$i] == $productname[$j] && $companyname[$i] == $companyname[$j]){
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 ?>
