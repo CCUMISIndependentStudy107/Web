@@ -25,30 +25,30 @@
         $fieldname = GetFieldName($servername, $username, $password, $db_name, $tablename);
         // print_r($fieldname);
         //[0] => ID [1] => Company [2] => ProductName [3] => Quantity [4] => Material [5] => Weight [6] => Contract [7] => Image [8] => Date
-        if(!Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$company)){
-            $sql = "INSERT INTO $tablename(";
-            for($i=1;$i<count($fieldname);$i++){
-                if($i != count($fieldname)-1)
-                    $sql .= $fieldname[$i].",";
-                else
-                    $sql .= $fieldname[$i].") VALUES(";
-            }
-            $sql .= "\"$company\",\"$productname\",$quantity,\"$material\",$weight,\"$tx\",\"$img_name\",\"$date\")";
-            // echo $sql;
-            if($conn -> query($sql) == false) {
-                echo "Failed to insert values! <br/>";
-                header("refresh:1; url=./self.html", true, 301);
-                exit();
-            }
+        // if(!Duplicate($servername,$username,$password,$db_name,$tablename,$fieldname,$company)){
+        $sql = "INSERT INTO $tablename(";
+        for($i=1;$i<count($fieldname);$i++){
+            if($i != count($fieldname)-1)
+                $sql .= $fieldname[$i].",";
+            else
+                $sql .= $fieldname[$i].") VALUES(";
         }
-        else{
-            // echo "Duplicate! can't insert values! <br/>";
-            $backupTable = "profile_backup";
-            CreateBackupTable($conn,$backupTable);
-            UpdateTable($servername,$username,$password,$db_name,$tablename,$backupTable,$company,$arr);
+        $sql .= "\"$company\",\"$productname\",$quantity,\"$material\",$weight,\"$tx\",\"$img_name\",\"$date\")";
+        // echo $sql;
+        if($conn -> query($sql) == false) {
+            echo "Failed to insert values! <br/>";
             header("refresh:1; url=./self.html", true, 301);
             exit();
         }
+        // }
+        // else{
+        //     // echo "Duplicate! can't insert values! <br/>";
+        //     $backupTable = "profile_backup";
+        //     CreateBackupTable($conn,$backupTable);
+        //     UpdateTable($servername,$username,$password,$db_name,$tablename,$backupTable,$company,$arr);
+        //     header("refresh:1; url=./self.html", true, 301);
+        //     exit();
+        // }
 
         // // Close connection
         mysqli_close($conn);
