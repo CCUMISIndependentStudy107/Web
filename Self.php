@@ -55,7 +55,7 @@
                                     echo "<td><span class='text-danger'>FAIL</span></td>";
                                     break;
                                 default:
-                                    echo "<td><span class='text-warning'>PENDING(" . $txLink . ")</span></td>";
+                                    echo "<td><span class='text-warning'>PENDING()</span></td>";
                                     break;
                             }
                         }
