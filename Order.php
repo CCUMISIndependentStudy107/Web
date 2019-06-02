@@ -231,7 +231,7 @@
                 }
             }
             else {
-                echo "No result!<br/>";
+                // echo "No result!<br/>";
                 return -1;
             }
             mysqli_free_result($res);
@@ -260,7 +260,7 @@
                 }
             }
             else {
-                echo "No result!<br/>";
+                // echo "No result!<br/>";
                 return -1;
             }
             mysqli_free_result($res);
@@ -289,7 +289,7 @@
                 }
             }
             else {
-                echo "No result!<br/>";
+                // echo "No result!<br/>";
                 return -1;
             }
             mysqli_free_result($res);
