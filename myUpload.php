@@ -5,7 +5,6 @@
     $date = WriteProductInfo();
     $filename = "beta.txt";
     BetaText($filename,$date,$value);
-    die();
     echo "Upload Successful";
 ?>
 <html>
@@ -57,7 +56,7 @@
         }
     }
 
-    function MovePlainText($date){
+    function MovePlainText($filename,$date){
         $filename = "PlainInfo.html";
         $upload_folder = "uploads/";
         copy($upload_folder.$date."/".$filename,$upload_folder."/".$filename);
@@ -116,5 +115,7 @@
     function BetaText($filename,$date,$value){
         $beta = fopen($filename,"w");
         WritePlainText($beta,$value,true,$date);
+        $dest = 'uploads/'.$date;
+        rename($filename,$dest.'/'.$filename);
     }
 ?>
