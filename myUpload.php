@@ -3,8 +3,8 @@
     ImageCheck();
     $value = BetaCalculate();
     $date = WriteProductInfo();
-    $filename = "beta.txt";
-    BetaText($filename,$date,$value);
+    $filename = "uploads/".$date."/beta.txt";
+    BetaText($filename,$value);
     echo "Upload Successful";
 ?>
 <html>
@@ -56,7 +56,7 @@
         }
     }
 
-    function MovePlainText($filename,$date){
+    function MovePlainText($date){
         $filename = "PlainInfo.html";
         $upload_folder = "uploads/";
         copy($upload_folder.$date."/".$filename,$upload_folder."/".$filename);
@@ -112,10 +112,8 @@
         return $date;
     }
 
-    function BetaText($filename,$date,$value){
+    function BetaText($filename,$value){
         $beta = fopen($filename,"w");
-        WritePlainText($beta,$value,true,$date);
-        $dest = 'uploads/'.$date;
-        rename($filename,$dest.'/'.$filename);
+        fwrite($beta,$value);
     }
 ?>
