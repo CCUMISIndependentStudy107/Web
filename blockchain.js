@@ -74,7 +74,7 @@ function getERC20TokenDecimals(callback) {
     });
 }
 
-function getHDCBalance(addr) {
+function getHDCBalance() {
     // _WALLET_ADDRESS = document.querySelector('#main-wallet .wallet').value;
     // _RECIPIENTS_ADDRESS = document.querySelector('#vendor-wallet .wallet').value;
     if (_WALLET_ADDRESS && _RECIPIENTS_ADDRESS) {

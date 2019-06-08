@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <title>新增商品</title>
+    <title>個人資訊</title>
     <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -47,6 +47,7 @@
     <div id="self-info">
         <div id="logo">
             <img src="pic/zhbot.png" onclick="window.location.reload();">
+            <a href="info.html"><img src="pic/i1.png" alt="HDC" width="300px" height="300px"></a>
         </div>
 
 
@@ -141,10 +142,32 @@
                     <div class="form-group col-md-6">
                         <input type="button" class="btn btn-success" value="送出" onclick="authSmartContract()">
                         <input type="button" class="btn btn-secondary" data-toggle="modal" data-target="#reduce-carbon-algorithm-modal" value="節碳量說明">
+                        <input type="button" class="btn btn-secondary" data-toggle="modal" data-target="#smart-contract-modal" value="智能合約">
                     </div>
                 </div>
             </form>
         </section>
+
+        <div class="modal fade" id="smart-contract-modal" tabindex="-1" role="dialog" aria-labelledby="Reduce-Carbon-Algorithm-Modal" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">智能合約說明</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                                <p class="lead">輸入進去α表的值會在以下的智能合約進行計算：</p>
+                            <div class="container">
+                                <div class="row">
+                                    <img src="./pic/sc_code.png" alt="author" style="display: block; width: 100%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         <div class="modal fade" id="reduce-carbon-algorithm-modal" tabindex="-1" role="dialog" aria-labelledby="Reduce-Carbon-Algorithm-Modal" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -158,10 +181,11 @@
                     <div class="modal-body">
                         <!-- <h3>減碳計算公式來自Booming Bamboo：由博士所著。</h3>
                         <h4>該書表示：</h4> -->
-                        <p class="lead">減碳計算公式來自《Booming Bamboo》，由 <strong><u>dr. ir. Pablo van der Lugt</u></strong> 所著。作者對各種材質生產時所產生的二氧化碳進行量化比較，而我們則利用這些比較進行計算來得出我們的數據。<small>公式：[種類(W) * 排放量(C) = 結果(R)]</small></p>
-
+                        <p class="lead">減碳計算公式來自<a href="https://boomingbamboo.com/" blank="_blank">《Booming Bamboo》</a>，由 <strong><u>dr. ir. Pablo van der Lugt</u></strong> 所著。作者對各種材質生產時所產生的二氧化碳進行量化比較，而我們則利用這些比較進行計算來得出我們的數據。<small>公式：[種類(W) * 排放量(C) = 結果(R)]</small></p>
                         <div class="container">
-                            <div class="row justify-content-around">
+                            <div class="row justify-content-center">
+                                <img src="./pic/bb_author.png" alt="author" style="display: block; width: 750px; height: 450px;">
+<!--
                                 <div class="card mb-2" style="width: 22rem;">
                                     <div class="card-body">
                                         <h5 class="card-title">竹子</h5>
@@ -222,6 +246,7 @@
                                         </p>
                                     </div>
                                 </div>
+-->
                             </div>
                         </div>
                     </div>
