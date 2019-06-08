@@ -18,6 +18,7 @@
 <?php
     include "connect_sql.php";
     include "Duplicate.php";
+    include "Beta_table.php";
     $ProductInfoName = array("ID","Name","Price","Quantity","Information","Weight","Tag","PictureName","ReduceC","FolderName","Company", "tx");
     $check = "checks";
     $tablename = CreateTable($servername,$username,$password,$db_name,$ProductInfoName,$check);
