@@ -31,7 +31,7 @@
 <body>
     <div id="green-count">
         <div id="logo">
-            <img src="pic/manufacturer.png" onclick="window.location.reload();">
+            <img src="pic/manufacturer.png" style="display: block; width: 200px;" onclick="window.location.reload();">
         </div>
 
         <form action="myUpload.php" method="POST" enctype="multipart/form-data">
@@ -91,12 +91,162 @@
                 <div class="form-group col-md-12">
                     <input type="text" readonly class="form-control-plaintext" id="reduceC" :value="count">
                 </div>
+                <!-- <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-success" style="display: block">送出</button>
+                </div> -->
+            </div>
+        </form>
+        <form action="Beta_table.php" method="POST">
+            <h1>β審查表</h1><br>
+            <div><p><h3>原料一</p></h3></div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Material1"><br>原料名</label>
+                    <input type="text" class="form-control" id="Material1" name="Material1" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Electric1">開採時用電</label>
+                    <input type="number" class="form-control" id="Electric1" name="Electric1" required>
+                    <div class="input-group-append">
+                            <span class="input-group-text">Kg/度</span>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                        <label for="Process1_1">初步加工</label>
+                        <input type="number" class="form-control" id="Process1_1" name="Process1_1" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Kg/度</span>
+                        </div>
+                    </div>
+                <div class="form-group col-md-6">
+                    <label for="Process1_2">進一步加工</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="Process1_2" name="Process1_2" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Kg/度</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Mileage1">總運送里程</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="Mileage1" name="Mileage1" v-model="amount" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Km</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Gasoline1">平均油耗</label>
+                    <input type="number" class="form-control" id="Gasoline1" name="Gasoline1" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text">Km/L</span>
+                    </div>
+                </div>
+            </div>
+            <div><p><h3>原料二</p></h3></div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Material2"><br>原料名</label>
+                    <input type="text" class="form-control" id="Material2" name="Material2">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Electric2">開採時用電</label>
+                    <input type="number" class="form-control" id="Electric2" name="Electric2" required>
+                    <div class="input-group-append">
+                            <span class="input-group-text">Kg/度</span>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                        <label for="Process2_1">初步加工</label>
+                        <input type="number" class="form-control" id="Process2_1" name="Process2_1" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Kg/度</span>
+                        </div>
+                    </div>
+                <div class="form-group col-md-6">
+                    <label for="Process2_2">進一步加工</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="Process2_2" name="Process2_2" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Kg/度</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Mileage2">總運送里程</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="Mileage2" name="Mileage2" v-model="amount" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Km</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="Gasoline2">平均油耗</label>
+                    <input type="number" class="form-control" id="Gasoline2" name="Gasoline2" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text">Km/L</span>
+                    </div>
+                </div>
+            </div>
+            <div><p><h3>產品製作</p></h3></div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="Mweight1">原料一</label>
+                    <input type="number" class="form-control" id="Mweight1" name="Mweight1" required>
+                    <div class="input-group-append">
+                            <span class="input-group-text">kg</span>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                        <label for="Mweight2">原料二</label>
+                        <input type="number" class="form-control" id="Mweight2" name="Mweight2" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">kg</span>
+                        </div>
+                    </div>
+                <div class="form-group col-md-6">
+                    <label for="MElec">製作時耗電</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="MElec" name="MElec" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">度/個</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                        <label for="MWeight">總重</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="MWeight" name="MWeight" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">kg</span>
+                            </div>
+                        </div>
+                    </div>
+                <div class="form-group col-md-6">
+                        <label for="Expiration">使用年限</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="Expiration" name="Expiration" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">年</span>
+                            </div>
+                        </div>
+                    </div>
+                <div class="form-group col-md-6">
+                    <label for="Bamboo">竹原料</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="Bamboo" name="Bamboo" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Kg</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group col-md-2">
                     <button type="submit" class="btn btn-success" style="display: block">送出</button>
                 </div>
             </div>
         </form>
-
         <div id=about-us></div>
     </div>
 </body>

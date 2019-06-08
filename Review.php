@@ -64,6 +64,7 @@
                 if (status === 1) {
                     if (confirm('確定通過？') == true) {
                         let toAddr = $('#preprocess' + id).text();
+                        console.log('aaa', $('#preprocess' + id).text());
                         sendHDC(reduceC, toAddr).then(tx => {
                             alert(tx)
                             $.ajax({
