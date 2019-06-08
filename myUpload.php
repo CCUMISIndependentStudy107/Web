@@ -5,6 +5,7 @@
     $date = WriteProductInfo();
     $filename = "beta.txt";
     BetaText($filename,$date,$value);
+    die();
     echo "Upload Successful";
 ?>
 <html>
@@ -113,6 +114,7 @@
     }
 
     function BetaText($filename,$date,$value){
-        WritePlainText($filename,$value,true,$date);
+        $beta = fopen($filename,"w");
+        WritePlainText($beta,$value,true,$date);
     }
 ?>
