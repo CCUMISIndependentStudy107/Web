@@ -1,6 +1,10 @@
 <?php
+    include "Beta_table.php";
     ImageCheck();
-    WriteProductInfo();
+    $value = BetaCalculate();
+    $date = WriteProductInfo();
+    $filename = "beta.txt";
+    BetaText($filename,$date,$value);
     echo "Upload Successful";
 ?>
 <html>
@@ -105,5 +109,10 @@
         rename($img_old_dest,$image_new_dest);
         //echo "OK";
         fclose($info_file);
+        return $date;
+    }
+
+    function BetaText($filename,$date,$value){
+        WritePlainText($filename,$value,true,$date);
     }
 ?>
