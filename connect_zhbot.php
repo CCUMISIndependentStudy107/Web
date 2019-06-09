@@ -59,8 +59,8 @@
         if($conn -> query($sql) == false){
             echo "Failed to Insert values <br/>";
         }
-        else{
-            echo "上架成功<br/>";
+        else {
+            header('Location: ./new.html');
         }
         mysqli_close($conn);
     }
