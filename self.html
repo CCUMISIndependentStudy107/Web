@@ -47,7 +47,7 @@
     <div id="self-info">
         <div id="logo">
             <img src="pic/zhbot.png" onclick="window.location.reload();">
-            <a href="info.html"><img src="pic/i1.png" alt="HDC" width="300px" height="300px"></a>
+            <!-- <a href="./info.html"><img src="pic/i1.png" alt="HDC" width="300px" height="300px"></a> -->
         </div>
 
 
@@ -315,7 +315,7 @@
     ];
 
     function getNewestData() {
-        let username = window.parent.document.querySelector('#menu-item-2814 a').textContent;
+        let username = window.parent.document.querySelector('#menu-item-2814 a').textContent.split('(')[0];
         getAlphaTable(username).then(res => {
             singleDataFragment = res.split(';');
             let dataHtml = '';
@@ -447,7 +447,7 @@
         setvalue(category, base).then(res => {
             console.log(res);
             window.open('https://ropsten.etherscan.io/tx/' + res, '_blank');
-            $('#company').val(window.parent.document.querySelector('#menu-item-2814 a').textContent);
+            $('#company').val(window.parent.document.querySelector('#menu-item-2814 a').textContent.split('(')[0]);
             $('#tx').val(res);
             getCompareValue(material, base);
             $('#alpha-table').submit();
@@ -514,7 +514,7 @@
                 url: 'Self.php',
                 type: 'POST',
                 data: {
-                    username: window.parent.document.querySelector('#menu-item-2814 a').textContent
+                    username: window.parent.document.querySelector('#menu-item-2814 a').textContent.split('(')[0]
                 },
                 error: function(err) {
                     reject(err);

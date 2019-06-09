@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,29 +9,114 @@
     <title>碳幣商城</title>
     <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"   crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <style>
-        #product_tag_help {
-            display: inline;
+        body {
+            background: #fff;
+            font-family: 'Microsoft JhengHei';
         }
 
-        .custom-file-input:lang(en)~.custom-file-label::after {
-            content: "瀏覽";
+        span {
+            font-size: 15px;
         }
 
-        .custom-file-label {
-            padding: 0.375rem 1rem;
+        a {
+            text-decoration: none;
+            color: #2bb673;
+            border-bottom: 2px solid #2bb673;
         }
 
-        .custom-file-input {
-            opacity: 1;
+        a:hover {
+            /* color: #2bb673;
+            filter: brightness(0.3); */
+            text-decoration: none;
+        }
+
+        .box {
+            padding: 60px 0px;
+        }
+
+        .box-part {
+            padding: 60px 10px;
+            margin: 30px 0px;
+            border: 2px solid #2bb673;
+            border-radius: 2rem;
+            cursor: pointer;box-shadow: 0px 0px 8px 4px #eee;
+        }
+
+        .box-part:hover {
+            background-color: #fff;
+            /* box-shadow: 1px 1px 1px 1px #444; */
+            filter: brightness(.95);
+            transition: .2s;
+        }
+
+        .text {
+            margin: 20px 0px;
+        }
+
+        .fas {
+            margin-bottom: 1rem;
+            color: #2bb673;
+        }
+
+        .title > h4 {
+            color: #2bb673 !important;
+            font-weight: bold !important;
         }
     </style>
 </head>
+
 <body>
-    <input type="button" name="plant" id="plant" value="種樹">
-    <input type="button" name="lecture" id="lecture" value="講座">
-    <input type="button" name="transaction" id="transaction" value="交易">
+    <div class="box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="box-part text-center">
+                        <i class="fas fa-tree fa-3x" aria-hidden="true"></i>
+                        <div class="title">
+                            <h4>種樹</h4>
+                        </div>
+                        <div class="text">
+                            <span>Lorem ipsum dolor sit amet, id quo eruditi eloquentiam. Assum decore te sed. Elitr scripta ocurreret qui ad.</span>
+                        </div>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="box-part text-center">
+                        <i class="fas fa-chalkboard-teacher fa-3x" aria-hidden="true"></i>
+                        <div class="title">
+                            <h4>講座</h4>
+                        </div>
+                        <div class="text">
+                            <span>Lorem ipsum dolor sit amet, id quo eruditi eloquentiam. Assum decore te sed. Elitr scripta ocurreret qui ad.</span>
+                        </div>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    <div class="box-part text-center">
+                        <i class="fas fa-exchange-alt fa-3x" aria-hidden="true"></i>
+                        <div class="title">
+                            <h4>交易</h4>
+                        </div>
+                        <div class="text">
+                            <span>Lorem ipsum dolor sit amet, id quo eruditi eloquentiam. Assum decore te sed. Elitr
+                                scripta ocurreret qui ad.</span>
+                        </div>
+                        <a href="#">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </body>
+
 </html>
