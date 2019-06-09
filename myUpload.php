@@ -3,8 +3,9 @@
     ImageCheck();
     $arr = BetaCalculate();
     $date = WriteProductInfo();
-    $filename = "uploads/".$date."/beta.txt";
-    BetaText($filename,$arr);
+    $position = "uploads/".$date."/beta.txt";
+    $filename = "beta.txt";
+    BetaText($filename,$position,$arr,$date);
     echo "Upload Successful";
 ?>
 <html>
@@ -48,16 +49,15 @@
         return;
     }
 
-    function WritePlainText($file,$information,$end,$date){
+    function WritePlainText($filename,$file,$information,$end,$date){
         if(!$end) fwrite($file,$information."\n");   //seperate by NextLine
         else{
             fwrite($file,$information);
-            MovePlainText($date);
+            MovePlainText($filename,$date);
         }
     }
 
-    function MovePlainText($date){
-        $filename = "PlainInfo.html";
+    function MovePlainText($filename,$date){
         $upload_folder = "uploads/";
         copy($upload_folder.$date."/".$filename,$upload_folder."/".$filename);
     }
@@ -76,6 +76,7 @@
         if(!file_exists($dest)) mkdir($dest,0777,true); //if not exists , create one
         $info_filename = $dest.'/ProductInfo.txt';   //write product information text file named ProductInfo.txt
         $plain_filename = $dest.'/PlainInfo.html';   //write plain information text file named PlainInfo.html
+        $filename = "PlainInfo.html";
         #Write info File
         $info_file = fopen($info_filename,"w");
         WriteFileInfo($info_file,"商品名稱",$_POST['product_name'],false);
@@ -92,16 +93,16 @@
         WriteFileInfo($info_file,"廠商名稱",$_POST['company_name'],true);
         #Write plain File
         $plain_file = fopen($plain_filename,"w");
-        WritePlainText($plain_file,$_POST['product_name'],false,$date);
-        WritePlainText($plain_file,$_POST['product_price'],false,$date);
-        WritePlainText($plain_file,$_POST['product_quantity'],false,$date);
-        WritePlainText($plain_file,$_POST['product_info'],false,$date);
-        WritePlainText($plain_file,$_POST['product_weight'],false,$date);
-        WritePlainText($plain_file,$tags,false,$date);
-        WritePlainText($plain_file,$_FILES['product_picture']['name'],false,$date);
-        WritePlainText($plain_file,ReduceC(),false,$date);
-        WritePlainText($plain_file,$date,false,$date);
-        WritePlainText($plain_file,$_POST['company_name'],true,$date);
+        WritePlainText($filename,$plain_file,$_POST['product_name'],false,$date);
+        WritePlainText($filename,$plain_file,$_POST['product_price'],false,$date);
+        WritePlainText($filename,$plain_file,$_POST['product_quantity'],false,$date);
+        WritePlainText($filename,$plain_file,$_POST['product_info'],false,$date);
+        WritePlainText($filename,$plain_file,$_POST['product_weight'],false,$date);
+        WritePlainText($filename,$plain_file,$tags,false,$date);
+        WritePlainText($filename,$plain_file,$_FILES['product_picture']['name'],false,$date);
+        WritePlainText($filename,$plain_file,ReduceC(),false,$date);
+        WritePlainText($filename,$plain_file,$date,false,$date);
+        WritePlainText($filename,$plain_file,$_POST['company_name'],true,$date);
         #Move image to new destination
         $img_name = $_FILES['product_picture']['name'];
         $img_old_dest = "uploads/".$img_name;
@@ -112,11 +113,12 @@
         return $date;
     }
 
-    function BetaText($filename,$arr){
-        $beta = fopen($filename,"w");
+    function BetaText($filename,$position,$arr,$date){
+        $beta = fopen($position,"w");
         for($i=0;$i<count($arr);$i++){
             if($i != count($arr)-1) fwrite($beta,$arr[$i]."\n");
             else fwrite($beta,$arr[$i]);
         }
+        MovePlainText($filename,$date);
     }
 ?>
