@@ -98,6 +98,7 @@
 
         <br>
         <br>
+
             <h1 onclick="window.location.reload();">β 審查表</h1>
             <div class="form-row">
                 <h3 class="col-md-12">原料一</h3>
@@ -283,7 +284,7 @@
                 return this.co2 = '您為地球減少了 ' + this.weight * 440/1000 * this.amount + ' 公克的二氧化碳。';
             },
             CompanyName: function () {
-                return window.parent.document.querySelector('#menu-item-2814 a').textContent;
+                return window.parent.document.querySelector('#menu-item-2814 a').textContent.split('(')[0];
             }
         }
     });
