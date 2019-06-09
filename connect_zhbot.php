@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     </head>
     <body>
+        <img src="pic/zhbot.png" onclick="window.location.reload();">
         <form>
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -18,23 +19,21 @@
 <?php
     include "connect_sql.php";
     include "Duplicate.php";
+
     $ProductInfoName = array("ID","Name","Price","Quantity","Information","Weight","Tag","PictureName","ReduceC","FolderName","Company", "tx");
     $check = "checks";
     $tablename = CreateTable($servername,$username,$password,$db_name,$ProductInfoName,$check);
-    $ProductInfo = ReadPlainText();
+    $filename = "PlainInfo.html";
+    $ProductInfo = ReadPlainText($filename);
     $ProductInfo[5] = TagProcess($ProductInfo[5]);
     // print_r($ProductInfo);
-    // INSERT INTO DATABASE
-    /* Not sure these works */
-    // $db=mysql_connect($servername,$username,$password);
-    // mysql_query("set character set utf8",$db);
-    // mysql_query("SET CHARACTER_SET_database= utf8",$db);
-    // mysql_query("SET CHARACTER_SET_CLIENT= utf8",$db);
-    // mysql_query("SET CHARACTER_SET_RESULTS= utf8",$db);
-    // mysql_query("SET NAMES 'UTF8'");
+
+    // Beta table
+    Beta($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9]);
+
+    // INSERT INTO TABLE preprocess
     $conn = mysqli_connect($servername,$username,$password,$db_name);
-    // $sql = "INSERT INTO ".$tablename." (".$ProductInfoName[1].",".$ProductInfoName[2].",".$ProductInfoName[3].",".$ProductInfoName[4].",".$ProductInfoName[5].",".$ProductInfoName[6].",".$ProductInfoName[7].",".$ProductInfoName[8].",".$ProductInfoName[9].",".$ProductInfoName[10].",".$check.")";
-    // $sql .= " VALUES(\"".$ProductInfo[0]."\",".$ProductInfo[1].",".$ProductInfo[2].",\"".$ProductInfo[3]."\",".$ProductInfo[4].",\"".$ProductInfo[5]."\",\"".$ProductInfo[6]."\",".$ProductInfo[7].",\"".$ProductInfo[8]."\",\"".$ProductInfo[9]."\",0);";
+
     if(Duplicate($servername,$username,$password,$db_name,$tablename,$ProductInfoName,$ProductInfo)){
         echo "Failed to insert because of the duplicate<br/>";
     }
@@ -61,7 +60,7 @@
             echo "Failed to Insert values <br/>";
         }
         else{
-            echo "成功輸入至資料庫！<br/>";
+            echo "上架成功<br/>";
         }
         mysqli_close($conn);
     }
@@ -79,18 +78,71 @@
         return $tableName;
     }
 
-    function ReadPlainText(){
-        $file = fopen("uploads/PlainInfo.html","r");
-        $ProductInfo = array();
+    function ReadPlainText($filename){
+        $upload_path = "uploads/";
+        $file_path = $upload_path.$filename;
+        $file = fopen($file_path,"r");
+        $arr = array();
         while(!feof($file)){
             $tmp = fgets($file);
-            array_push($ProductInfo,$tmp);
+            array_push($arr,$tmp);
         }
-        // print_r($ProductInfo);
-        return $ProductInfo;
+        // print_r($arr);
+        return $arr;
     }
 
     function TagProcess($tag){
         return str_replace(','," ",$tag);
+    }
+
+    function Beta($servername,$username,$password,$db_name,$ProductName,$Company){
+        $beta_file = "beta.txt";
+        $info = ReadPlainText($beta_file);
+        $InfoName = array('ID','ProductName','Company','Material1','Electric1','Process1_1','Process1_2','Mileage1','Gasoline1','Material2','Electric2','Process2_1','Process2_2','Mileage2','Gasoline2','Mweight1','Mweight2','MElec','MWeight','Expiration','Bamboo','value');
+        // print_r($info);
+        $arr = array($ProductName,$Company);
+        for($i=0;$i<count($info);$i++){
+            array_push($arr,$info[$i]);
+        }
+        // print_r($arr);
+        $tableName = CreateBetaTable($servername,$username,$password,$db_name,$InfoName);
+        $sql = "INSERT INTO $tableName (";
+        for($i=1;$i<count($InfoName);$i++){
+            if($i != count($InfoName)-1) $sql .= $InfoName[$i].",";
+            else $sql .= $InfoName[$i].") VALUES(";
+        }
+        for($i=0;$i<count($arr);$i++){
+            switch($i){
+                //Product Name, Company , Material Names
+                case 0: case 1: case 2: case 8:
+                    $sql .= "\"$arr[$i]\",";
+                    break;
+                case count($arr)-1:
+                    $sql .= $arr[$i].");";
+                    break;
+                default:
+                    $sql .= "$arr[$i],";
+                    break;
+            }
+        }
+        // echo $sql;
+        $conn = mysqli_connect($servername,$username,$password,$db_name);
+        if($conn -> query($sql) == false){
+            echo "Failed to Insert values in beta table<br/>";
+        }
+        else{
+            // echo "成功輸入至資料庫！<br/>";
+        }
+    }
+
+    function CreateBetaTable($servername,$username,$password,$db_name,$InfoName){
+        $conn = mysqli_connect($servername,$username,$password,$db_name);
+        $tableName = 'beta';
+
+        $sql = "CREATE TABLE IF NOT EXISTS ".$tableName." (".$InfoName[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY,".$InfoName[1]." VARCHAR(200),".$InfoName[2]." VARCHAR(200),".$InfoName[3]." VARCHAR(200),".$InfoName[4]." FLOAT,".$InfoName[5]." FLOAT,".$InfoName[6]." FLOAT,".$InfoName[7]." FLOAT,".$InfoName[8]." FLOAT,".$InfoName[9]." VARCHAR(200),".$InfoName[10]." FLOAT,".$InfoName[11]." FLOAT,".$InfoName[12]." FLOAT,".$InfoName[13]." FLOAT,".$InfoName[14]." FLOAT,".$InfoName[15]." FLOAT,".$InfoName[16]." FLOAT,".$InfoName[17]." FLOAT,".$InfoName[18]." FLOAT,".$InfoName[19]." INT,".$InfoName[20]." FLOAT,".$InfoName[21]." FLOAT);";
+        // echo $sql;
+        if($conn -> query($sql) == false) echo "Failed to create table ".$tableName."<br/>";
+        // else echo "Table create successfully!<br/>";
+        return $tableName;
     }
 ?>
