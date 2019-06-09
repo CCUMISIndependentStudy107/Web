@@ -26,6 +26,7 @@
         $value += $MElec*$process_rate;
         $value += $Expiration*$Bamboo*$year_rate;
         $value *= $MWeight;
-        return $value;
+        $arr = array($Material1,$Electric1,$Process1_1,$Process1_2,$Mileage1,$Gasoline1,$Material2,$Electric2,$Process2_1,$Process2_2,$Mileage2,$Gasoline2,$Mweight1,$Mweight2,$MElec,$MWeight,$Expiration,$Bamboo,$value);
+        return $arr;
     }
 ?>

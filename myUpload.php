@@ -1,7 +1,7 @@
 <?php
     include "Beta_table.php";
     ImageCheck();
-    $value = BetaCalculate();
+    $arr = BetaCalculate();
     $date = WriteProductInfo();
     $filename = "uploads/".$date."/beta.txt";
     BetaText($filename,$value);
@@ -112,8 +112,11 @@
         return $date;
     }
 
-    function BetaText($filename,$value){
+    function BetaText($filename,$arr){
         $beta = fopen($filename,"w");
-        fwrite($beta,$value);
+        for($i=0;$i<count($arr);$i++){
+            if($i != count($arr)-1) fwrite($beta,$arr[$i]."\n");
+            else fwrite($beta,$arr[$i]);
+        }
     }
 ?>
