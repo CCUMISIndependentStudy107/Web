@@ -4,7 +4,7 @@
     $arr = BetaCalculate();
     $date = WriteProductInfo();
     $filename = "uploads/".$date."/beta.txt";
-    BetaText($filename,$value);
+    BetaText($filename,$arr);
     echo "Upload Successful";
 ?>
 <html>
