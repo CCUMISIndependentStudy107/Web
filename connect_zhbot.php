@@ -66,6 +66,8 @@
         }
         mysqli_close($conn);
     }
+    $arr = GetProductInfo($servername, $username, $password, $db_name, "beta", 30);
+    print_r($arr);
 ?>
 
 <?php
