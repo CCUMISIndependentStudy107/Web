@@ -29,7 +29,8 @@
     // print_r($ProductInfo);
 
     // Beta table
-    Beta($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9]);
+    $pid = GetPID($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9]);
+    Beta($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9],$pid);
 
     // INSERT INTO TABLE preprocess
     $conn = mysqli_connect($servername,$username,$password,$db_name);
@@ -146,5 +147,29 @@
         if($conn -> query($sql) == false) echo "Failed to create table ".$tableName."<br/>";
         // else echo "Table create successfully!<br/>";
         return $tableName;
+    }
+
+    function GetPID($servername,$username,$password,$db_name,$ProductName,$Company){
+        $conn = mysqli_connect($servername, $username, $password, $db_name);
+        $tablname = "preprocess";
+        $fieldName = GetFieldName($servername, $username, $password, $db_name, $tablename);
+        $fieldnum = count($fieldName);
+        $sql = "SELECT * FROM $tablename WHERE ".$fieldName[1]."=$ProductName AND $fieldName[10] = $Company";
+        $arr = array();
+        if ($res = mysqli_query($conn, $sql)) {
+            if (mysqli_num_rows($res) > 0) {
+                while ($row = mysqli_fetch_array($res)) {
+                    for ($i = 0, $j = 0; $i < $fieldnum; $i++) {
+                        $id = $row[$fieldName[0]];
+                        return $id;
+                    }
+                }
+            }
+            else {
+                echo "No result!<br/>";
+                return ;
+            }
+            mysqli_free_result($res);
+        }
     }
 ?>
