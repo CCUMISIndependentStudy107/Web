@@ -29,10 +29,6 @@
     $ProductInfo[5] = TagProcess($ProductInfo[5]);
     // print_r($ProductInfo);
 
-    // Beta table
-    $pid = GetPID($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9]);
-    Beta($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9],$pid);
-
     // INSERT INTO TABLE preprocess
     $conn = mysqli_connect($servername,$username,$password,$db_name);
 
@@ -66,6 +62,9 @@
         }
         mysqli_close($conn);
     }
+    // Beta table
+    $pid = GetPID($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9]);
+    Beta($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9],$pid);
     $arr = GetProductInfo($servername, $username, $password, $db_name, "beta", 30);
     print_r($arr);
 ?>
