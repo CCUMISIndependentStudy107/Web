@@ -95,12 +95,14 @@
         return str_replace(','," ",$tag);
     }
 
-    function Beta($servername,$username,$password,$db_name,$ProductName,$Company){
+    function Beta($servername,$username,$password,$db_name,$ProductName,$Company,$pid){
         $beta_file = "beta.txt";
         $info = ReadPlainText($beta_file);
-        $InfoName = array('ID','ProductName','Company','Material1','Electric1','Process1_1','Process1_2','Mileage1','Gasoline1','Material2','Electric2','Process2_1','Process2_2','Mileage2','Gasoline2','Mweight1','Mweight2','MElec','MWeight','Expiration','Bamboo','value');
+        $InfoName = array('ID','PID','ProductName','Company','Material1','Electric1','Process1_1','Process1_2',
+        'Mileage1','Gasoline1','Material2','Electric2','Process2_1','Process2_2','Mileage2','Gasoline2','Mweight1',
+        'Mweight2','MElec','MWeight','Expiration','Bamboo','value');
         // print_r($info);
-        $arr = array($ProductName,$Company);
+        $arr = array($pid,$ProductName,$Company);
         for($i=0;$i<count($info);$i++){
             array_push($arr,$info[$i]);
         }
@@ -114,7 +116,7 @@
         for($i=0;$i<count($arr);$i++){
             switch($i){
                 //Product Name, Company , Material Names
-                case 0: case 1: case 2: case 8:
+                case 1: case 2: case 3: case 9:
                     $sql .= "\"$arr[$i]\",";
                     break;
                 case count($arr)-1:
@@ -139,7 +141,7 @@
         $conn = mysqli_connect($servername,$username,$password,$db_name);
         $tableName = 'beta';
 
-        $sql = "CREATE TABLE IF NOT EXISTS ".$tableName." (".$InfoName[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY,".$InfoName[1]." VARCHAR(200),".$InfoName[2]." VARCHAR(200),".$InfoName[3]." VARCHAR(200),".$InfoName[4]." FLOAT,".$InfoName[5]." FLOAT,".$InfoName[6]." FLOAT,".$InfoName[7]." FLOAT,".$InfoName[8]." FLOAT,".$InfoName[9]." VARCHAR(200),".$InfoName[10]." FLOAT,".$InfoName[11]." FLOAT,".$InfoName[12]." FLOAT,".$InfoName[13]." FLOAT,".$InfoName[14]." FLOAT,".$InfoName[15]." FLOAT,".$InfoName[16]." FLOAT,".$InfoName[17]." FLOAT,".$InfoName[18]." FLOAT,".$InfoName[19]." INT,".$InfoName[20]." FLOAT,".$InfoName[21]." FLOAT);";
+        $sql = "CREATE TABLE IF NOT EXISTS ".$tableName." (".$InfoName[0]." INT NOT NULL AUTO_INCREMENT PRIMARY KEY,".$InfoName[1]." INT,".$InfoName[2]." VARCHAR(200),".$InfoName[3]." VARCHAR(200),".$InfoName[4]." VARCHAR(200),".$InfoName[5]." FLOAT,".$InfoName[6]." FLOAT,".$InfoName[7]." FLOAT,".$InfoName[8]." FLOAT,".$InfoName[9]." FLOAT,".$InfoName[10]." VARCHAR(200),".$InfoName[11]." FLOAT,".$InfoName[12]." FLOAT,".$InfoName[13]." FLOAT,".$InfoName[14]." FLOAT,".$InfoName[15]." FLOAT,".$InfoName[16]." FLOAT,".$InfoName[17]." FLOAT,".$InfoName[18]." FLOAT,".$InfoName[19]." FLOAT,".$InfoName[20]." INT,".$InfoName[21]." FLOAT,".$InfoName[22]." FLOAT);";
         // echo $sql;
         if($conn -> query($sql) == false) echo "Failed to create table ".$tableName."<br/>";
         // else echo "Table create successfully!<br/>";

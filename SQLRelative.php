@@ -16,7 +16,9 @@
         if(!$conn) die("Can't access to sql!<br/>");
         $fieldName = GetFieldName($servername, $username, $password, $db_name, $tablename);
         $fieldnum = count($fieldName);
-        $sql = "SELECT * FROM $tablename WHERE ".$fieldName[0]."=$pid";
+        $pos = 0;
+        if($tablename == "beta") $pos=1;
+        $sql = "SELECT * FROM $tablename WHERE ".$fieldName[$pos]."=$pid";
         $arr = array();
         if ($res = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($res) > 0) {
@@ -34,10 +36,10 @@
             mysqli_free_result($res);
         }
         $keys = array_keys($arr);
-        if(count($keys)>1){
-            echo "Why?";
-            return;
-        }
+        // if(count($keys)>1){
+        //     echo "Why?";
+        //     return;
+        // }
         // for($i=0;$i<count($keys);$i++){
         //     print_r($arr[$keys[$i]]);
         // }
