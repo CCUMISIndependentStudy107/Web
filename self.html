@@ -73,17 +73,18 @@
         </section>
 
         <section class="simple-section">
-            <h3 class="row justify-content-between" style="padding: 0 1rem;"><span>審查結果表</span><span id="total-reduce-carbon"></span></h3>
+            <h3 class="row justify-content-between" style="padding: 0 1rem;"><span>個人排碳量</span><span id="total-reduce-carbon"></span></h3>
             <div id="tx-addr" class="table-responsive">
+                <small>正值：節省多少排碳量；負值：消耗多少排碳量。</small>
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">商品名稱</th>
-                            <th scope="col">與竹製品比較(g)</th>
-                            <th scope="col">與木製品比較(g)</th>
-                            <th scope="col">與鋼鐵製品比較(g)</th>
-                            <th scope="col">與塑膠製品比較(g)</th>
-                            <th scope="col">與鋁製品比較(g)</th>
+                            <th scope="col" style="color: #2bb673;">與竹對比(g)</th>
+                            <th scope="col">與木對比(g)</th>
+                            <th scope="col">與鋼鐵對比(g)</th>
+                            <th scope="col">與塑膠對比(g)</th>
+                            <th scope="col">與鋁對比(g)</th>
                             <th scope="col">原始耗碳量(g)</th>
                             <th scope="col"></th>
                         </tr>
@@ -94,7 +95,7 @@
         </section>
 
         <section class="simple-section">
-            <h3>α 審查表</h3>
+            <h3>個人排碳計算表</h3>
             <form id="alpha-table" action="Alpha_table.php" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -158,12 +159,9 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                                <p class="lead">輸入進去α表的值會在以下的智能合約進行計算：</p>
-                            <div class="container">
-                                <div class="row">
-                                    <img src="./pic/sc_code.png" alt="author" style="display: block; width: 100%;">
-                                </div>
-                            </div>
+                            <p class="lead">智能合約簡單來說是一種自動化轉移價值的平台。我們可以把他想成一台自動販賣機，給錢按下按鈕就會給相對的產品。但和自動販賣機不同的事情是，智能合約追求的是去中心化管理，也就是說智能合約不像自動販賣機是由特定公司進行管理的。</p>
+                            <p class="lead">這邊會出現一個問題，如果要去中心化的話，怎麼運行這個平台？如果交給企業或政府，那豈不是又回到去中心化了嗎？區塊鏈的出現解決了這個問題。區塊鏈本身有著公開透明、去中心化、不可篡改、自動化等特性。這些特性對於智能合約來說是絕佳的平台，因此在區塊鏈上使用智能合約，成為了大家關注的焦點。</p>
+                            <p class="lead">我們平台為了保證計算的公正性，決定使用智能合約。透過使用智能合約，無論任何人都可以對我們的計算進行審查，我們的碳計算可以因此有更高的可信度。同時，公開的資料可以避免數據造假的問題。</p>
                         </div>
                     </div>
                 </div>
@@ -179,12 +177,29 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- <h3>減碳計算公式來自Booming Bamboo：由博士所著。</h3>
-                        <h4>該書表示：</h4> -->
-                        <p class="lead">減碳計算公式來自<a href="https://boomingbamboo.com/" blank="_blank">《Booming Bamboo》</a>，由 <strong><u>dr. ir. Pablo van der Lugt</u></strong> 所著。作者對各種材質生產時所產生的二氧化碳進行量化比較，而我們則利用這些比較進行計算來得出我們的數據。<small>公式：[種類(W) * 排放量(C) = 結果(R)]</small></p>
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <img src="./pic/bb_author.png" alt="author" style="display: block; width: 750px; height: 450px;">
+                        <p class="lead">關於竹商品的減碳量研究，基本上要從生命週期評估開始。</p>
+                        <p class="lead">生命週期評估將產品從 1.原料開採 2.生產製造 3.產品運輸 4.產品使用 5.處置/回收 進行全面性的整理與比對。要全面評估一項商品排放二氧化碳的狀況（或是說計算碳足跡），從生命週期評估的角度來做可以說是最為完善。</p>
+                        <p class="lead">我們認為倘若需要使用生命週期評估的方式計算上架到我們平台的商品的排碳量，我們需要讓廠商進行一些資料的填寫，其中包含的 1.各項材料從原料到加工成零件的排碳量：開採->運輸->初步加工->運輸->進一步加工（重複加工、運輸直到整個製成結束）->運輸->倉庫保存 2.要生產的商品需要使用的零件的材質資訊列表 3.商品製作過程的排碳量計算 4.商品使用年限。</p>
+                        <p class="lead">基本上只有有了以上四點，我們就可以進行計算。我們可以先利用1和2計算出商品原料的排碳，算出結果再加上3就可以計算出總排碳量。得到總排碳量之後，我們只需要再利用4來算出商品吸收的二氧化碳，並與前面算出的最終結果進行計算整理就可以算出最後的結果了。</p>
+                        <p class="mb-0">參考資料：</p>
+                        <ol>
+                            <li>
+                                <a href="https://www.inbar.int/wp-content/uploads/2017/02/Bamboo-products-LCA-TR-35_0.pdf">https://www.inbar.int/wp-content/uploads/2017/02/Bamboo-products-LCA-TR-35_0.pdf</a>
+                            </li>
+                            <li>
+                                <a href="https://boomingbamboo.com">https://boomingbamboo.com</a>
+                            </li>
+                            <li>
+                                <a href="https://www.youtube.com/watch?v=wI_fdwCU_oc&feature=youtu.be">https://www.youtube.com/watch?v=wI_fdwCU_oc&feature=youtu.be</a>
+                            </li>
+                            <li>
+                                <a href="https://www.itri.org.tw/chi/Content/MsgPic01/Contents.aspx?SiteID=1&MmmID=620624053204740250&MSid=1001263363051450350">https://www.itri.org.tw/chi/Content/MsgPic01/Contents.aspx?SiteID=1&MmmID=620624053204740250&MSid=1001263363051450350</a>
+                            </li>
+                        </ol>
+                        <b>計算：原料1 + 原料2 + 產品製作 - 使用年限</b>
+                        <br>
+                        <small>[(ai + a2 + a3)*1.02 + (x*0.22)]*(@1) + [(bi + b2 + b3)*1.02 + (y*0.22)] + (c*1.02) + [(z*@3)*(4*0.4*3.1)]</small>
+                        <img src="./pic/photo6334328106306873572.jpg" class="img-fluid img-thumbnail">
 <!--
                                 <div class="card mb-2" style="width: 22rem;">
                                     <div class="card-body">
@@ -247,8 +262,6 @@
                                     </div>
                                 </div>
 -->
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -328,7 +341,7 @@
                         <td>
                             ${ data.productName }
                         </td>
-                        <td>
+                        <td style="color: #2bb673;">
                             ${ compare[0] }
                         </td>
                         <td>

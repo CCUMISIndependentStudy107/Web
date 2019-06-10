@@ -19,10 +19,10 @@
         // echo $sql; die();
         // To show searching result(s)
         $OrderInfo = array();
-        $fieldname_chinese = array("ID", "買方","商品名稱", "商品價格", "購買數量", "提交日期", "廠商名稱", "狀態");
+        $fieldname_chinese = array("ID", "買方","商品名稱", "商品價格", "購買數量", "提交日期", "廠商名稱", "減碳量(g)", "狀態");
         if ($result = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($result) > 0) {
-                echo "<h3>購買紀錄</h3>";
+                echo "<h3>竹商品購買紀錄</h3>";
                 echo "<div class='table-responsive'>";
                 echo "<table class='table table-striped'>";
                 echo "<thead>";
@@ -47,6 +47,7 @@
                         if ($i == count($fieldname) - 1) {
                             $id = $row[$fieldname[0]];
                             $reduceC = getReduceC($servername, $username, $password, $db_name, $id);
+                            echo "<td>$reduceC</td>";
                             switch ($row[$fieldname[$i]]) {
                                 case 1:
                                     echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
