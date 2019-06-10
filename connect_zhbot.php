@@ -157,19 +157,17 @@
         $fieldName = GetFieldName($servername, $username, $password, $db_name, $tablename);
         $fieldnum = count($fieldName);
         $sql = "SELECT * FROM $tablename WHERE ".$fieldName[1]."=$ProductName AND $fieldName[10] = $Company";
-        $arr = array();
+        echo $sql;
         if ($res = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($res) > 0) {
                 while ($row = mysqli_fetch_array($res)) {
-                    for ($i = 0, $j = 0; $i < $fieldnum; $i++) {
-                        $id = $row[$fieldName[0]];
-                        return $id;
-                    }
+                    $id = $row[$fieldName[0]];
+                    return $id;
                 }
             }
             else {
                 echo "No result!<br/>";
-                return ;
+                return -1;
             }
             mysqli_free_result($res);
         }
