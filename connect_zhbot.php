@@ -68,6 +68,7 @@
     Beta($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9],$pid);
     $arr = GetProductInfo($servername, $username, $password, $db_name, $betaTable, $pid);
     print_r($arr);
+    die();
 ?>
 
 <?php
