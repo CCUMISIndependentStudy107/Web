@@ -87,6 +87,14 @@
         .popover-body {
             font-size: 1.4rem;
         }
+
+        .nav-tabs .nav-link {
+            color: #2bb673 !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #495057 !important;
+        }
     </style>
 </head>
 <body>
@@ -206,50 +214,22 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="row">
-                            <div class="form-group col-sm-4 row">
-                                <label for="company_name" class="col-sm-4 col-form-label">廠商名稱</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="company_name" name="company_name" value="zhbot" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-4 row">
-                                <label for="company_name" class="col-sm-4 col-form-label">商品名稱</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="product_name" name="product_name" value="zhbot" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-4 row">
-                                <label for="company_name" class="col-sm-4 col-form-label">商品價格</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="product_price" name="product_price" value="zhbot" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-4 row">
-                                <label for="company_name" class="col-sm-4 col-form-label">上架數量</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="product_quantity" name="product_quantity" value="zhbot" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-4 row">
-                                <label for="company_name" class="col-sm-4 col-form-label">商品簡介</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="product_info" name="product_info" value="zhbot" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-4 row">
-                                <label for="company_name" class="col-sm-4 col-form-label">商品重量</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="product_weight" name="product_weight" value="zhbot" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group col-sm-4 row">
-                                <label for="company_name" class="col-sm-4 col-form-label">商品標籤</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="product_tag" name="product_tag" value="zhbot" readonly>
-                                </div>
-                            </div>
-                        </form>
+                        <ul class="nav nav-tabs mb-2" id="productDetailsTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="main-tab" data-toggle="tab" href="#main" role="tab" aria-controls="main" aria-selected="true">主要商品資訊</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="material-tab" data-toggle="tab" href="#materialla" role="tab" aria-controls="material" aria-selected="false">原料</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="made-tab" data-toggle="tab" href="#made" role="tab" aria-controls="made" aria-selected="false">產品製作</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="productDetailsTabContent">
+                            <!-- <div class="tab-pane fade show active" id="main" role="tabpanel" aria-labelledby="main-tab"></div>
+                            <div class="tab-pane fade" id="materialla" role="tabpanel" aria-labelledby="material-tab"></div>
+                            <div class="tab-pane fade" id="made" role="tabpanel" aria-labelledby="made-tab"></div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -662,7 +642,11 @@
                 console.log(err);
             },
             success: function(res) {
-                console.log(res);
+                // let modalDataFragments = res.split('@#-#@');
+                // for (let i = 0; i < modalDataFragments.length; i++) {
+                //     let data = modalDataFragments[i];
+                    $('#productDetailsTabContent').html(res);
+                // }
             }
         });
     }

@@ -74,6 +74,7 @@
                             else if ($i == 1) { /* 不必要顯示買方名稱 */ }
                             else if ($i == 2) {
                                 $id = $row[$fieldname[0]];
+                                $pid = $row[$fieldname[2]];
                                 $name = getProductBYID($servername, $username, $password, $db_name, $id);
                                 echo "<td title='" . $name . "'>" . $name . "</td>";
                             }
@@ -90,7 +91,7 @@
                         // echo "<br/>";
                     }
                     echo "<td>";
-                    echo "<button type='button' class='btn btn-sm btn-success' data-toggle='modal' data-target='#show-more-purchase-details-modal' onclick='showMorePurchaseDetails($id)'>！</button>";
+                    echo "<button type='button' class='btn btn-sm btn-success' data-toggle='modal' data-target='#show-more-purchase-details-modal' onclick='showMorePurchaseDetails($pid)'>！</button>";
                     echo "</td>";
                     echo "</tr>";
                 }
