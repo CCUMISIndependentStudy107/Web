@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <title>個人資訊</title>
+    <link rel="stylesheet" href="./style.css">
     <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
     <style>
         .simple-section {
             margin-bottom: 2rem;
@@ -41,6 +43,50 @@
         #tx-addr tbody tr td:not(:first-of-type) {
             text-align: right;
         }
+
+        #hight-charts text.highcharts-credits {
+            display: none;
+        }
+
+        #hight-charts text.highcharts-title > tspan {
+            font-family: 'Microsoft JhengHei';
+            font-size: 1.6rem;
+        }
+
+        #hight-charts text.highcharts-subtitle > tspan {
+            font-family: 'Microsoft JhengHei';
+            font-size: 1.2rem;
+        }
+
+        .popover {
+            max-width: 320px;
+        }
+
+        .popover-dismiss {
+            cursor: help;
+            outline: none;
+        }
+
+        .popover-dismiss:hover {
+            color: transparent;
+            text-decoration: none;
+        }
+
+        .popover-dismiss > span {
+            border-radius: 0 .25rem .25rem 0;
+        }
+
+        .popover-dismiss > span:hover {
+            filter: brightness(.85);
+        }
+
+        .popover-header {
+            font-size: 1.6rem;
+        }
+
+        .popover-body {
+            font-size: 1.4rem;
+        }
     </style>
 </head>
 <body>
@@ -64,7 +110,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="wallet-money" name="wallet-money" readonly>
                             <div class="input-group-append">
-                                <span class="input-group-text">HDC</span>
+                                    <a tabindex="0" class="popover-dismiss" role="button" data-toggle="popover" data-placement="top" data-trigger="" title="什麼是 HDC？" data-content="象徵排碳量的一種衡量標準。"><span class="input-group-text">HDC</span></a>
                             </div>
                         </div>
                     </div>
@@ -73,9 +119,9 @@
         </section>
 
         <section class="simple-section">
-            <h3 class="row justify-content-between" style="padding: 0 1rem;"><span>個人排碳量</span><span id="total-reduce-carbon"></span></h3>
+            <h3 class="row justify-content-between" style="padding: 0 1rem;"><span>{{level}}排碳量</span><span id="total-reduce-carbon"></span></h3>
             <div id="tx-addr" class="table-responsive">
-                <small>正值：節省多少排碳量；負值：消耗多少排碳量。</small>
+                <small>正值：相比之下多排放的二氧化碳量；負值：相比之下少排放的二氧化碳量。</small>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -95,7 +141,7 @@
         </section>
 
         <section class="simple-section">
-            <h3>個人排碳計算表</h3>
+            <h3>{{level}}排碳計算表</h3>
             <form id="alpha-table" action="Alpha_table.php" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -149,24 +195,48 @@
             </form>
         </section>
 
-        <div class="modal fade" id="smart-contract-modal" tabindex="-1" role="dialog" aria-labelledby="Reduce-Carbon-Algorithm-Modal" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">智能合約說明</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p class="lead">智能合約簡單來說是一種自動化轉移價值的平台。我們可以把他想成一台自動販賣機，給錢按下按鈕就會給相對的產品。但和自動販賣機不同的事情是，智能合約追求的是去中心化管理，也就是說智能合約不像自動販賣機是由特定公司進行管理的。</p>
-                            <p class="lead">這邊會出現一個問題，如果要去中心化的話，怎麼運行這個平台？如果交給企業或政府，那豈不是又回到去中心化了嗎？區塊鏈的出現解決了這個問題。區塊鏈本身有著公開透明、去中心化、不可篡改、自動化等特性。這些特性對於智能合約來說是絕佳的平台，因此在區塊鏈上使用智能合約，成為了大家關注的焦點。</p>
-                            <p class="lead">我們平台為了保證計算的公正性，決定使用智能合約。透過使用智能合約，無論任何人都可以對我們的計算進行審查，我們的碳計算可以因此有更高的可信度。同時，公開的資料可以避免數據造假的問題。</p>
-                        </div>
+        <!-- 購買商品更多資訊 -->
+        <div class="modal fade" id="show-more-purchase-details-modal" tabindex="-1" role="dialog" aria-labelledby="Reduce-Carbon-Algorithm-Modal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">購買商品更多資訊</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="lead">智能合約簡單來說是一種<mark>自動化轉移價值的平台</mark>。我們可以把他想成一台自動販賣機，給錢按下按鈕就會給相對的產品。但和自動販賣機不同的事情是，智能合約追求的是去中心化管理，也就是說智能合約不像自動販賣機是由特定公司進行管理的。</p>
+                        <p class="lead">這邊會出現一個問題，如果要去中心化的話，怎麼運行這個平台？如果交給企業或政府，那豈不是又回到去中心化了嗎？區塊鏈的出現解決了這個問題。區塊鏈本身有著公開透明、去中心化、不可篡改、自動化等特性。這些特性對於智能合約來說是絕佳的平台，因此在區塊鏈上使用智能合約，成為了大家關注的焦點。</p>
+                        <p class="lead">我們平台為了<mark>保證計算的公正性</mark>，決定使用智能合約。透過使用智能合約，無論任何人都可以對我們的計算進行審查，我們的碳計算可以因此有更高的可信度。同時，公開的資料可以<mark>避免數據造假</mark>的問題。</p>
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- 智能合約說明 -->
+        <div class="modal fade" id="smart-contract-modal" tabindex="-1" role="dialog" aria-labelledby="Reduce-Carbon-Algorithm-Modal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">智能合約說明</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <blockquote class="blockquote text-center">
+                            <h2 class="m-0" style="color: #2bb673;">網路交易的信任新解藥</h2>
+                        </blockquote>
+                        <p class="lead">智能合約簡單來說是一種<mark>自動化轉移價值的平台</mark>。我們可以把他想成一台自動販賣機，給錢按下按鈕就會給相對的產品。但和自動販賣機不同的事情是，智能合約追求的是去中心化管理，也就是說智能合約不像自動販賣機是由特定公司進行管理的。</p>
+                        <p class="lead">這邊會出現一個問題，如果要去中心化的話，怎麼運行這個平台？如果交給企業或政府，那豈不是又回到去中心化了嗎？區塊鏈的出現解決了這個問題。區塊鏈本身有著公開透明、去中心化、不可篡改、自動化等特性。這些特性對於智能合約來說是絕佳的平台，因此在區塊鏈上使用智能合約，成為了大家關注的焦點。</p>
+                        <p class="lead">我們平台為了<mark>保證計算的公正性</mark>，決定使用智能合約。透過使用智能合約，無論任何人都可以對我們的計算進行審查，我們的碳計算可以因此有更高的可信度。同時，公開的資料可以<mark>避免數據造假</mark>的問題。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 節碳量說明 -->
         <div class="modal fade" id="reduce-carbon-algorithm-modal" tabindex="-1" role="dialog" aria-labelledby="Reduce-Carbon-Algorithm-Modal" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -268,6 +338,7 @@
         </div>
 
         <section id="record-table" class="simple-section"></section>
+        <section id="hight-charts" class="simple-section"></section>
     </div>
 <script src="./blockchain.js"></script>
 <script>
@@ -539,12 +610,29 @@
         });
     }
 
+    function showMorePurchaseDetails(id) {
+        $.ajax({
+            url: 'Self_get_purchase_details.php',
+            type: 'POST',
+            data: {
+                id: id
+            },
+            error: function(err) {
+                console.log(err);
+            },
+            success: function(res) {
+                console.log(res);
+            }
+        });
+    }
+
     var green = new Vue({
         el: '#self-info',
         data: {
             walletAddr: ''
         },
         beforeMount: function () {
+            // purchaseHistoryChart();
             getWalletAddr().then(addr => {
                 this.walletAddr = addr.split('8877887')[0];
                 _RECIPIENTS_ADDRESS = addr.split('8877887')[0];
@@ -557,11 +645,110 @@
             });
         },
         computed: {
-            walletMoney: function () {
-                return ;
+            level: function () {
+                let level = window.parent.document.querySelector('#menu-item-2814 a').textContent.split('(')[1];
+                switch (level) {
+                    case '管理員)':
+                        return '管理員';
+                        break;
+                    case '廠商)':
+                        return '商品';
+                        break;
+                    default:
+                        return '個人';
+                }
             }
         }
     });
+
+    $('.popover-dismiss').popover({
+        trigger: 'focus'
+    });
+
+    function purchaseHistoryChart() {
+        var title = {
+            text: '購買竹商品之減碳量紀錄圖'
+        };
+        var subtitle = {
+            text: '年份: 2019'
+        };
+        var xAxis = {
+            categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+        };
+        var yAxis = {
+            title: {
+                text: '減碳量 (g)'
+            },
+            plotLines: [ // 最下方的底線
+                {
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }
+            ]
+        };
+
+        var tooltip = {
+            valueSuffix: ' g'
+        }
+
+        var legend = {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        };
+
+        var series =  [
+            {
+                name: window.parent.document.querySelector('#menu-item-2814 a').textContent.split('(')[0],
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            },
+        ];
+
+        let dt = $('.datetime'), rc = $('.reduceC');
+        for (let i = 0; i < dt.length; i++) {
+            let month = dt.eq(i).text().split('-')[1];
+
+            if (month === '01')
+                series[0].data[0] += parseFloat(rc.eq(i).text());
+            else if (month === '02')
+                series[0].data[1] += parseFloat(rc.eq(i).text());
+            else if (month === '03')
+                series[0].data[2] += parseFloat(rc.eq(i).text());
+            else if (month === '04')
+                series[0].data[3] += parseFloat(rc.eq(i).text());
+            else if (month === '05')
+                series[0].data[4] += parseFloat(rc.eq(i).text());
+            else if (month === '06')
+                series[0].data[5] += parseFloat(rc.eq(i).text());
+            else if (month === '07')
+                series[0].data[6] += parseFloat(rc.eq(i).text());
+            else if (month === '08')
+                series[0].data[7] += parseFloat(rc.eq(i).text());
+            else if (month === '09')
+                series[0].data[8] += parseFloat(rc.eq(i).text());
+            else if (month === '10')
+                series[0].data[9] += parseFloat(rc.eq(i).text());
+            else if (month === '11')
+                series[0].data[10] += parseFloat(rc.eq(i).text());
+            else if (month === '12')
+                series[0].data[11] += parseFloat(rc.eq(i).text());
+        }
+        console.log('series', series);
+
+        var json = {};
+
+        json.title = title;
+        json.subtitle = subtitle;
+        json.xAxis = xAxis;
+        json.yAxis = yAxis;
+        json.tooltip = tooltip;
+        json.legend = legend;
+        json.series = series;
+
+        $('#hight-charts').highcharts(json);
+    }
 </script>
 </body>
 </html>

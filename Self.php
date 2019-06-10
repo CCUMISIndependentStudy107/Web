@@ -47,7 +47,7 @@
                         if ($i == count($fieldname) - 1) {
                             $id = $row[$fieldname[0]];
                             $reduceC = getReduceC($servername, $username, $password, $db_name, $id);
-                            echo "<td>$reduceC</td>";
+                            echo "<td class='reduceC'>$reduceC</td>";
                             switch ($row[$fieldname[$i]]) {
                                 case 1:
                                     echo "<td><span class='text-success'>PASS(" . $txLink . ")</span></td>";
@@ -68,6 +68,9 @@
                                 echo "<td id='record" . $id . "' style='display: none'>" . $eth . "</td>";
                             }
                             else if ($i == 7) { /* 不要顯示 `tx(7)` */ }
+                            else if ($i == 5) {
+                                echo "<td class='datetime' title='" . $row[$fieldname[$i]] . "'>" . $row[$fieldname[$i]] . "</td>";
+                            }
                             else if ($i == 1) { /* 不必要顯示買方名稱 */ }
                             else if ($i == 2) {
                                 $id = $row[$fieldname[0]];
@@ -86,12 +89,16 @@
                         // }
                         // echo "<br/>";
                     }
+                    echo "<td>";
+                    echo "<button type='button' class='btn btn-sm btn-success' data-toggle='modal' data-target='#show-more-purchase-details-modal' onclick='showMorePurchaseDetails($id)'>！</button>";
+                    echo "</td>";
                     echo "</tr>";
                 }
                 // print_r($OrderInfo);
                 echo "</tbody>";
                 echo "</table>";
                 echo "</div>";
+                echo "<script> purchaseHistoryChart(); </script>";
                 mysqli_free_result($result);
             }
             else {
