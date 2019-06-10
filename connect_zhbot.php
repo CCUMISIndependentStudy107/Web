@@ -18,6 +18,7 @@
 </html>
 <?php
     include "connect_sql.php";
+    include "SQLRelative.php";
     include "Duplicate.php";
 
     $ProductInfoName = array("ID","Name","Price","Quantity","Information","Weight","Tag","PictureName","ReduceC","FolderName","Company", "tx");
