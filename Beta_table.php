@@ -24,7 +24,7 @@
         $value = ((($Electric1+$Process1_1+$Process1_2)*$process_rate)+$Mileage1*$gas_rate)*$Mweight1;
         $value += ((($Electric2+$Process2_1+$Process2_2)*$process_rate)+$Mileage2*$gas_rate)*$Mweight2;
         $value += $MElec*$process_rate;
-        $value += $Expiration*$Bamboo*$year_rate;
+        $value -= $Expiration*$Bamboo*$year_rate;
         $value *= $MWeight;
         $arr = array($Material1,$Electric1,$Process1_1,$Process1_2,$Mileage1,$Gasoline1,$Material2,$Electric2,$Process2_1,$Process2_2,$Mileage2,$Gasoline2,$Mweight1,$Mweight2,$MElec,$MWeight,$Expiration,$Bamboo,$value);
         return $arr;
