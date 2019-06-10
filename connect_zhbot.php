@@ -130,7 +130,6 @@
             }
         }
         echo $sql;
-        die();
         $conn = mysqli_connect($servername,$username,$password,$db_name);
         if($conn -> query($sql) == false){
             echo "Failed to Insert values in beta table<br/>";
@@ -153,10 +152,10 @@
 
     function GetPID($servername,$username,$password,$db_name,$ProductName,$Company){
         $conn = mysqli_connect($servername, $username, $password, $db_name);
-        $tablname = "preprocess";
+        $tablename = "preprocess";
         $fieldName = GetFieldName($servername, $username, $password, $db_name, $tablename);
         $fieldnum = count($fieldName);
-        $sql = "SELECT * FROM $tablename WHERE ".$fieldName[1]."=$ProductName AND $fieldName[10] = $Company";
+        $sql = "SELECT * FROM $tablename WHERE ".$fieldName[1]."=\"$ProductName\" AND $fieldName[10] = \"$Company\"";
         echo $sql;
         if ($res = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($res) > 0) {
