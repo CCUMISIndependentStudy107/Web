@@ -66,9 +66,6 @@
     $betaTable = "beta";
     $pid = GetPID($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9]);
     Beta($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9],$pid);
-    $arr = GetProductInfo($servername, $username, $password, $db_name, $betaTable, $pid);
-    print_r($arr);
-    die();
 ?>
 
 <?php
@@ -159,7 +156,7 @@
         $fieldName = GetFieldName($servername, $username, $password, $db_name, $tablename);
         $fieldnum = count($fieldName);
         $sql = "SELECT * FROM $tablename WHERE ".$fieldName[1]."=\"$ProductName\" AND $fieldName[10] = \"$Company\"";
-        echo $sql;
+        // echo $sql;
         if ($res = mysqli_query($conn, $sql)) {
             if (mysqli_num_rows($res) > 0) {
                 while ($row = mysqli_fetch_array($res)) {
