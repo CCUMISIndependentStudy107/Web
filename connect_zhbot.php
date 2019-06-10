@@ -63,9 +63,10 @@
         mysqli_close($conn);
     }
     // Beta table
+    $betaTable = "beta";
     $pid = GetPID($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9]);
     Beta($servername,$username,$password,$db_name,$ProductInfo[0],$ProductInfo[9],$pid);
-    $arr = GetProductInfo($servername, $username, $password, $db_name, "beta", 30);
+    $arr = GetProductInfo($servername, $username, $password, $db_name, $betaTable, $pid);
     print_r($arr);
 ?>
 
