@@ -129,7 +129,8 @@
                     break;
             }
         }
-        // echo $sql;
+        echo $sql;
+        die();
         $conn = mysqli_connect($servername,$username,$password,$db_name);
         if($conn -> query($sql) == false){
             echo "Failed to Insert values in beta table<br/>";
