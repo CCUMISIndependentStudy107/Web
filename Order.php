@@ -10,6 +10,10 @@
         <script src="./web3.min.js"></script>
         <script src="./blockchain.js"></script>
         <style>
+            table {
+                font-size: 1.4rem !important;
+            }
+
             .table td, .table th {
                 padding: .75rem;
                 vertical-align: top;
