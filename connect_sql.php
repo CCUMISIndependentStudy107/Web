@@ -1,7 +1,7 @@
 <?php
-    $servername = "140.123.94.145"; //server 本地可用localhost
-    $username = "zhbot";    //sql 帳號
-    $password = "zhbot107"; //sql 密碼
+    $servername = "127.0.0.1"; //server 本地可用localhost
+    $username = "root";    //sql 帳號
+    $password = ""; //sql 密碼
     /* CREATE DATABASE IF NOT EXISTS */
     $db_name = "newzhbot";  //database name
     $conn = mysqli_connect($servername, $username, $password);  // Create connection
